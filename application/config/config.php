@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'https://192.168.0.16/';
+$config['base_url']	= 'https://open-note.ddns.net/';
 
 /*
 |--------------------------------------------------------------------------
