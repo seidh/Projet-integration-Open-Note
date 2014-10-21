@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'https://open-note.ddns.net/';
+$config['base_url'] = 'https://open-note.ddns.net/';
 
 /*
 |--------------------------------------------------------------------------
@@ -224,7 +224,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = '45GHYFCVOPA58H6QS810AQM720MP9560';
 
 /*
 |--------------------------------------------------------------------------
@@ -265,7 +265,7 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
+$config['cookie_prefix']	= "opennote_";
 $config['cookie_domain']	= "";
 $config['cookie_path']		= "/";
 $config['cookie_secure']	= FALSE;
@@ -279,7 +279,7 @@ $config['cookie_secure']	= FALSE;
 | COOKIE data is encountered
 |
 */
-$config['global_xss_filtering'] = FALSE;
+$config['global_xss_filtering'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

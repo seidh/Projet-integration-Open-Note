@@ -38,21 +38,18 @@
                         <h3 class="panel-title">Connection</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <?php echo validation_errors(); ?>
+                        <?php echo form_open('verifylogin'); ?>
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="username" id="username" type="email" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
+                                    <input class="form-control" placeholder="Password" name="password" id="password" type="password" value="">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="<?php echo base_url('accueil'); ?>" class="btn btn-lg btn-success btn-block">Login</a>
+                                <!-- <a href="<?php echo base_url('accueil'); ?>" class="btn btn-lg btn-success btn-block">Login</a> -->
+                                <input type="submit" value="Login" class="btn btn-lg btn-success btn-block"/>
                             </fieldset>
                         </form>
                     </div>
