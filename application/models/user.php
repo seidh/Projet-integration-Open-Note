@@ -20,5 +20,30 @@ Class User extends CI_Model
      return false;
    }
  }
+ function user_data($username)
+ {
+    $this -> db -> select('*');
+    $this -> db -> from('user');
+    $this -> db -> where('email', $username);
+    $this -> db -> limit(1);
+ 
+    $query = $this -> db -> get();
+    $result = $query->result();
+    if($result)
+    {
+        $data = array();
+        foreach($result as $row)
+        {
+            $data = array(
+                'id' => $row->id,
+                'username' => $row->email,
+                'name' => $row->name,
+                'firstname' => $row->firstname,
+                'pwd' => $row->pwd
+                );
+        }
+        return $data;
+    }
+ }
 }
 ?>

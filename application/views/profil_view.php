@@ -221,8 +221,10 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Bonjour <?php echo $username; ?>!</h1>
+                    <h1 class="page-header">Ton profil <?php echo $username; ?>!</h1>
                 </div>
+                <?php echo $name; ?><br />
+                <?php echo $firstname; ?><br />
                 <!-- /.col-lg-12 -->
             </div>
 
@@ -247,5 +249,6 @@
 </body>
 
 </html>
+
 
 
