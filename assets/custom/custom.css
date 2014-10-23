@@ -1,0 +1,44 @@
+/*
+Add custom style here. 
+Please note where your custom style is used.
+Don't forget to write your name and the date :-D
+*/
+/* 
+    Created on : 23-oct.-2014, 2:13:19
+    Author     : Olivier
+*/
+
+/* 22/10/2014 - Olivier - Scrollable tables for admin page */
+table {
+    table-layout:fixed;
+}
+
+.div-table-content {
+  height:150px;
+  overflow-y:auto;
+}
+
+.logo
+{
+    background-image: url('../image/OpenNote2.png');
+    width:118px;
+    height:50px;
+    margin-left:10px;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }
+
+.logo-front
+{
+    background-image: url('../image/frontlogo.png');
+    width:610px;
+    height:307px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:40px;
+}
