@@ -17,6 +17,7 @@
     <link href="<?php echo base_url('assets/sb-admin-2/css/plugins/metisMenu/metisMenu.min.css');?>" rel="stylesheet" type="text/css"/>
     <!-- Custom CSS -->
     <link href="<?php echo base_url('assets/sb-admin-2/css/sb-admin-2.css');?>" rel="stylesheet" type="text/css"/>
+    <link href="<?php echo base_url('assets/custom/custom.css');?>" rel="stylesheet" type="text/css"/>
     <!-- Custom Fonts -->
     <link href="<?php echo base_url('assets/sb-admin-2/font-awesome-4.1.0/css/font-awesome.min.css');?>" rel="stylesheet" type="text/css"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -31,6 +32,11 @@
 <body>
 
     <div class="container">
+        <div class="row">
+            <div class="col-lg-12 center">
+                <div class="front-logo"></div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
