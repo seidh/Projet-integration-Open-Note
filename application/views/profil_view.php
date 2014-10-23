@@ -192,26 +192,10 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a class="active" href="index.html"><i class="fa fa-dashboard fa-fw"></i> Comptabilité</a>
+                            <a class="active" href="#"><i class="fa fa-dashboard fa-fw"></i> Ma Page de profil</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Cours informatique <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Intégration technologique</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Routages et commutations</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Sécurité réseaux</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Marketing</a>
-                        </li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Mes catégories</a>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -223,12 +207,13 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Votre profil</h1>
                 </div>
-                
+                <?php echo validation_errors(); ?>
+                <?php echo form_open('profil/edit'); ?>
                 <div class="form-group row">
                     <div class="col-sm-3">
                         <label>Avatar</label><br />
                         <img src="<?php echo base_url('assets/image/avatarDefault.png'); ?>" alt="Avatar par défaut" />
-                        <input id="avatar" style="display: none" type="file">
+                        <input id="avatar" name="avatar" style="display: none" type="file">
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group row">
@@ -237,7 +222,7 @@
                             </div>
                             <div class="col-sm-8">
                                 <div id="name"><?php echo $name; ?></div>
-                                <input id ="saveName" style="display: none" class="form-control" value="<?php echo $name; ?>">
+                                <input id ="saveName" name="name" style="display: none" class="form-control" value="<?php echo $name; ?>">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -246,7 +231,7 @@
                             </div>
                             <div class="col-lg-8">
                                 <div id="firstname"><?php echo $firstname; ?></div>
-                                <input id ="saveFirstname" style="display: none" class="form-control" value="<?php echo $firstname; ?>">
+                                <input id ="saveFirstname" name="firstname" style="display: none" class="form-control" value="<?php echo $firstname; ?>">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -271,7 +256,7 @@
                             </div>
                             <div class="col-lg-8">
                                 <div id="email"><?php echo $username; ?></div>
-                                <input id ="saveEmail" style="display: none" class="form-control" value="<?php echo $username; ?>">
+                                <input id ="saveEmail" name="email" style="display: none" class="form-control" value="<?php echo $username; ?>">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -283,11 +268,11 @@
                             </div>
                         </div>
                         <button id="change" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer vos informations ?</button>
-                        <button id="save" style="display: none" type="button" class="btn btn-primary btn-lg btn-block" value="Enregistrez vos changements">Enregistrez vos changements</button>
+                        <button id="save" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez vos changements</button>
                     </div>
                 </div>
                 
-                
+                </form>
                 <br />
                 <br />
                 <!-- /.col-lg-12 -->
@@ -311,25 +296,12 @@
     <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/morris/raphael.min.js');?>" type="text/javascript"></script>
     Custom Theme JavaScript -->
     <script src="<?php echo base_url('assets/sb-admin-2/js/sb-admin-2.js');?>" type="text/javascript"></script>
-    
-    <script>
-        $('#change, #save').click(function() {
-            $('#save').toggle("slow");
-            $('#change').toggle("slow");
-            
-            $('#name').toggle("slow");
-            $('#saveName').toggle("slow");
-            
-            $('#firstname').toggle("slow");
-            $('#saveFirstname').toggle("slow");
-            
-            $('#email').toggle("slow");
-            $('#saveEmail').toggle("slow");
-            
-            $('#avatar').toggle("slow");
-        });
-    </script>
-                
+    <script src="<?php echo base_url('assets/custom/custom.js');?>" type="text/javascript"></script>
+ <script>
+       jQuery(document).ready(function(){
+           edit();
+       });
+ </script>               
                 
 </body>
 
