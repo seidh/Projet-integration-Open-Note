@@ -5,11 +5,12 @@ session_start(); //we need to call PHP's session object to access it through CI
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-class accueil extends CI_Controller
+class profil extends CI_Controller
 {
         function __construct()
         {
             parent::__construct();
+            $this->load->model('user','',TRUE);
         }
 	function index()
 	{
@@ -17,7 +18,8 @@ class accueil extends CI_Controller
                 {
                     $session_data = $this->session->userdata('logged_in');
                     $data['username'] = $session_data['username'];
-                    $this->load->view('accueil', $data);
+                    $result = $this->user->user_data($data['username']);
+                    $this->load->view('profil_view', $result);
                 }
                 else
                 {
@@ -26,10 +28,11 @@ class accueil extends CI_Controller
                 }
 	}
 
-	function logout()
+	/*function logout()
         {
             $this->session->unset_userdata('logged_in');
             session_destroy();
             redirect('accueil', 'refresh');
-        }
+        }*/
  }
+

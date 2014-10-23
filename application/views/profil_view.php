@@ -168,8 +168,6 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="profil"><i class="fa fa-user fa-fw"></i> Mon profil</a>
                         </li>
-                        <li><a href="administration"><i class="fa fa-gear fa-fw"></i> Administration</a>
-                        </li>
                         <li class="divider"></li>
                         <li><a href="accueil/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
@@ -223,8 +221,75 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Bonjour <?php echo $username; ?>!</h1>
+                    <h1 class="page-header">Votre profil</h1>
                 </div>
+                
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label>Avatar</label><br />
+                        <img src="<?php echo base_url('assets/image/avatarDefault.png'); ?>" alt="Avatar par défaut" />
+                        <input id="avatar" style="display: none" type="file">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Nom :</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <div id="name"><?php echo $name; ?></div>
+                                <input id ="saveName" style="display: none" class="form-control" value="<?php echo $name; ?>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Prénom :</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <div id="firstname"><?php echo $firstname; ?></div>
+                                <input id ="saveFirstname" style="display: none" class="form-control" value="<?php echo $firstname; ?>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Sexe :</label>
+                            </div>
+                            <div id="sexe" class="col-lg-8">
+                                <?php echo $sexe; ?>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Groupe :</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <?php echo $groupe; ?>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Adresse mail :</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <div id="email"><?php echo $username; ?></div>
+                                <input id ="saveEmail" style="display: none" class="form-control" value="<?php echo $username; ?>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Date d'anniversaire :</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <?php echo $birthday; ?>
+                            </div>
+                        </div>
+                        <button id="change" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer vos informations ?</button>
+                        <button id="save" style="display: none" type="button" class="btn btn-primary btn-lg btn-block" value="Enregistrez vos changements">Enregistrez vos changements</button>
+                    </div>
+                </div>
+                
+                
+                <br />
+                <br />
                 <!-- /.col-lg-12 -->
             </div>
 
@@ -246,6 +311,26 @@
     <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/morris/raphael.min.js');?>" type="text/javascript"></script>
     Custom Theme JavaScript -->
     <script src="<?php echo base_url('assets/sb-admin-2/js/sb-admin-2.js');?>" type="text/javascript"></script>
+    
+    <script>
+        $('#change, #save').click(function() {
+            $('#save').toggle("slow");
+            $('#change').toggle("slow");
+            
+            $('#name').toggle("slow");
+            $('#saveName').toggle("slow");
+            
+            $('#firstname').toggle("slow");
+            $('#saveFirstname').toggle("slow");
+            
+            $('#email').toggle("slow");
+            $('#saveEmail').toggle("slow");
+            
+            $('#avatar').toggle("slow");
+        });
+    </script>
+                
+                
 </body>
 
 </html>
