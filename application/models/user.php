@@ -39,7 +39,10 @@ Class User extends CI_Model
                 'username' => $row->email,
                 'name' => $row->name,
                 'firstname' => $row->firstname,
-                'pwd' => $row->pwd
+                'pwd' => $row->pwd,
+                'sexe' => $row->sexe,
+                'birthday' => $row->birthday,
+                'groupe' => $row->groupe
                 );
         }
         return $data;
