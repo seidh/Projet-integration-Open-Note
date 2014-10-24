@@ -20,11 +20,11 @@ Class User extends CI_Model
      return false;
    }
  }
- function user_data($username)
+ function user_data($id)
  {
     $this -> db -> select('*');
     $this -> db -> from('user');
-    $this -> db -> where('email', $username);
+    $this -> db -> where('id', $id);
     $this -> db -> limit(1);
  
     $query = $this -> db -> get();
@@ -42,7 +42,9 @@ Class User extends CI_Model
                 'pwd' => $row->pwd,
                 'sexe' => $row->sexe,
                 'birthday' => $row->birthday,
-                'groupe' => $row->groupe
+                'groupe' => $row->groupe,
+                'error' => ' '
+                    
                 );
         }
         return $data;

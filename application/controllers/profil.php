@@ -20,8 +20,7 @@ class profil extends CI_Controller
 		if($this->session->userdata('logged_in'))
                 {
                     $session_data = $this->session->userdata('logged_in');
-                    $data['username'] = $session_data['username'];
-                    $result = $this->user->user_data($data['username']);
+                    $result = $this->user->user_data($session_data['id']);
                     $this->load->view('profil_view', $result);
                 }
                 else
@@ -61,8 +60,7 @@ class profil extends CI_Controller
                     'username' => $this->input->post('email'));
                 
                 $this->session->set_userdata('logged_in', $sess_array);
-                $result = $this->user->user_data($session_data['username']);
-                sleep(1);
+                
 		redirect('profil', 'refresh');
             }
         }
@@ -83,6 +81,31 @@ class profil extends CI_Controller
             {
                 $this->form_validation->set_message('check_email', 'Adresse mail déja utilisée');
                 return false;
+            }
+        }
+        
+        function do_upload()
+        {
+            $config['upload_path'] = './assets/image';
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size']	= '100';
+            $config['max_width']  = '150';
+            $config['max_height']  = '150';
+
+            $this->load->library('upload', $config);
+
+            if ( !$this->upload->do_upload())
+            {
+                $session_data = $this->session->userdata('logged_in');
+                $result = $this->user->user_data($session_data['id']);
+                $result['error'] = $this->upload->display_errors();
+		$this->load->view('profil_view', $result);
+            }
+            else
+            {
+                $session_data = $this->session->userdata('logged_in');
+                $result = $this->user->user_data($session_data['id']);
+		$this->load->view('profil_view', $result);
             }
         }
  }

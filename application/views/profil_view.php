@@ -207,15 +207,20 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Votre profil</h1>
                 </div>
-                <?php echo validation_errors(); ?>
-                <?php echo form_open('profil/edit'); ?>
                 <div class="form-group row">
                     <div class="col-sm-3">
-                        <label>Avatar</label><br />
-                        <img src="<?php echo base_url('assets/image/avatarDefault.png'); ?>" alt="Avatar par défaut" />
-                        <input id="avatar" name="avatar" style="display: none" type="file">
+                        <?php echo $error; ?>
+                        <?php echo form_open_multipart('profil/do_upload');?>
+                            <label>Avatar</label><br />
+                            <img src="<?php echo base_url('assets/image/avatarDefault.png'); ?>" alt="Avatar par défaut" />
+                            <input id="avatar" name="userfile" style="display: none" type="file">
+                            <button id="choiceAvatar" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer son avatar ?</button>
+                            <button id="submitAvatar" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez votre avatar</button>
+                        </form>
                     </div>
                     <div class="col-sm-4">
+                        <?php echo validation_errors(); ?>
+                        <?php echo form_open('profil/edit'); ?>
                         <div class="form-group row">
                             <div class="col-sm-4">
                                 <label>Nom :</label>
@@ -269,10 +274,9 @@
                         </div>
                         <button id="change" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer vos informations ?</button>
                         <button id="save" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez vos changements</button>
+                    </form>
                     </div>
                 </div>
-                
-                </form>
                 <br />
                 <br />
                 <!-- /.col-lg-12 -->
@@ -300,6 +304,7 @@
  <script>
        jQuery(document).ready(function(){
            edit();
+           avatar();
        });
  </script>               
                 

@@ -13,7 +13,7 @@
 
 edit = function() 
 {
-    $('#change, #save').click(function() {
+    $('#change').click(function() {
         $('#save').toggle("slow");
         $('#change').toggle("slow");
             
@@ -26,8 +26,16 @@ edit = function()
         $('#email').toggle("slow");
         $('#saveEmail').toggle("slow");
             
-        $('#avatar').toggle("slow");
     });
+}
+
+avatar = function()
+{
+    $('#submitAvatar, #choiceAvatar').click(function(){
+        $('#avatar').toggle("slow");
+        $('#submitAvatar').toggle("slow");
+        $('#choiceAvatar').toggle("slow");
+    })
 }
 /////////////////////////////////////
 //End of profil page
