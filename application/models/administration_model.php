@@ -5,6 +5,8 @@ Class Admin extends CI_Model {
      * Model functions about users
      */
     function get_all_user(){
+        $query_result = $this->db->get('user');
+        return $query_result;
         
     }
     
@@ -38,7 +40,7 @@ Class Admin extends CI_Model {
     /**
      * Model functions about moderator
      */
-    function get_all_modérateur(){
+    function get_all_moderator(){
         
     }
 
