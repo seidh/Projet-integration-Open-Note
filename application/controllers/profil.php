@@ -84,28 +84,38 @@ class profil extends CI_Controller
             }
         }
         
-        function do_upload()
+        function do_upload($field = 'userfile')
         {
+            $session_data = $this->session->userdata('logged_in');
+            $result = $this->user->user_data($session_data['id']);
+            
             $config['upload_path'] = './assets/image';
             $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size']	= '100';
-            $config['max_width']  = '150';
-            $config['max_height']  = '150';
+            $config['max_size']	= '1000';
+            $config['max_width']  = '1500';
+            $config['max_height']  = '1500';
+            $config['overwrite'] = TRUE;
+            $config['file_name'] = $result['id'];
+            
 
             $this->load->library('upload', $config);
 
             if ( !$this->upload->do_upload())
             {
-                $session_data = $this->session->userdata('logged_in');
-                $result = $this->user->user_data($session_data['id']);
+               
                 $result['error'] = $this->upload->display_errors();
 		$this->load->view('profil_view', $result);
             }
             else
             {
-                $session_data = $this->session->userdata('logged_in');
-                $result = $this->user->user_data($session_data['id']);
-		$this->load->view('profil_view', $result);
+                $image_data = $this->upload->data();
+                $data = array('avatar' => $image_data['file_name']);
+
+                $where = "id = ".$session_data['id']; 
+
+                $str = $this->db->update_string('user', $data, $where);
+                $this->db->query($str);
+		redirect('profil', 'refresh');
             }
         }
  }

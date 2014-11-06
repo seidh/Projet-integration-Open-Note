@@ -212,7 +212,21 @@
                         <?php echo $error; ?>
                         <?php echo form_open_multipart('profil/do_upload');?>
                             <label>Avatar</label><br />
-                            <img src="<?php echo base_url('assets/image/avatarDefault.png'); ?>" alt="Avatar par défaut" />
+                            <?php
+                            if ($avatar == null)
+                            {
+                                echo '<img src="';
+                                echo base_url('assets/image/avatarDefault.png');
+                                echo '" alt="Avatar par défaut" />';
+                            }
+                            else
+                            {
+                                echo '<img src="';
+                                echo base_url('assets/image');
+                                echo '/'.$avatar.'" alt="Mon Avatar" />';
+                            }
+                            ?>
+                            
                             <input id="avatar" name="userfile" style="display: none" type="file">
                             <button id="choiceAvatar" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer son avatar ?</button>
                             <button id="submitAvatar" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez votre avatar</button>

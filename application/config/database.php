@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '192.168.0.13';
+$db['default']['hostname'] = '10.0.42.13';
 $db['default']['username'] = 'mysqlclient';
 $db['default']['password'] = 'MjslMDP=42';
 $db['default']['database'] = 'Open-Note';
