@@ -115,6 +115,19 @@ class profil extends CI_Controller
 
                 $str = $this->db->update_string('user', $data, $where);
                 $this->db->query($str);
+                
+                //resize
+                $resize['source_image'] = $this->upload->upload_path.$this->upload->file_name;
+		$resize['maintain_ratio'] = FALSE;
+		$resize['width'] = 300;
+		$resize['height'] = 300;
+
+		$this->load->library('image_lib', $resize);
+                if ( ! $this->image_lib->resize()){
+                        $result['error'] = $this->image_lib->display_errors();
+                        $this->load->view('profil_view', $result);
+		}
+                
 		redirect('profil', 'refresh');
             }
         }

@@ -25,6 +25,11 @@ edit = function()
             
         $('#email').toggle("slow");
         $('#saveEmail').toggle("slow");
+        
+        $('#oldpwd').toggle("slow");
+        $('#newpwd1').toggle("slow");
+        $('#newpwd2').toggle("slow");
+        
             
     });
 }

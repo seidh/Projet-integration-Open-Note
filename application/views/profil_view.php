@@ -286,6 +286,30 @@
                                 <?php echo $birthday; ?>
                             </div>
                         </div>
+                        <div id="oldpwd" class="form-group row" style="display: none" >
+                            <div class="col-lg-4">
+                                <label>Ancien mot de passe :</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <input id ="old_pwd" name="old_pwd" class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div id="newpwd1" class="form-group row" style="display: none" >
+                            <div class="col-lg-4">
+                                <label>Nouveau mot de passe :</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <input id ="new_pwd_1" name="new_pwd_1" class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div id="newpwd2" class="form-group row" style="display: none" >
+                            <div class="col-lg-4">
+                                <label>Retappez votre nouveau mot de passe :</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <input id ="new_pwd_2" name="new_pwd_2" class="form-control" type="password">
+                            </div>
+                        </div>
                         <button id="change" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer vos informations ?</button>
                         <button id="save" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez vos changements</button>
                     </form>
