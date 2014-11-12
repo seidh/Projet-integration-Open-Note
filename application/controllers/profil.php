@@ -35,14 +35,18 @@ class profil extends CI_Controller
             $this->form_validation->set_rules('firstname', 'Prénom', 'trim|required|xss_clean');
             $this->form_validation->set_rules('email', 'Adresse mail', 'trim|required|xss_clean|callback_check_email');
             
+            $this->form_validation->set_rules('old_pwd', 'Ancien mot de passe', 'trim|xss_clean|callback_change_password[new_pwd_1.new_pwd_2]');
+            $this->form_validation->set_rules('new_pwd_1', 'Nouveau mot de passe', 'trim|xss_clean');
+            $this->form_validation->set_rules('new_pwd_2', 'Retapper votre nouveau mot de passe', 'trim|xss_clean');
+            
+            
             
             $session_data = $this->session->userdata('logged_in');
             if ($this->form_validation->run() == FALSE)
             {
                 //form mal rempli
                 
-                $result = $this->user->user_data($session_data['username']);
-                sleep(1);
+                $result = $this->user->user_data($session_data['id']);
 		$this->load->view('profil_view',$result);
             }
             else
@@ -63,6 +67,54 @@ class profil extends CI_Controller
                 
 		redirect('profil', 'refresh');
             }
+        }
+        public function change_password($str,$params){
+                //Fonction permettant de verifier le mot de passe courant.
+            if($str != ''){
+                list($param1, $param2) = explode('.', $params, 2);
+                //Le mot de passe courant est correct
+                $old_pwd_crypt = SHA1($str);
+                $session_data = $this->session->userdata('logged_in');
+                $result = $this->user->user_data($session_data['id']);
+                
+                $this -> db -> select('id, email, pwd');
+                $this -> db -> from('user');
+                $this -> db -> where('pwd', $old_pwd_crypt);
+                $this -> db -> where('id', $result['id']);
+                $this -> db -> limit(1);
+ 
+                $query = $this -> db -> get();
+                if($query -> num_rows() > 0)
+                {
+                    //Le nouveau mot de passe est renseigne
+                    if($this->input->post($param1) != ''){
+                        //Le nouveau password est coherent
+                        if($this->input->post($param1) == $this->input->post($param2)){
+                            $new_pwd_crypt = SHA1($this->input->post($param1));
+                            $data = array('pwd' => $new_pwd_crypt);
+                            $where = "id = ".$result['id']; 
+
+                            $str = $this->db->update_string('user', $data, $where);
+                            $this->db->query($str);
+                            
+                            return TRUE;
+                        }
+                        else{
+                            $this->form_validation->set_message('change_password', 'Votre nouveau mot de passe ne correspond pas avec sa confirmation');
+                            return FALSE;
+                        }
+                    }
+                    else{
+                        $this->form_validation->set_message('change_password', 'Vous devez reseigner un nouveau mot de passe');
+                        return FALSE;
+                    }
+                }
+                else{
+                    $this->form_validation->set_message('change_password', 'Votre mot de passe actuel est incorrect');
+                    return FALSE;
+                }
+            }
+            return TRUE;
         }
         function check_email($email)
         {
