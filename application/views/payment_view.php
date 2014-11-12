@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>OpenNote</title>
+    <title>OpenNote - paiement</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url('assets/sb-admin-2/css/bootstrap.min.css');?>" rel="stylesheet" type="text/css"/>
@@ -168,6 +168,8 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="profil"><i class="fa fa-user fa-fw"></i> Mon profil</a>
                         </li>
+                        <li><a href="administration"><i class="fa fa-gear fa-fw"></i> Administration</a>
+                        </li>
                         <li class="divider"></li>
                         <li><a href="accueil/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
@@ -192,10 +194,26 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a class="active" href="#"><i class="fa fa-dashboard fa-fw"></i> Ma Page de profil</a>
+                            <a class="active" href="index.html"><i class="fa fa-dashboard fa-fw"></i> Comptabilité</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Mes catégories</a>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Cours informatique <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">Intégration technologique</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">Routages et commutations</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">Sécurité réseaux</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Marketing</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -204,120 +222,100 @@
         </nav>
         <div id="page-wrapper">
             <div class="row">
-                <div class="col-sm-12">
-                    <h1 class="page-header">Votre profil</h1>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-5">
-                        <?php echo $error; ?>
-                        <?php echo form_open_multipart('profil/do_upload');?>
-                            <label>Avatar</label><br />
-                            <?php
-                            if ($avatar == null)
-                            {
-                                echo '<img src="';
-                                echo base_url('assets/image/avatarDefault.png');
-                                echo '" alt="Avatar par défaut" />';
-                            }
-                            else
-                            {
-                                echo '<img src="';
-                                echo base_url('assets/image');
-                                echo '/'.$avatar.'" alt="Mon Avatar" />';
-                            }
-                            ?>
-                            
-                            <input id="avatar" name="userfile" style="display: none" type="file">
-                            
-                            <button id="choiceAvatar" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer son avatar ?</button>
-                            <button id="submitAvatar" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez votre avatar</button>
-                        </form>
-                    </div>
-                    <div class="col-sm-7">
-                        <font color="red" size="3"><?php echo validation_errors(); ?></font>
-                        <?php echo form_open('profil/edit'); ?>
-                        <div class="form-group row">
-                            <div class="col-sm-5">
-                                <label>Nom :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <div id="name"><?php echo $name; ?></div>
-                                <input id ="saveName" name="name" style="display: none" class="form-control" value="<?php echo $name; ?>">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-5">
-                                <label>Prénom :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <div id="firstname"><?php echo $firstname; ?></div>
-                                <input id ="saveFirstname" name="firstname" style="display: none" class="form-control" value="<?php echo $firstname; ?>">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-5">
-                                <label>Sexe :</label>
-                            </div>
-                            <div id="sexe" class="col-sm-7">
-                                <?php echo $sexe; ?>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-5">
-                                <label>Groupe :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <?php echo $groupe; ?>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-5">
-                                <label>Adresse mail :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <div id="email"><?php echo $username; ?></div>
-                                <input id ="saveEmail" name="email" style="display: none" class="form-control" value="<?php echo $username; ?>">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-5">
-                                <label>Date d'anniversaire :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <?php echo $birthday; ?>
-                            </div>
-                        </div>
-                        <div id="oldpwd" class="form-group row" style="display: none" >
-                            <div class="col-sm-5">
-                                <label>Ancien mot de passe :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <input id ="old_pwd" name="old_pwd" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <div id="newpwd1" class="form-group row" style="display: none" >
-                            <div class="col-sm-5">
-                                <label>Nouveau mot de passe :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <input id ="new_pwd_1" name="new_pwd_1" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <div id="newpwd2" class="form-group row" style="display: none" >
-                            <div class="col-sm-5">
-                                <label>Retappez votre nouveau mot de passe :</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <input id ="new_pwd_2" name="new_pwd_2" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <button id="change" type="button" class="btn btn-primary btn-lg btn-block">Envie de changer vos informations ?</button>
-                        <button id="save" style="display: none" type="submit" class="btn btn-primary btn-lg btn-block">Enregistrez vos changements</button>
-                    </form>
-                    </div>
+                <div class="col-lg-12">
+                    <h1 class="page-header">Information sur les offres payantes</h1>
                 </div>
                 <br />
-                <br />
+                <ul>
+                    <li>Différents aspects de la vente concernant notre projet :</li>
+                    <br />
+                    <ul>
+                        <li>Solutions Grand Volume (installation sur parc informatique du client) :
+                            <ul>
+                                <li>300 utilisateurs : 5€ / mois / utilisateur</li>
+                                <li>300 - 1000 utilisateurs : 4,5 € /mois /utilisateur</li>
+                                <li>1000 - 10000 utilisateurs : 4 € /mois /utilisateur</li>
+                                <li> +10000 : 3 € /mois /utilisateurs</li>
+                                <br />
+                                <li>import data utilisateurs : forfait 500 €</li>
+                                <li>Offre gratuite de l'installation matérielle</li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>Solutions clés en main pour particuliers (jusqu'à 15 personnes) :
+                            <ul>
+                                <li>Sans fournir de serveur : Gratuit</li>
+                                <li>Serveurs :
+                                    <ul>
+                                        <li>Basique : VPS 25 Go : 8 € /mois</li>
+                                        <li>Pro : VPS 50 Go : 15 € / mois</li>
+                                        <li>Premium : VPS 100 Go : 25 € / mois</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>Solutions de support :
+                            <ul>
+                                <li>support en ligne : 100 € par mois</li>
+                                <li>support physique : facturé à l'heure : 60 € / heure</li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>Modules :
+                            <ul>
+                                <li>
+                                    de base :
+                                    <ul>
+                                        <li>Forum : 2000 €</li>
+                                        <li>Editeur LaTeX : 1000 €</li>
+                                        <li>Système de chat : 500 €</li>
+                                        <li>Possibilité d'upload de pièces jointes aux notes : 750 €</li>
+                                        <li>Recherche interne aux notes : 500 €</li>
+                                        <li>Gestion d'agendas et de calendriers : 500 €</li>
+                                        <li>Google Analytics (Reporting de l'activité sur le site) : 500 €</li>
+                                    </ul>
+                                </li>
+                                <li>personnalisés : € sur devis.</li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>Design personnalisé du site internet et de l'application mobile : 4000 €</li>
+                        <br />
+                        <li>Moyens de paiement :
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <?php
+                                        echo '<img src="';
+                                        echo base_url('assets/image/VISA.gif');
+                                        echo '" alt="Paiement Visa" />';
+                                    ?>
+                                </div>
+                                <div class="col-md-3">
+                                    <?php
+                                        echo '<img src="';
+                                        echo base_url('assets/image/mastercard.jpg');
+                                        echo '" alt="Paiement Master Card" />';
+                                    ?>
+                                </div>
+                                <div class="col-md-3">
+                                    <?php
+                                        echo '<img src="';
+                                        echo base_url('assets/image/logo-cb.png');
+                                        echo '" alt="Paiement carte bleue" />';
+                                    ?>
+                                </div>
+                                <div class="col-md-3">
+                                    <?php
+                                        echo '<img src="';
+                                        echo base_url('assets/image/American-Express.png');
+                                        echo '" alt="Paiement American Express" />';
+                                    ?>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </ul>
                 <!-- /.col-lg-12 -->
             </div>
 
@@ -339,16 +337,9 @@
     <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/morris/raphael.min.js');?>" type="text/javascript"></script>
     Custom Theme JavaScript -->
     <script src="<?php echo base_url('assets/sb-admin-2/js/sb-admin-2.js');?>" type="text/javascript"></script>
-    <script src="<?php echo base_url('assets/custom/custom.js');?>" type="text/javascript"></script>
- <script>
-       jQuery(document).ready(function(){
-           edit();
-           avatar();
-       });
- </script>               
-                
 </body>
 
 </html>
+
 
 

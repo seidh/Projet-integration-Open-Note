@@ -205,14 +205,14 @@
                                 <li>
                                     <a href="morris.html">Routages et commutations</a>
                                 </li>
-                                <li>
-                                    <a href="morris.html">Sécurité réseaux</a>
-                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Marketing</a>
+                        </li>
+                        <li>
+                            <a href="payment"><i class="fa fa-wrench fa-fw"></i>Information de paiement</a>
                         </li>
                     </ul>
                 </div>
