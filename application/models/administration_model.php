@@ -123,6 +123,7 @@ Class administration_model extends CI_Model {
                                     ->result();
         //foreach cat_perm element, get user data
         $all_moderator_tab = array();
+
         foreach ($cat_perm_result as $cat_perm_element) {
             $tmp_array = array();
             
@@ -145,7 +146,7 @@ Class administration_model extends CI_Model {
             $tmp_array['cat_id'] = $category_data['id'];
             $tmp_array['cat_name'] = $category_data['name'];
             
-            $all_moderator_tab; //add tab inside all_moderator_tab ?? chack on web
+            $all_moderator_tab[] = $tmp_array;
         }
         
         return $all_moderator_tab;
