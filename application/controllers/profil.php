@@ -110,7 +110,7 @@ class profil extends CI_Controller
                     }
                 }
                 else{
-                    $this->form_validation->set_message('change_password', 'Votre mot de passe actuel est incorrect</font>');
+                    $this->form_validation->set_message('change_password', 'Votre mot de passe actuel est incorrect');
                     return FALSE;
                 }
             }
