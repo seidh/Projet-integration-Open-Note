@@ -61,16 +61,32 @@ Class administration_model extends CI_Model {
     /**
      * Model functions about category
      */
+        
+    /**
+     * 
+     * @return type associative array containing data of all categories
+     */
     function get_all_category(){
         return $this->db->get('category')
                         ->result();
     }
     
+    
+    /**
+     * 
+     * @return type array containing category perm
+     */
     function get_all_category_perm(){
         return $this->db->get('cat_perm')
                         ->result();
     }
     
+    /**
+     * 
+     * @param type $fields associative array containing row/data to be update
+     * @param type $where_clauses string containing where clauses exemple : "id = 2"
+     * @return boolean false on error true on success
+     */
     function modify_category($fields,$where_clauses){
         if(!isset($where_clauses) && !isset($fields) && (!is_string($where_clauses) || !is_array($where_clauses)))
                 return false;
@@ -78,6 +94,11 @@ Class administration_model extends CI_Model {
         return true;
     }
     
+    /**
+     * 
+     * @param type $fields associative array containing 'name' and 'parent_id' ('parent_id' can be null)
+     * @return boolean false on error and id of created cat if success !
+     */
     function create_category($fields){
         if(!isset($fields) && !is_array($fields)) 
             return false;
@@ -96,14 +117,18 @@ Class administration_model extends CI_Model {
      * Model functions about moderator
      */
     function get_all_moderator(){
+        //get cat_perm where perm_id = moderator_perm
         
+        //foreach cat_perm element, get user data
+        
+        //build array containing data
     }
 
     /**
      * Model function about moderator
      */
     function get_all_notes(){
-        
+        $this->db->get('')
     }
 
 }
