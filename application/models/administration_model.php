@@ -118,17 +118,44 @@ Class administration_model extends CI_Model {
      */
     function get_all_moderator(){
         //get cat_perm where perm_id = moderator_perm
-        
+        $cat_perm_result = $this->db->get('cat_perm')
+                                    ->where('perm_id', 2)
+                                    ->result();
         //foreach cat_perm element, get user data
+        $all_moderator_tab = array();
+        foreach ($cat_perm_result as $cat_perm_element) {
+            $tmp_array = array();
+            
+            //get category data by cat_id from cat_perm
+            $category_data = $this->db->get('category')
+                                      ->where('id', $cat_perm_element['cat_id'])
+                                      ->select('id, name');
+            
+            //get moderator data by user_id from cat_perm
+            $moderator_data = $this->db->get('user')
+                                       ->where('id', $cat_perm_element['user_id'])
+                                       ->select('id, name, firstname, pseudo, email');
+            
+            //bind array
+            $tmp_array['user_id'] = $moderator_data['id'];
+            $tmp_array['pseudo'] = $moderator_data['pseudo'];
+            $tmp_array['name'] = $moderator_data['name'];
+            $tmp_array['firstname'] = $moderator_data['firstname'];
+            $tmp_array['email'] = $moderator_data['email'];
+            $tmp_array['cat_id'] = $category_data['id'];
+            $tmp_array['cat_name'] = $category_data['name'];
+            
+            $all_moderator_tab; //add tab inside all_moderator_tab ?? chack on web
+        }
         
-        //build array containing data
+        return $all_moderator_tab;
     }
 
     /**
      * Model function about moderator
      */
     function get_all_notes(){
-        $this->db->get('')
+        $this->db->get('');
     }
 
 }
