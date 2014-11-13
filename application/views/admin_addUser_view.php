@@ -271,7 +271,7 @@
                                 <input id="dayBirth" name="dayBirth" class="form-control" />
                             </div>
                             <div class="col-lg-1">
-                                <input id="monthBirth" name="monthBirth" class="form-control" />
+                                <input id="monthBirth" name="monthBirth" class="form-control" /> 
                             </div> 
                             <div class="col-lg-2">
                                 <input id="yearBirth" name="yearBirth" class="form-control" />

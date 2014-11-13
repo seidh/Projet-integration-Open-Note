@@ -31,7 +31,7 @@ class administration extends CI_Controller
         function adduser()
         {
             $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
-            //$this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
         }
 	/*function logout()
         {
