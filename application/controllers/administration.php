@@ -10,13 +10,18 @@ class administration extends CI_Controller
         function __construct()
         {
             parent::__construct();
-            $this->load->model('admin','',TRUE);
+            $this->load->model('administration_model','',TRUE);
         }
 	function index()
 	{
 		$this->load->view('admin_view');
 	}
-
+        
+        function userList()
+        {
+                $data['user_data'] = $this->administration_model->get_all_user();
+                $this->load->view('admin_userList_view', $data);
+        }
 	/*function logout()
         {
             $this->session->unset_userdata('logged_in');
