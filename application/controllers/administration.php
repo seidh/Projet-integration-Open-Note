@@ -22,6 +22,17 @@ class administration extends CI_Controller
                 $data['user_data'] = $this->administration_model->get_all_user();
                 $this->load->view('admin_userList_view', $data);
         }
+        
+        function newUserForm()
+        {
+            $this->load->view('admin_addUser_view');
+        }
+        
+        function adduser()
+        {
+            $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
+            //$this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
+        }
 	/*function logout()
         {
             $this->session->unset_userdata('logged_in');
