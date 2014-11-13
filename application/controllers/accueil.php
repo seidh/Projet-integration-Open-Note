@@ -43,7 +43,7 @@ class accueil extends CI_Controller
                 // on charge la view qui contient le corps de la page
                 $data['contents'] = 'accueil';
                 
-                $data['sidebar'] = 'profil';
+                $data['sidebar'] = 'normal';
 
                 // on charge la page dans le template
                 $this->load->view('templates/template', $data);
