@@ -14,7 +14,9 @@ class administration_model_test extends CI_Controller{
         print_r($this->admin_model->get_all_user());
         echo '<h1>Get category</h1>';
         print_r($this->admin_model->get_all_category());
-        
+        echo '<h1>Get all moderator</h1>';
+        $moderator = $this->admin_model->get_all_moderator();
+        print_r($moderator);
         echo '</pre>';
     }
     
