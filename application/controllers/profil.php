@@ -17,17 +17,36 @@ class profil extends CI_Controller
         }
 	function index()
 	{
-		if($this->session->userdata('logged_in'))
+                if($this->session->userdata('logged_in'))
                 {
                     $session_data = $this->session->userdata('logged_in');
-                    $result = $this->user->user_data($session_data['id']);
-                    $this->load->view('profil_view', $result);
+                    $data['id'] = $session_data['id'];                 
+                    $result = $this->user->user_data($data['id']);
+                    
+                    
                 }
                 else
                 {
                     //If no session, redirect to login page
                     redirect('login', 'refresh');
                 }
+                
+                // définition des données variables du template
+                $result['title'] = 'Open-Note - Profil';
+                $result['description'] = 'La description de la page pour les moteurs de recherche';
+                $data['keywords'] = 'les, mots, clés, de, la, page';
+                // TEST Affichage date
+                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                // on choisit la view qui contient le corps de la page
+                $result['contents'] = 'profil_view';
+                // On choisit la sidebar
+                $result['sidebar'] = 'profil';
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $result);
 	}
         function edit()
         {   
@@ -47,6 +66,7 @@ class profil extends CI_Controller
                 //form mal rempli
                 
                 $result = $this->user->user_data($session_data['id']);
+                
 		$this->load->view('profil_view',$result);
             }
             else

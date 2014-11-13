@@ -11,21 +11,112 @@ class administration extends CI_Controller
         {
             parent::__construct();
             $this->load->model('administration_model','',TRUE);
+            $this->load->model('user','',TRUE);
         }
 	function index()
 	{
-		$this->load->view('admin_view');
-	}
+                if($this->session->userdata('logged_in'))
+                {
+                    $session_data = $this->session->userdata('logged_in');
+                    $data['id'] = $session_data['id'];                 
+                    $result = $this->user->user_data($data['id']);
+                    $data['name'] = $result['name'];
+                    $data['firstname'] = $result['firstname'];
+                    $data['pseudo'] = $result['pseudo'];
+                }
+                else
+                {
+                    //If no session, redirect to login page
+                    redirect('login', 'refresh');
+                }
+                
+                // définition des données variables du template
+                $data['title'] = 'Open-Note - Acceuil';
+                $data['description'] = 'La description de la page pour les moteurs de recherche';
+                $data['keywords'] = 'les, mots, clés, de, la, page';
+                // TEST Affichage date
+                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                $data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                // on choisit la view qui contient le corps de la page
+                $data['contents'] = 'admin_view';
+                // On choisit la sidebar
+                $data['sidebar'] = 'admin';
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $data);   
+        }
         
         function userList()
         {
                 $data['user_data'] = $this->administration_model->get_all_user();
-                $this->load->view('admin_userList_view', $data);
+                if($this->session->userdata('logged_in'))
+                {
+                    $session_data = $this->session->userdata('logged_in');
+                    $data['id'] = $session_data['id'];                 
+                    $result = $this->user->user_data($data['id']);
+                    $data['name'] = $result['name'];
+                    $data['firstname'] = $result['firstname'];
+                    $data['pseudo'] = $result['pseudo'];
+                }
+                else
+                {
+                    //If no session, redirect to login page
+                    redirect('login', 'refresh');
+                }
+                
+                // définition des données variables du template
+                $data['title'] = 'Open-Note - Liste utilisateurs';
+                $data['description'] = 'La description de la page pour les moteurs de recherche';
+                $data['keywords'] = 'les, mots, clés, de, la, page';
+                // TEST Affichage date
+                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                $data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                // on choisit la view qui contient le corps de la page
+                $data['contents'] = 'admin_userList_view';
+                // On choisit la sidebar
+                $data['sidebar'] = 'admin';
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $data);                
         }
         
         function newUserForm()
         {
-            $this->load->view('admin_addUser_view');
+                if($this->session->userdata('logged_in'))
+                {
+                    $session_data = $this->session->userdata('logged_in');
+                    $data['id'] = $session_data['id'];                 
+                    $result = $this->user->user_data($data['id']);
+                    $data['name'] = $result['name'];
+                    $data['firstname'] = $result['firstname'];
+                    $data['pseudo'] = $result['pseudo'];
+                }
+                else
+                {
+                    //If no session, redirect to login page
+                    redirect('login', 'refresh');
+                }
+                
+                // définition des données variables du template
+                $data['title'] = 'Open-Note - Liste utilisateurs';
+                $data['description'] = 'La description de la page pour les moteurs de recherche';
+                $data['keywords'] = 'les, mots, clés, de, la, page';
+                // TEST Affichage date
+                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                $data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                // on choisit la view qui contient le corps de la page
+                $data['contents'] = 'admin_addUser_view';
+                // On choisit la sidebar
+                $data['sidebar'] = 'admin';
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $data); 
         }
         
         function adduser()

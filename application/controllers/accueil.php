@@ -18,10 +18,11 @@ class accueil extends CI_Controller
                 if($this->session->userdata('logged_in'))
                 {
                     $session_data = $this->session->userdata('logged_in');
-                    $data['username'] = $session_data['username'];                 
-                    $result = $this->user->user_data($data['username']);
+                    $data['id'] = $session_data['id'];                 
+                    $result = $this->user->user_data($data['id']);
                     $data['name'] = $result['name'];
                     $data['firstname'] = $result['firstname'];
+                    $data['pseudo'] = $result['pseudo'];
                     
                     
                 }

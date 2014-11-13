@@ -44,6 +44,7 @@ Class User extends CI_Model
                 'birthday' => $row->birthday,
                 'groupe' => $row->groupe,
                 'avatar' => $row->avatar,
+                'pseudo' => $row->pseudo,
                 'error' => ' '
                     
                 );

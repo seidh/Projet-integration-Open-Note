@@ -1,6 +1,6 @@
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <span class="navbar-brand sidebarLogo"></span>
+                    <span class="navbar-brand sidebarLogo"><a href="acceuil"></a></span>
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
@@ -14,10 +14,22 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a class="active" href="index.html"><i class="fa fa-users fa-fw"></i>Utilisateurs</a>
+                            <a href="<?php echo base_url('administration'); ?>"><i class="fa fa-wrench fa-fw"></i>Administration</a>
+                        </li>                          
+                        <li>
+                            <a class="active" href="#"><i class="fa fa-users fa-fw"></i>Utilisateurs<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="<?php echo base_url('administration/userlist'); ?>">Liste d'utilisateurs</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo base_url('administration/newuserform'); ?>">Ajout d'un utilisateur</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-life-ring fa-fw"></i>Modérateurs</a>
+                            <a href="../accueil"><i class="fa fa-life-ring fa-fw"></i>Modérateurs</a>
                         </li>                        
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i>Catégorie<span class="fa arrow"></span></a>
@@ -36,3 +48,4 @@
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
+            </nav>

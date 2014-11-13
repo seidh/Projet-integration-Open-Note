@@ -1,6 +1,6 @@
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <span class="navbar-brand sidebarLogo"></span>
+                    <span class="navbar-brand sidebarLogo"><a href="acceuil"></a></span>
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
@@ -17,7 +17,7 @@
                             <a class="active" href="index.html"><i class="fa fa-info-circle fa-fw"></i>Mes informations</a>
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-sitemap fa-fw"></i>Mes catégories</a>
+                            <a href="accueil"><i class="fa fa-sitemap fa-fw"></i>Mes catégories</a>
                         </li>                        
                         
                     </ul>
@@ -25,3 +25,4 @@
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
+            </nav>

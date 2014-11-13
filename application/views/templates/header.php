@@ -173,6 +173,8 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="profil"><i class="fa fa-user fa-fw"></i> Mon profil</a>
                         </li>
+                        <li><a href="profil"><i class="fa fa-wrench fa-fw"></i> Administration</a>
+                        </li>
                         <li class="divider"></li>
                         <li><a href="accueil/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>

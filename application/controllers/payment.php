@@ -20,13 +20,31 @@ class payment extends CI_Controller
                 {
                     $session_data = $this->session->userdata('logged_in');
                     $result = $this->user->user_data($session_data['id']);
-                    $this->load->view('payment_view', $result);
+                    // définition des données variables du template
+                    $result['title'] = 'Open-Note - Offres';
+                    $result['description'] = 'La description de la page pour les moteurs de recherche';
+                    $result['keywords'] = 'les, mots, clés, de, la, page';
+                    // TEST Affichage date
+                    setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+
+                    $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                    // on charge la view qui contient le corps de la page
+                    $result['contents'] = 'payment_view';
+
+                    $result['sidebar'] = 'normal';
+
+                    // on charge la page dans le template
+                    $this->load->view('templates/template', $result);   
                 }
                 else
                 {
                     //If no session, redirect to login page
                     redirect('login', 'refresh');
                 }
+                
+
+             
 	}
  }
 
