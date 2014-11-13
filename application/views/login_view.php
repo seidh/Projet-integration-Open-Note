@@ -53,8 +53,6 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" id="password" type="password" value="">
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <!-- <a href="<?php echo base_url('accueil'); ?>" class="btn btn-lg btn-success btn-block">Login</a> -->
                                 <input type="submit" value="Login" class="btn btn-lg btn-success btn-block"/>
                             </fieldset>
                         </form>

@@ -1,7 +1,6 @@
-
-            <!-- /.navbar-top-links -->
-            <div class="navbar-default sidebar" role="navigation">
+<div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
+                    <span class="navbar-brand sidebarLogo"></span>
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
@@ -26,33 +25,17 @@
                                 <li>
                                     <a href="morris.html">Routages et commutations</a>
                                 </li>
+                                <li>
+                                    <a href="morris.html">Sécurité réseaux</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Marketing</a>
                         </li>
-                        <li>
-                            <a href="payment"><i class="fa fa-wrench fa-fw"></i>Information de paiement</a>
-                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
-        </nav>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Bonjour <?php echo $username; ?>!</h1>
-                </div>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                <!-- /.col-lg-12 -->
-            </div>
-
-        </div>
-        <!-- /#page-wrapper -->
-
-    
-
-

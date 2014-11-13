@@ -8,6 +8,10 @@ Don't forget to write your name and the date :-D
     Author     : Olivier
 */
 
+body {
+    padding-top:40px;
+}
+
 /* 22/10/2014 - Olivier - Scrollable tables for admin page */
 table {
     table-layout:fixed;
@@ -41,4 +45,44 @@ table {
     margin-left: auto;
     margin-right: auto;
     margin-top: 40px;
+}
+
+/* 05/11/2014 - NAVBAR CSS */
+.firstname-name
+{
+    border-right: 1px solid lightgrey;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+}
+.firstname-name:hover
+{
+    text-decoration: none;
+    background-color: #eee;
+
+}
+
+/* 06/11/2014 - FOOTER CSS */
+.navbar-static-bottom
+{
+    border-top: 1px solid #e7e7e7;
+    border-left: 1px solid #e7e7e7;
+    margin-left: 250px;
+    bottom:0px;
+    
+    background-color: #f8f8f8;
+    height: 50px;/* or however high you would like */
+}
+
+/* 06/11/2014 - SIDEBAR */
+.sidebarLogo
+{
+    background-image: url('../image/sidebar-Logo.png');
+    width:177px;
+    height:77px;
+    margin-left: 35px;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
