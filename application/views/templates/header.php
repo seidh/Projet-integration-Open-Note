@@ -44,6 +44,7 @@
     <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/morris/raphael.min.js');?>" type="text/javascript"></script>
     Custom Theme JavaScript -->
     <script src="<?php echo base_url('assets/sb-admin-2/js/sb-admin-2.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/custom/custom.js');?>" type="text/javascript"></script>
 </head>
 
 <body>
