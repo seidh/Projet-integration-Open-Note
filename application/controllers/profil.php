@@ -67,7 +67,21 @@ class profil extends CI_Controller
                 
                 $result = $this->user->user_data($session_data['id']);
                 
-		$this->load->view('profil_view',$result);
+		$result['title'] = 'Open-Note - Profil';
+                $result['description'] = 'La description de la page pour les moteurs de recherche';
+                $data['keywords'] = 'les, mots, clés, de, la, page';
+                // TEST Affichage date
+                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                // on choisit la view qui contient le corps de la page
+                $result['contents'] = 'profil_view';
+                // On choisit la sidebar
+                $result['sidebar'] = 'profil';
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $result);
             }
             else
             {
@@ -176,7 +190,21 @@ class profil extends CI_Controller
             {
                
                 $result['error'] = $this->upload->display_errors();
-		$this->load->view('profil_view', $result);
+		$result['title'] = 'Open-Note - Profil';
+                $result['description'] = 'La description de la page pour les moteurs de recherche';
+                $data['keywords'] = 'les, mots, clés, de, la, page';
+                // TEST Affichage date
+                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                // on choisit la view qui contient le corps de la page
+                $result['contents'] = 'profil_view';
+                // On choisit la sidebar
+                $result['sidebar'] = 'profil';
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $result);
             }
             else
             {
@@ -195,9 +223,24 @@ class profil extends CI_Controller
 		$resize['height'] = 300;
 
 		$this->load->library('image_lib', $resize);
-                if ( ! $this->image_lib->resize()){
+                if ($this->image_lib->resize()){
                         $result['error'] = $this->image_lib->display_errors();
-                        $this->load->view('profil_view', $result);
+                        
+                        $result['title'] = 'Open-Note - Profil';
+                        $result['description'] = 'La description de la page pour les moteurs de recherche';
+                        $data['keywords'] = 'les, mots, clés, de, la, page';
+                        // TEST Affichage date
+                        setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                
+                        $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                        // on choisit la view qui contient le corps de la page
+                        $result['contents'] = 'profil_view';
+                        // On choisit la sidebar
+                        $result['sidebar'] = 'profil';
+
+                        // on charge la page dans le template
+                        $this->load->view('templates/template', $result);
 		}
                 
 		redirect('profil', 'refresh');
