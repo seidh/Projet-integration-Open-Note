@@ -130,4 +130,19 @@ class administration extends CI_Controller
             session_destroy();
             redirect('accueil', 'refresh');
         }*/
+        
+        function moderatorList()
+        {
+            
+        }
+        
+        function attributeModeratorForm()
+        {
+            
+        }
+        
+        function notesList()
+        {
+            
+        }
  }
