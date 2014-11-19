@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>OpenNote</title>
+    <title>OpenNote - Récupération du votre mot de passe</title>
     
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url('assets/sb-admin-2/css/bootstrap.min.css');?>" rel="stylesheet" type="text/css"/>
@@ -43,20 +43,16 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Connexion</h3>
+                        <h3 class="panel-title">Récupération de votre mot de passe</h3>
                     </div>
                     <div class="panel-body">
                         <?php echo validation_errors(); ?>
-                        <?php echo form_open('verifylogin'); ?>
+                        <?php echo form_open('recovery_pwd/sendMail'); ?>
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="username" id="username" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="email" id="email" type="email" autofocus>
                                 </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" id="password" type="password" value="">
-                                </div>
-                                <input type="submit" value="Login" class="btn btn-lg btn-success btn-block"/>
-                                <a href="recovery_pwd">Mot de passe oublié ?</a>
+                                <input type="submit" value="Récupération du mot de passe" class="btn btn-lg btn-success btn-block"/>
                             </fieldset>
                         </form>
                     </div>
@@ -77,5 +73,6 @@
 </body>
 
 </html>
+
 
 
