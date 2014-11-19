@@ -107,7 +107,8 @@ class administration extends CI_Controller
 
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_modoList_view'; //TODO : sync with Olivier view
-
+            
+            $this->data['moderators_data'] = $this->administation_model->get_all_moderators();
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
         }
@@ -121,6 +122,28 @@ class administration extends CI_Controller
 
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_notesList_view'; //TODO : sync with Olivier view
+
+            // on charge la page dans le template
+            $this->load->view('templates/template', $this->data); 
+        }
+        
+        function addCat()
+        {
+            
+            $this->administration_model->create_category();
+        }
+        
+        
+        function categoriesList()
+        {
+            $this->data['title'] = 'Open-Note - Liste des catégories de notes';
+            $this->data['description'] = 'Page listant toutes les catégories de la plateforme';
+            $this->data['keywords'] = 'les, mots, clés, de, la, page';
+
+            $this->data['caterories_data'] = $this->administration_model->get_all_categories();
+            
+            // on choisit la view qui contient le corps de la page
+            $this->data['contents'] = 'admin_categoriesList_view'; //TODO : sync with Olivier view
 
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 

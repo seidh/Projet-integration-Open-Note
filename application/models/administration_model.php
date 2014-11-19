@@ -83,6 +83,16 @@ Class administration_model extends CI_Model {
     }
 
     /**
+     * Get number of elements inside specified table
+     * @param string $table_name containing table name
+     * @return integer containing elements number of spécified table
+     */
+    function numberOf($table_name = '')
+    {
+        return $this->db->count_all($table_name);
+    }
+    
+    /**
      * 
      * @param type $fields associative array containing row/data to be update
      * @param type $where_clauses string containing where clauses exemple : "id = 2"
