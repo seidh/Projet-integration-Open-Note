@@ -185,9 +185,9 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profil"><i class="fa fa-user fa-fw"></i> Mon profil</a>
+                        <li><a href="<?php echo base_url("profil"); ?>"><i class="fa fa-user fa-fw"></i> Mon profil</a>
                         </li>
-                        <li><a href="profil"><i class="fa fa-wrench fa-fw"></i> Administration</a>
+                        <li><a href="<?php echo base_url("administration");?>"><i class="fa fa-wrench fa-fw"></i> Administration</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="accueil/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>

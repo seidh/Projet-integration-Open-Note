@@ -11,6 +11,14 @@
                         <?php //echo form_open_multipart('administration/adduser')?>
                         <div class="form-group row">
                             <div class="col-lg-3 text-right top5">
+                                <label>Pseudo :</label>
+                            </div>
+                            <div class="col-lg-5">
+                                <input id="pseudo" name="name" class="form-control" />
+                            </div>                          
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-3 text-right top5">
                                 <label>Nom :</label>
                             </div>
                             <div class="col-lg-5">
@@ -45,15 +53,9 @@
                             <div class="col-lg-3 text-right top5">
                                 <label>Date de naissance :</label>
                             </div>
-                            <div class="col-lg-1">
-                                <input id="dayBirth" name="dayBirth" class="form-control" />
-                            </div>
-                            <div class="col-lg-1">
-                                <input id="monthBirth" name="monthBirth" class="form-control" /> 
-                            </div> 
-                            <div class="col-lg-2">
-                                <input id="yearBirth" name="yearBirth" class="form-control" />
-                            </div>                            
+                            <div class="col-lg-3">
+                                <input id="dayBirth" name="dayBirth" class="form-control" type="date" />
+                            </div>                          
                         </div>                        
                     </div>
                 </div>

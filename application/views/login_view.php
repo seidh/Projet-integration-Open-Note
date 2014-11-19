@@ -34,7 +34,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 center">
-                <div class="front-logo"></div>
+                <div class="logo_container"">
+                    <span class="front-logo"><span class="inner_logo"></span></span>                        
+                </div>
             </div>
         </div>
         <div class="row">
