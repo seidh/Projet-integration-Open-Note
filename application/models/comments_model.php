@@ -26,11 +26,39 @@ class comments_model extends CI_Model
      * @param int $parent_id
      * @return object containing comments data
      */
-    function get_note_comment_by_parent($parent_id)
+    private function _get_comment_by_parent($parent_id = NULL)
     {
-        return $this->db->get($this->table)
-                        ->where('parent_id', $parent_id)
+        return $this->db->where('parent_id', $parent_id)
+                        ->get($this->table)
                         ->result();
+    }
+    
+    private function _get_primary_note_comment($note_id)
+    {
+        return $this->db->where('parent_id', null, FALSE)
+                        ->where('note_id', $note_id)
+                        ->get($this->table)
+                        ->result();
+    }
+    
+    private function _get_note_comment_r($parent_id, $primary_level = false, $note_id = NULL)
+    {
+        $comments_array = array();
+
+        $working_array = ($primary_level) ? $this->_get_primary_note_comment($note_id) : 
+                                            $this->_get_comment_by_parent($parent_id);
+        if(empty($working_array)) return;
+        
+        foreach ($working_array as $child) {
+            $comments_array[] = $child;
+            $comments_array[] = $this->_get_note_comment_r($child->id);
+        }
+        return $comments_array;
+    }
+    
+    function get_note_comments($note_id)
+    {
+        return $this->_get_note_comment_r(NULL, true, $note_id);
     }
 }
 
