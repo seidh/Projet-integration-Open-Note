@@ -22,15 +22,13 @@ class comments_model extends CI_Model
     }
     
     /**
-     * 
-     * @param type $note_id
-     * @param type $parent_id
+     * Get all comments with given parent_id
+     * @param int $parent_id
      * @return object containing comments data
      */
-    function get_note_comment_by_parent($note_id, $parent_id)
+    function get_note_comment_by_parent($parent_id)
     {
         return $this->db->get($this->table)
-                        ->where('note_id', $note_id)
                         ->where('parent_id', $parent_id)
                         ->result();
     }
