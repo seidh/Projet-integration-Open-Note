@@ -109,8 +109,14 @@ class administration extends CI_Controller
             $this->data['contents'] = 'admin_modoList_view'; //TODO : sync with Olivier view
             
             $this->data['moderators_data'] = $this->administation_model->get_all_moderators();
+            
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
+        }
+        
+        function addModoForm()
+        {
+            //TODO controller form side
         }
 
         
@@ -122,6 +128,8 @@ class administration extends CI_Controller
 
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_notesList_view'; //TODO : sync with Olivier view
+            
+            $this->data['notes_data'] = $this->administration_model->get_all_notes();
 
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
@@ -129,6 +137,7 @@ class administration extends CI_Controller
         
         function addCat()
         {
+            //TODO cat adding form validation
             
             $this->administration_model->create_category();
         }
@@ -145,7 +154,14 @@ class administration extends CI_Controller
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_categoriesList_view'; //TODO : sync with Olivier view
 
+            $this->data['cat_datas'] = $this->administration_model->get_all_category();
+            
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
+        }
+        
+        function addCatForm()
+        {
+            //TODO add form in controller side
         }
  }

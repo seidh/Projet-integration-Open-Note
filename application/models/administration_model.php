@@ -14,6 +14,15 @@ Class administration_model extends CI_Model {
                             ->result();
         }
 
+        
+    
+    
+    
+    
+    
+    
+    
+    
         /**
          * 
          * @return type return array containing all user_perm rows
@@ -22,6 +31,15 @@ Class administration_model extends CI_Model {
             return $this->db->get('user_perm')
                             ->result();
         }
+        
+    
+    
+    
+    
+    
+    
+    
+    
         /**
          * 
          * @param type $fields associativ array containing columns and values to update
@@ -35,6 +53,14 @@ Class administration_model extends CI_Model {
                 return true;
         }
 
+    
+    
+    
+    
+    
+    
+    
+    
         /**
          * 
          * @param type $fields associative array containing user data
@@ -58,6 +84,14 @@ Class administration_model extends CI_Model {
             return $this->db->insert_id();
         }
 
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * Model functions about category
@@ -72,6 +106,22 @@ Class administration_model extends CI_Model {
                         ->result();
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * 
@@ -82,15 +132,69 @@ Class administration_model extends CI_Model {
                         ->result();
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Get number of elements inside specified table
      * @param string $table_name containing table name
      * @return integer containing elements number of spécified table
      */
-    function numberOf($table_name = '')
+    function total_number_of($table_name = '')
     {
         return $this->db->count_all($table_name);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     * @param type $cat_id
+     * @return type
+     */
+    function get_number_user_in_cat($cat_id)
+    {
+        return $this->db->where('cat_id', $cat_id)
+                        ->count_all_results('cat_perm');
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     * @param type $cat_id
+     * @return type
+     */
+    function get_note_number_in_cat($cat_id)
+    {
+        return $this->db->where('category', $cat_id)
+                        ->count_all_results('note');
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * 
@@ -105,20 +209,80 @@ Class administration_model extends CI_Model {
         return true;
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * 
      * @param type $fields associative array containing 'name' and 'parent_id' ('parent_id' can be null)
      * @return boolean false on error and id of created cat if success !
      */
-    function create_category($fields){
+    function create_category($fields, $admin_user_id){
         if(!isset($fields) && !is_array($fields)) 
             return false;
         if(!array_key_exists('name', $fields) && !array_key_exists('parent_id', $fields))
             return false;
         
+        // create category
         $this->db->insert('category', $fields);
-        return $this->db->insert_id();
+        $cat_id = $this->db->insert_id();
+        
+        //add admin as cat moderator
+        return $this->attribute_moderator($admin_user_id, $cat_id);
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     * @param type $cat_id
+     */
+    function delete_category($cat_id)
+    {
+        //first we need to delete all perm for this category 
+        $this->db->delete('cat_perm', "id = $cat_id");
+        
+        //then we can delete all note linked to this cat
+        // for this, we should delete every note_perm linked to dying notes.
+        $dying_notes_id = $this->db->select('id')
+                                   ->from('note')
+                                   ->where('category', $cat_id)
+                                   ->result();
+        if(!empty($dying_notes_id))
+        {
+            //deletion of note_perm elements linked to dying note
+            foreach ($dying_notes_id as $note) {
+                $this->db->delete('note_perm', "note_id = $note->note_id");
+            }
+            
+            //remove note
+            $this->db->delete('note', "category = $cat_id");
+        }
+        return true;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * 
@@ -134,6 +298,15 @@ Class administration_model extends CI_Model {
         return true;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Model functions about moderator
      */
@@ -175,6 +348,15 @@ Class administration_model extends CI_Model {
         return $all_moderator_tab;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Model function about notes
      */
