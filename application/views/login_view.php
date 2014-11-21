@@ -46,7 +46,7 @@
                         <h3 class="panel-title">Connexion</h3>
                     </div>
                     <div class="panel-body">
-                        <?php echo validation_errors(); ?>
+                        <?php echo validation_errors(); echo $message?>
                         <?php echo form_open('verifylogin'); ?>
                             <fieldset>
                                 <div class="form-group">

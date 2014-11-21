@@ -12,6 +12,7 @@ class profil extends CI_Controller
             parent::__construct();
             $this->load->helper('form','url');
             $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>'); 
             
             $this->load->model('user','',TRUE);
         }

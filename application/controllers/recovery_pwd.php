@@ -8,6 +8,7 @@ class recovery_pwd extends CI_Controller {
    parent::__construct();
    $this->load->helper('form','url');
    $this->load->library('form_validation');
+   $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>'); 
  }
  
  function index()
@@ -57,8 +58,11 @@ class recovery_pwd extends CI_Controller {
         VALUES (".$this->db->escape($row->id).", ".$this->db->escape($cle).")";
 
         $this->db->query($sql);
-        echo $this->email->print_debugger();
-        //$this->load->view('recovery_pwd_view');
+        $data['message'] = '<div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                Un mail de récupération de mot de passe vous a été envoyé.
+                            </div>';
+        $this->load->view('login_view',$data);
     }
     
  }
@@ -71,9 +75,24 @@ class recovery_pwd extends CI_Controller {
         $this -> db -> limit(1);
  
         $query = $this -> db -> get();
+        $row = $query->row();
         if($query -> num_rows() == 1)
         {
+            $this -> db -> select('id, cle');
+            $this -> db -> from('activation');
+            $this -> db -> where('id', $row->id);
+            $this -> db -> limit(1);
+ 
+            $query = $this -> db -> get();
+            if($query -> num_rows() == 1)
+            {
+                $this->form_validation->set_message('check_email', 'Vous êtes déjà en récupération de mot de passe, pensez à vérifier vos mails');
+                return false;
+            }
+            else
+            {
                 return true;
+            }
         }
         else
         {
@@ -117,7 +136,11 @@ class recovery_pwd extends CI_Controller {
             
             $query2 = $this->db->query("DELETE FROM activation WHERE id = '".$row->id."';");
             
-            redirect('login', 'refresh');
+            $data['message'] = '<div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                Votre nouveau mot de passe est opérationnel, vous pouvez dès à présent vous connecter en utilisant celui-ci.
+                            </div>';
+            $this->load->view('login_view',$data);
             
         }
     }
