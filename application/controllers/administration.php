@@ -15,6 +15,10 @@ class administration extends CI_Controller
             $this->load->model('administration_model','',TRUE);
             $this->load->model('user','',TRUE);
             
+            $this->load->helper('form','url');
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
+            
             if($this->session->userdata('logged_in'))
             {
                 $session_data = $this->session->userdata('logged_in');
@@ -87,9 +91,35 @@ class administration extends CI_Controller
         
         function adduser()
         {
+//                                    <div class="form-group row">
+//                            <div class="col-lg-3 text-right top5">
+//                                <label>Groupe :</label>
+//                            </div>
+//                            <div class="col-lg-5">
+//                                <input id="group" name="group" class="form-control" />
+//                            </div>                                     
+//                        </div>   
+//                        <div class="form-group row">
+//                            <div class="col-lg-3 text-right top5">
+//                                <label>Date de naissance :</label>
+//                            </div>
+//                            <div class="col-lg-1">
+//                                <input id="dayBirth" name="dayBirth" class="form-control" />
+//                            </div>
+//                            <div class="col-lg-1">
+//                                <input id="monthBirth" name="monthBirth" class="form-control" /> 
+//                            </div> 
+//                            <div class="col-lg-2">
+//                                <input id="yearBirth" name="yearBirth" class="form-control" />
+//                            </div>    
+            
+            
             //TODO : use user existance check from model (maybe not implemented yet)
             
             $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('firstname', 'Prénom', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('groupe', 'Groupe', 'trim|required|xss_clean');
             // $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
         }
 	/*function logout()
