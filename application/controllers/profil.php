@@ -219,7 +219,7 @@ class profil extends CI_Controller
                 
                 //resize
                 $resize['source_image'] = $this->upload->upload_path.$this->upload->file_name;
-		$resize['maintain_ratio'] = FALSE;
+		$resize['maintain_ratio'] = TRUE;
 		$resize['width'] = 300;
 		$resize['height'] = 300;
 
