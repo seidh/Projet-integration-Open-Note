@@ -116,9 +116,8 @@ class recovery_pwd extends CI_Controller {
             
             
             $query2 = $this->db->query("DELETE FROM activation WHERE id = '".$row->id."';");
-            $this->db->query($query2);
             
-            $this->load->view('login');
+            redirect('login', 'refresh');
             
         }
     }
