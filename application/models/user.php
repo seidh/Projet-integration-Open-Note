@@ -45,8 +45,8 @@ Class User extends CI_Model
                 'groupe' => $row->groupe,
                 'avatar' => $row->avatar,
                 'pseudo' => $row->pseudo,
-                'error' => ' '
-                    
+                'error' => ' ',
+                'message' => ' '   
                 );
         }
         return $data;

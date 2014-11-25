@@ -45,6 +45,8 @@
     Custom Theme JavaScript -->
     <script src="<?php echo base_url('assets/sb-admin-2/js/sb-admin-2.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/custom/custom.js');?>" type="text/javascript"></script>
+    <!--CK editor !-->
+    <script src="<?php echo base_url('assets/ckeditor/ckeditor.js');?>" type="text/javascript"></script>
 </head>
 
 <body>
@@ -68,7 +70,7 @@
             <!-- /.navbar-header -->
             
             <ul class="nav navbar-top-links navbar-right">
-                <a href="profil"><li class="firstname-name"><?php echo $firstname." ".$name; ?></li></a>
+                <a href="<?php echo base_url('profil'); ?>"><li class="firstname-name"><?php echo $firstname." ".$name; ?></li></a>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>

@@ -6,7 +6,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-5">
-                        <?php echo $error; ?>
+                        <?php echo $error;echo $message; ?>
                         <?php echo form_open_multipart('profil/do_upload');?>
                             <label>Avatar</label><br />
                             <?php
