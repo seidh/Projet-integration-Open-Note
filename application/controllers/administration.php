@@ -118,9 +118,35 @@ class administration extends CI_Controller
             
             $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
             $this->form_validation->set_rules('firstname', 'Prénom', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('sexe','Sexe', 'trim|required|xss_clean');
             $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean');
             $this->form_validation->set_rules('groupe', 'Groupe', 'trim|required|xss_clean');
-            // $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('dayBirth', 'Jour de naissance', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('monthBirth', 'Mois de naissance', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('yearBirth', 'Année de naissance', 'trim|required|xss_clean');
+            
+            if($this->form_validation->run() == FALSE)
+            {
+                //erreur dans le formulaire
+                redirect('newUserForm', 'refresh');
+            }
+            else
+            {
+                //build default user password by concat name and firstname (tolowercase)
+                $user_default_pwd = strtolower($this->input->post('name') . $this->input->post('firstname'));
+                
+                //build user data array to inject into database
+                $user_data = array('name' => $this->input->post('name'),
+                        'firstname' => $this->input->post('firstname'),
+                        'pwd' => sha1($user_default_pwd),
+                        'birthday' => $this->input->post('yearBirth').'-'.$this->input->post('monthBirth').'-'.$this->input->post('dayBirth'),
+                        'groupe' => $this->input->post('groupe'),
+                        'sexe' => $this->input->post('sexe'),
+                        'pseudo' => $this->input->post('name').$this->input->post('firstname'),
+                        'avatar' => null);
+                
+                print_r($user_data);
+            }
         }
 	/*function logout()
         {

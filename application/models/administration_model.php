@@ -81,7 +81,11 @@ Class administration_model extends CI_Model {
                     return false;
 
             $this->db->insert('user', $fields);
-            return $this->db->insert_id();
+            $insert_id = $this->db->insert_id();
+            
+            //create user_perm
+            $this->db->insert('user_perm', array('user_id' => $insert_id, 'perm_id' => 3));
+            return $insert_id;
         }
 
     
@@ -294,6 +298,7 @@ Class administration_model extends CI_Model {
         if(!is_int($id_user) && !is_int($id_user)){
             return false;
         }
+        //TODO descending attribution
         $this->db->insert('cat_perm', array('user_id'=>$id_user, 'cat_id'=>$id_cat, 'perm_id'=>2));
         return true;
     }
@@ -310,6 +315,8 @@ Class administration_model extends CI_Model {
     /**
      * Model functions about moderator
      */
+    
+    //TODO distinct moderator ( actually, we get few moderator row for one user)
     function get_all_moderator(){
         //get cat_perm where perm_id = moderator_perm
         $cat_perm_result = $this->db->where('perm_id', 2) // 2 = moderator
