@@ -11,16 +11,8 @@
                     </div>
                     <!-- /.col-lg-12 -->
                     <div class="col-lg-10">
-                        <?php // echo $error; ?>
-                        <?php //echo form_open_multipart('administration/adduser')?>
-                        <div class="form-group row">
-                            <div class="col-lg-3 text-right top5">
-                                <label>Pseudo :</label>
-                            </div>
-                            <div class="col-lg-5">
-                                <input id="pseudo" name="name" class="form-control" />
-                            </div>                          
-                        </div>
+                        <?php echo validation_errors(); ?>
+                        <?php echo form_open('administration/adduser');?>
                         <div class="form-group row">
                             <div class="col-lg-3 text-right top5">
                                 <label>Nom :</label>

@@ -11,14 +11,22 @@ class administration_model_test extends CI_Controller{
     
     function index(){
         echo '<pre>';
-        print_r($this->admin_model->get_all_user());
-        echo '<h1>Get category</h1>';
-        print_r($this->admin_model->get_all_category());
-        echo '<h1>Get all moderator</h1>';
-        $moderator = $this->admin_model->get_all_moderator();
-        print_r($moderator);
-        echo '</pre>';
+//        print_r($this->admin_model->get_all_user());
+//        echo '<h1>Get category</h1>';
+//        print_r($this->admin_model->get_all_category());
+//        echo '<h1>Get all moderator</h1>';
+//        $moderator = $this->admin_model->get_all_moderator();
+//        print_r($moderator);
+//        echo '</pre>';
+//        echo 'test';
+//        var_dump($this->admin_model->is_user_exist("jonathan.beersaerts1993@gmail.com"));
+//        
+//        var_dump($this->admin_model->get_all_top_level_cat());
+        print_r($this->admin_model->get_all_moderator());
     }
     
+    function test_get($value){
+        echo $value;
+    }
     
 }
