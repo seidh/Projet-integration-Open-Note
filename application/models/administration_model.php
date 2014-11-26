@@ -300,9 +300,16 @@ Class administration_model extends CI_Model {
     }
     
     function get_all_child_of_cat($cat_id){
-        if($this->is_top_level_cat($cat_id)) return;
+        if(!$this->is_top_level_cat($cat_id)) return;
         return $this->db->get_where('category', array('parent_id' => $cat_id))
                         ->result();
+    }
+    
+    function is_moderator_of($user_id, $cat_id)
+    {
+        $where_clause = array('user_id' => $user_id, 'cat_id' => $cat_id);
+        $result = $this->db->get_where('cat_perm', $where_clause, 1);
+        return ($result->num_rows() >= 1) ? true : false;
     }
     
     
@@ -321,17 +328,19 @@ Class administration_model extends CI_Model {
         if(!is_int($id_user) && !is_int($id_user)){
             return false;
         }
+        if($this->is_moderator_of($id_user, $id_cat)) return false;
+        
         //TODO descending attribution
         $this->db->insert('cat_perm', array('user_id'=>$id_user, 'cat_id'=>$id_cat, 'perm_id'=> $this->moderator_perm));
         
         
-        if($this->is_top_level_cat($id_cat)) return true;
+        if(!$this->is_top_level_cat($id_cat)) return true;
         //else we need ton add moderator inside cild cats
-        foreach ($this->get_all_child_of_cat($id_cat) as $child_cat) {
-            $this->attribute_moderator($id_user, $child_cat->parent_id);
+        $children_cat = $this->get_all_child_of_cat($id_cat);
+        foreach ($children_cat as $child_cat) {
+            $this->attribute_moderator($id_user, $child_cat->id);
         }
-        
-        
+
         return true;
     }
 
@@ -349,45 +358,39 @@ Class administration_model extends CI_Model {
      */
     
     //TODO distinct moderator ( actually, we get few moderator row for one user)
-    function get_all_moderator(){
-        //get cat_perm where perm_id = moderator_perm
-        $cat_perm_result = $this->db->where('perm_id', $this->moderator_perm) // 2 = moderator
-                                    ->get('cat_perm')
-                                    ->result();
-        //foreach cat_perm element, get user data
-        $all_moderator_tab = array();
-
-        foreach ($cat_perm_result as $cat_perm_element) {
-            $tmp_array = array();
-
-            //get category data by cat_id from cat_perm
-            $category_data = $this->db->where('id', $cat_perm_element->cat_id)
-                                      ->select('id, name')
-                                      ->get('category')
-                                      ->result();
-
-            //get moderator data by user_id from cat_perm
-            $moderator_data = $this->db->where('id', $cat_perm_element->user_id)
-                                       ->select('id, name, firstname, pseudo, email')
-                                       ->get('user')
-                                       ->result();
+    function get_all_moderator()
+    {
+        $moderator_array = array();
+        //get all moderator data
+        $moderator_user_data = $this->db->select('u.id, u.name, u.firstname, u.pseudo, u.email')
+                                   ->distinct()
+                                   ->from('cat_perm')
+                                   ->join('user as u', 'u.id = cat_perm.user_id')
+                                   ->where('perm_id', $this->moderator_perm)
+                                   ->get()
+                                   ->result_array();
+        
+        foreach($moderator_user_data as $current_mod){
+            $binding_mod_data = $current_mod;
             
-            //bind array
-            $tmp_array['user_id'] = $moderator_data[0]->id;
-            $tmp_array['pseudo'] = $moderator_data[0]->pseudo;
-            $tmp_array['name'] = $moderator_data[0]->name;
-            $tmp_array['firstname'] = $moderator_data[0]->firstname;
-            $tmp_array['email'] = $moderator_data[0]->email;
-            $tmp_array['cat_id'] = $category_data[0]->id;
-            $tmp_array['cat_name'] = $category_data[0]->name;
-
-            $all_moderator_tab[] = $tmp_array;
+            //get moderat cat by current user
+            $moderate_cat = $this->db->select('category.name, category.id')
+                                     ->from('cat_perm')
+                                     ->join('category','cat_perm.cat_id = category.id')
+                                     ->where('user_id', $binding_mod_data['id'])
+                                     ->where('perm_id', $this->moderator_perm)
+                                     ->get()
+                                     ->result_array();
+            
+            //add cat_data in moderator_data array
+            $binding_mod_data['moderate_cat'] = $moderate_cat;
+            
+            //add binded array inside global moderator array
+            $moderator_array[] = $binding_mod_data;
         }
-
-        return $all_moderator_tab;
+        
+        return $moderator_array;
     }
-
-    
     
     
     

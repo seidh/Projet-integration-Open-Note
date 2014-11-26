@@ -10,7 +10,7 @@ class administration_model_test extends CI_Controller{
     }
     
     function index(){
-//        echo '<pre>';
+        echo '<pre>';
 //        print_r($this->admin_model->get_all_user());
 //        echo '<h1>Get category</h1>';
 //        print_r($this->admin_model->get_all_category());
@@ -22,7 +22,11 @@ class administration_model_test extends CI_Controller{
 //        var_dump($this->admin_model->is_user_exist("jonathan.beersaerts1993@gmail.com"));
 //        
 //        var_dump($this->admin_model->get_all_top_level_cat());
+        print_r($this->admin_model->get_all_moderator());
     }
     
+    function test_get($value){
+        echo $value;
+    }
     
 }

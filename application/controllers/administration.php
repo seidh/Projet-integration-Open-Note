@@ -132,6 +132,11 @@ class administration extends CI_Controller
                 $this->administration_model->create_user($user_data);
             }
         }
+        
+        function modify_user($id){
+            
+            
+        }
 	/*function logout()
         {
             $this->session->unset_userdata('logged_in');
