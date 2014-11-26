@@ -47,6 +47,9 @@
     <script src="<?php echo base_url('assets/custom/custom.js');?>" type="text/javascript"></script>
     <!--CK editor !-->
     <script src="<?php echo base_url('assets/ckeditor/ckeditor.js');?>" type="text/javascript"></script>
+    <!-- DataTables JavaScript -->
+    <script src=" <?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/jquery.dataTables.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/dataTables.bootstrap.js'); ?>"></script>
 </head>
 
 <body>
@@ -70,7 +73,15 @@
             <!-- /.navbar-header -->
             
             <ul class="nav navbar-top-links navbar-right">
-                <a href="<?php echo base_url('profil'); ?>"><li class="firstname-name"><?php echo $firstname." ".$name; ?></li></a>
+                <a href="<?php echo base_url('profil'); ?>">
+                    <li class="firstname-name">
+                    <?php 
+                        $session_data = $this->session->userdata('logged_in');
+                        $data['id'] = $session_data['id'];
+                        $user_page = $this->user->user_data($data['id']);
+                        echo $user_page['firstname']." ".$user_page['name']; ?>
+                    </li>
+                </a>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>

@@ -27,7 +27,7 @@
                     echo'<ul class="nav nav-second-level">';
                     foreach ($all_cat_daughter as $cat_daughter) {
                         if ($this->category_model->check_my_cat($cat_daughter['id'], $result['id'])) {
-                            echo'<li><a href="">' . $cat_daughter['name'] . '</a></li>';
+                            echo'<li><a href="' . base_url("accueil/category?id=" . $cat_daughter['id']) . '">' . $cat_daughter['name'] . '</a></li>';
                         }
                     }
                     echo'</ul>';

@@ -52,5 +52,11 @@ Class category_model extends CI_Model
             return false;
         }
     }
+    function get_note_cat($cat_id)
+    {
+        $query = $this->db->query("SELECT * FROM note WHERE category = ".$cat_id.";");
+                        
+        return $query -> result_array();
+    }
     
 }

@@ -21,9 +21,17 @@ class profil extends CI_Controller {
 
     function index() {
         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            $data['id'] = $session_data['id'];
-            $result = $this->user->user_data($data['id']);
+            if($this->input->get('id') == '')
+            {
+                $session_data = $this->session->userdata('logged_in');
+                $data['id'] = $session_data['id'];
+                $result = $this->user->user_data($data['id']);
+            }
+            else
+            {
+                $result = $this->user->user_data($this->input->get('id'));
+            }
+            
         } else {
             //If no session, redirect to login page
             redirect('login', 'refresh');
