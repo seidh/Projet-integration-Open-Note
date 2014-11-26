@@ -1,4 +1,8 @@
-
+    <!-- Script for the active navbar -->
+    <script type="text/javascript">
+        activeNavbar();
+        collapseMenu();
+    </script> 
         <div id="page-wrapper">
             <div class="row">
                 <div class="row">

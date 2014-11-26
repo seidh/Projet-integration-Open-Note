@@ -242,4 +242,4 @@ if ($.fn.DataTable.TableTools) {
             "liner": "a"
         }
     });
-}
+};
