@@ -13,6 +13,12 @@ class accueil extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        if ($this->session->userdata('logged_in')) {
+            
+        } else {
+            //If no session, redirect to login page
+            redirect('login', 'refresh');
+        }
         $this->load->model('user', '', TRUE);
     }
 

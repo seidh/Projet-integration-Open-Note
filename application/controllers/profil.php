@@ -13,6 +13,12 @@ class profil extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        if ($this->session->userdata('logged_in')) {
+            
+        } else {
+            //If no session, redirect to login page
+            redirect('login', 'refresh');
+        }
         $this->load->helper('form', 'url');
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');

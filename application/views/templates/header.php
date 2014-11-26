@@ -87,45 +87,28 @@
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
+                        <?php
+                        $three_last_message = $this->conversation_model->get_three_last_message();
+                        foreach($three_last_message as $message)
+                        {
+                            $user = $this->user->user_data($message['user_id']);
+                            echo'<li>
+                            <a href="'.base_url('message/voir?id=').''.$message['conversation_id'].'">
                                 <div>
-                                    <strong>John Smith</strong>
+                                    <strong>'.$user['firstname'].' '.$user['name'].'</strong>
                                     <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
+                                        <em>'.$message['date_creation'].'</em>
                                     </span>
                                 </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                <div>'.$message['message'].'</div>
                             </a>
                         </li>
-                        <li class="divider"></li>
+                        <li class="divider"></li>';
+                        }
+                        ?>
                         <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
+                            <a class="text-center" href="<?php echo base_url('message'); ?>">
+                                <strong>Lire tout les messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
@@ -203,7 +186,7 @@
                         <li><a href="<?php echo base_url("administration");?>"><i class="fa fa-wrench fa-fw"></i> Administration</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="accueil/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="<?php echo base_url("accueil/logout");?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
