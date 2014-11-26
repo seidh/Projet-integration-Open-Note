@@ -91,31 +91,6 @@ class administration extends CI_Controller
         
         function adduser()
         {
-//                                    <div class="form-group row">
-//                            <div class="col-lg-3 text-right top5">
-//                                <label>Groupe :</label>
-//                            </div>
-//                            <div class="col-lg-5">
-//                                <input id="group" name="group" class="form-control" />
-//                            </div>                                     
-//                        </div>   
-//                        <div class="form-group row">
-//                            <div class="col-lg-3 text-right top5">
-//                                <label>Date de naissance :</label>
-//                            </div>
-//                            <div class="col-lg-1">
-//                                <input id="dayBirth" name="dayBirth" class="form-control" />
-//                            </div>
-//                            <div class="col-lg-1">
-//                                <input id="monthBirth" name="monthBirth" class="form-control" /> 
-//                            </div> 
-//                            <div class="col-lg-2">
-//                                <input id="yearBirth" name="yearBirth" class="form-control" />
-//                            </div>    
-            
-            
-            //TODO : use user existance check from model (maybe not implemented yet)
-            
             $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
             $this->form_validation->set_rules('firstname', 'Prénom', 'trim|required|xss_clean');
             $this->form_validation->set_rules('sexe','Sexe', 'trim|required|xss_clean');
@@ -139,13 +114,22 @@ class administration extends CI_Controller
                 $user_data = array('name' => $this->input->post('name'),
                         'firstname' => $this->input->post('firstname'),
                         'pwd' => sha1($user_default_pwd),
+                        'email' => $this->input->post('email'),
                         'birthday' => $this->input->post('yearBirth').'-'.$this->input->post('monthBirth').'-'.$this->input->post('dayBirth'),
                         'groupe' => $this->input->post('groupe'),
                         'sexe' => $this->input->post('sexe'),
                         'pseudo' => $this->input->post('name').$this->input->post('firstname'),
                         'avatar' => null);
                 
-                print_r($user_data);
+                print_r($user_data);//debug instruction
+                
+                //check if unique fields aren't used yet
+                if(!$this->administration_model->is_user_exist($user_data['email']))
+                {
+                    //user already exist so put error message
+                }
+                //else add user inside database
+                $this->administration_model->create_user($user_data);
             }
         }
 	/*function logout()
@@ -173,6 +157,16 @@ class administration extends CI_Controller
         function addModoForm()
         {
             //TODO controller form side
+            // définition des données variables du template
+            $this->data['title'] = 'Open-Note - Attribution de modérateur';
+            $this->data['description'] = 'Page d\'attribution manuel de modérateur';
+            $this->data['keywords'] = 'les, mots, clés, de, la, page';
+
+            // on choisit la view qui contient le corps de la page
+            $this->data['contents'] = 'admin_addModo_view';
+
+            // on charge la page dans le template
+            $this->load->view('templates/template', $this->data); 
         }
 
         
@@ -194,6 +188,8 @@ class administration extends CI_Controller
         function addCat()
         {
             //TODO cat adding form validation
+            $this->form_validation->set_rules('cat_name', 'Nom', 'trim|required|xss-clean');
+            $this->form_validation->set_rules('parent_id', 'Categories parentes', 'trim|required|xss-clean');
             
             $this->administration_model->create_category();
         }
@@ -204,8 +200,6 @@ class administration extends CI_Controller
             $this->data['title'] = 'Open-Note - Liste des catégories de notes';
             $this->data['description'] = 'Page listant toutes les catégories de la plateforme';
             $this->data['keywords'] = 'les, mots, clés, de, la, page';
-
-            $this->data['caterories_data'] = $this->administration_model->get_all_categories();
             
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_categoriesList_view'; //TODO : sync with Olivier view
@@ -219,5 +213,16 @@ class administration extends CI_Controller
         function addCatForm()
         {
             //TODO add form in controller side
+            
+            // définition des données variables du template
+            $this->data['title'] = 'Open-Note - Ajout d\'une catégorie';
+            $this->data['description'] = 'Page d\'ajout manuel d\'une catégorie';
+            $this->data['keywords'] = 'les, mots, clés, de, la, page';
+
+            // on choisit la view qui contient le corps de la page
+            $this->data['contents'] = 'admin_addCat_view';
+
+            // on charge la page dans le template
+            $this->load->view('templates/template', $this->data); 
         }
  }

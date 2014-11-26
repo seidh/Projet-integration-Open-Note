@@ -1,6 +1,8 @@
 <?php
 Class administration_model extends CI_Model {
 
+    private $moderator_perm = 2;
+    
     /**
      * Model functions about users
      */
@@ -73,6 +75,7 @@ Class administration_model extends CI_Model {
             if(!array_key_exists('name', $fields) && 
                !array_key_exists('firstname', $fields) &&
                !array_key_exists('pwd', $fields) &&
+               !array_key_exists('email', $fields) &&
                !array_key_exists('birthday', $fields) &&
                !array_key_exists('groupe', $fields) &&
                !array_key_exists('sexe', $fields) &&
@@ -89,6 +92,12 @@ Class administration_model extends CI_Model {
         }
 
     
+        
+        function is_user_exist($email){
+            $result = $this->db->get_where('user', array('email' => $email), 1);
+            
+            return ($result->num_rows() >= 1) ? true : false;
+        }
     
     
     
@@ -280,7 +289,21 @@ Class administration_model extends CI_Model {
     }
     
     
+    function is_top_level_cat($cat_id){
+        $result = $this->db->get_where('category', array('id' => $cat_id), 1)->result();
+        return ($result[0]->parent_id === null)? true : false;
+    }
     
+    function get_all_top_level_cat(){
+        return $this->db->get_where('category', array('parent_id' => null))
+                        ->result();
+    }
+    
+    function get_all_child_of_cat($cat_id){
+        if($this->is_top_level_cat($cat_id)) return;
+        return $this->db->get_where('category', array('parent_id' => $cat_id))
+                        ->result();
+    }
     
     
     
@@ -299,7 +322,16 @@ Class administration_model extends CI_Model {
             return false;
         }
         //TODO descending attribution
-        $this->db->insert('cat_perm', array('user_id'=>$id_user, 'cat_id'=>$id_cat, 'perm_id'=>2));
+        $this->db->insert('cat_perm', array('user_id'=>$id_user, 'cat_id'=>$id_cat, 'perm_id'=> $this->moderator_perm));
+        
+        
+        if($this->is_top_level_cat($id_cat)) return true;
+        //else we need ton add moderator inside cild cats
+        foreach ($this->get_all_child_of_cat($id_cat) as $child_cat) {
+            $this->attribute_moderator($id_user, $child_cat->parent_id);
+        }
+        
+        
         return true;
     }
 
@@ -319,7 +351,7 @@ Class administration_model extends CI_Model {
     //TODO distinct moderator ( actually, we get few moderator row for one user)
     function get_all_moderator(){
         //get cat_perm where perm_id = moderator_perm
-        $cat_perm_result = $this->db->where('perm_id', 2) // 2 = moderator
+        $cat_perm_result = $this->db->where('perm_id', $this->moderator_perm) // 2 = moderator
                                     ->get('cat_perm')
                                     ->result();
         //foreach cat_perm element, get user data
