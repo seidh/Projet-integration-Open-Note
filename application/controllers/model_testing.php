@@ -10,6 +10,14 @@ class model_testing extends CI_Controller
         echo '<pre>';
         print_r($tmp);
     }
+    
+    function test($arg1, $arg2)
+    {
+        echo $arg1;
+        echo $arg2;
+        echo '<br/>';
+        echo time();
+    }
 }
 
 /* 

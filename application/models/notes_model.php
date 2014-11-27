@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+include_once '/application/models/Git.php';
 
 class notes_model extends CI_Model
 {
@@ -6,32 +7,32 @@ class notes_model extends CI_Model
     public $table_vote = 'rate';
     public $table_comments = 'comments';
     
-    function create_note($name, $description = '')
-    {
-        /**
-         * Here come all git code for creating note returning the repo path and name
-         * to put into DB
-         */
-        
-        $gitRepoName = 'temporary name waiting GIT implementation';
-        
-        $values = array();
-        $values['name'] = $name;
-        $values['path'] = $gitRepoName;
-        $values['visible'] = 0;
-        //$values['description'] = $description; // TODO add on DB if OpenNote Team agree
-        
-        //Add note in DB
-        $this->db->insert($this->table_note, $values);
-        $note_id = $this->db->insert_id();
-        
-        //Perm attribution
-        
-    }
+    public static $default_path = 'assets/repo.d/';
     
-    function add_note_perm($note_id, $perm_data)
+            
+    function create_note($author_id, $author_pseudo, $author_email, $path, $note_name, $file_name, $cat_id)
     {
-        //TODO need infos from team
+        $git_repo = Git::create($path);
+        
+        $git_repo->run("config user.name \"$author_pseudo\"");
+        $git_repo->run("config user.email \"$author_email\"");
+        
+        $git_repo->add();
+        $git_repo->commit('Première version');
+        
+        //insert data on database
+        $note_array = array('path' => $path,
+                            'file_name' => $file_name,
+                            'name' => $note_name,
+                            'visible' => 1,
+                            'category' => $cat_id,
+                            'author_id' => $author_id,
+                            'creation_date' => date("Y-m-d H:i:s"),
+                            'modification_date' => date("Y-m-d H:i:s"));
+        
+        $this->db->insert('note', $note_array);
+        $note_id = $this->db->insert_id();
+        return $note_id;
     }
     
     function rate_note($note_id, $user_id, $value)
@@ -42,16 +43,6 @@ class notes_model extends CI_Model
                                                    'user_id' => $user_id,
                                                    'vote' => $value));
         return true;
-    }
-    
-    function add_comment($note_id, $user_id, $parent_id, $content)
-    {
-        //TODO implementation
-    }
-    
-    function get_all_comments($note_id)
-    {
-        //TODO recursive function to get all comment and return array containing all datas
     }
     
     function get_note_history($note_id)
