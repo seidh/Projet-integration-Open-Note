@@ -1,6 +1,6 @@
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <span class="navbar-brand sidebarLogo"><a href="acceuil"></a></span>
+                    <span class="navbar-brand sidebarLogo"><a href="<?php echo base_url('accueil');?>"></a></span>
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
