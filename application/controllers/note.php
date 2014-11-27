@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+session_start();
 
 class note extends CI_Controller{
     
@@ -30,6 +31,7 @@ class note extends CI_Controller{
             $this->data['name'] = $result['name'];
             $this->data['firstname'] = $result['firstname'];
             $this->data['pseudo'] = $result['pseudo'];
+            $this->data['email'] = $result['username'];
             //affichage date
             setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
             $this->data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
@@ -75,8 +77,9 @@ class note extends CI_Controller{
             $file_name = $this->input->post('title').'.txt';
 
             //create note_file
+            mkdir($repo_path);
             $note_file = fopen($repo_path.$file_name, 'w');
-            fwrite($note_file, $this->input->post(note_content));
+            fwrite($note_file, $this->input->post('note_content'));
             fclose($note_file);
 
             //create repository
@@ -94,7 +97,10 @@ class note extends CI_Controller{
     
     function check_cat($cat_id)
     {
-        
+        /**
+         *  call_back function to check if sessions_user is register inside cat_id given
+         * 
+         */
     }
     
     function create_by_upload($cat_id)
