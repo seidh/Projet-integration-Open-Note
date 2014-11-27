@@ -5,11 +5,19 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-12">
+                    <br />
+                    <a href="<?php echo base_url('note/create_online' . '/' . $cat_id) ?>"><button type="button" class="btn btn-outline btn-info">Créer une note dans cette catégorie</button></a>
+                    <br />
+                    <br />
+                    <br />
+            </div>
+            <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Listes des notes pour la catégorie
                     </div>
                     <!-- /.panel-heading -->
+
                     <div class="panel-body">
                         <div class="table-responsive">
                             <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
@@ -28,8 +36,8 @@
                                             $user = $this->user->user_data($row_note['author_id']);
                                             echo '
                                                 <tr class=" ">
-                                            <td class=" ">' . $row_note['name'] . '</td>
-                                            <td class=" "><a href="'.base_url('profil?id=').$row_note['author_id'].'">' . $user['name'] . ' ' . $user['firstname'] . '</a></td>
+                                            <td class=" "><a href="' . base_url('note/view') . '/' . $row_note['id'] . '">' . $row_note['name'] . '</a></td>
+                                            <td class=" "><a href="' . base_url('profil?id=') . $row_note['author_id'] . '">' . $user['name'] . ' ' . $user['firstname'] . '</a></td>
                                             <td class=" ">' . $row_note['creation_date'] . '</td>
                                             <td class=" ">' . $row_note['modification_date'] . '</td>
                                         </tr>';

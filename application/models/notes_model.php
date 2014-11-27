@@ -41,8 +41,8 @@ class notes_model extends CI_Model
         $buffer = '';
         
         $note_result = $this->db->get_where('note', "id = $note_id", 1)
-                                ->result();
-        $note_path = $note_result[0]->path.$note_result[0]->file_name;
+                                ->result_array();
+        $note_path = $note_result[0]['path'].$note_result[0]['file_name'];
         
         $file = fopen($note_path, 'r');
         if($file)
@@ -55,6 +55,7 @@ class notes_model extends CI_Model
         }
         $note_data = $note_result[0];
         $note_data['note_content'] = $note_content;
+        return $note_data;
     }
             
     function rate_note($note_id, $user_id, $value)

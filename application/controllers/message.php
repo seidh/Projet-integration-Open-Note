@@ -64,7 +64,7 @@ class message extends CI_Controller {
         $session_data = $this->session->userdata('logged_in');
         if ($this->form_validation->run() == FALSE) {
             //form mal rempli
-
+            /*
             $result = $this->user->user_data($session_data['id']);
 
             $result['title'] = 'Open-Note - Conversation';
@@ -84,11 +84,13 @@ class message extends CI_Controller {
             $result['liste_messages'] = $this->conversation_model->get_all_message_from_conversation($this->input->post('conf_id'));
             $result['conf_id'] = $this->input->post('conf_id');
             $this->load->view('templates/template', $result);
+             * */
+             redirect('message/voir?id='.$this->input->post('conf_id'), 'refresh');
         } else {
             //form bien rempli
             $sql = "INSERT INTO messages (user_id, conversation_id, message,date_creation) VALUES (" . $session_data['id'] . ", " . $this->input->post('conf_id') . " ,'" . $this->input->post('editor1') . "', now());";
             $this->db->query($sql);
-            redirect('message?id='.$this->input->post('conf_id'), 'refresh');
+            redirect('message/voir?id='.$this->input->post('conf_id'), 'refresh');
         }
     }
     function voir()
