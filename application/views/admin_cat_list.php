@@ -7,41 +7,48 @@
             <div class="row">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Liste des utilisateurs</h1>
+                        <h1 class="page-header">Liste des catégories</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                     <div class="col-lg-10 left">
                         <div class="table-responsive">
                             <div class="div-table-content">
                                 <?php echo validation_errors();?>
-                                
-                                <table id="users_table" class="table table-striped table-hover">
+                               <?php // echo var_dump($cat_moderators); ?>
+                                <table id="cat_table" class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="col-md-2">Nom</th>
-                                            <th class="col-md-2">Prénom</th>
-                                            <th class="col-md-2">Pseudo</th>
-                                            <th class="col-md-1">Groupe</th>
-                                            <th class="col-md-3">Email</th>
-                                            <th class="col-md-1"></th>
+                                            <th class="col-md-2">Catégorie</th>
+                                            <th class="col-md-2">Modérateur</th>                                                                                   
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php 
                                             //var_dump($user_data);
-                                            foreach ($user_data as $RawData) {
+                                            foreach ($cat_datas as $RawData) {
                                                 //var_dump($RawData);
-                                                $singleUser = get_object_vars($RawData);
+                                                $singleCat = get_object_vars($RawData);
                                                 //echo $singleUser;                                        
-                                                echo'<tr id='.$singleUser['id'].'>';
-                                                echo form_open('administration/modify_user/'.$singleUser['id'].'');
-                                                echo'<td><span id="dispname'.$singleUser['id'].'">'.$singleUser['name'].'</span><input style="display:none;" id="editName'.$singleUser['id'].'" name="editName" class="form-control" value="'.$singleUser['name'].'"></input></td>';
-                                                echo'<td><span id="dispfirstname'.$singleUser['id'].'">'.$singleUser['firstname'].'</span><input style="display:none;" id="editFirstname'.$singleUser['id'].'" name="editFirstname" class="form-control" value="'.$singleUser['firstname'].'"></input></td>';
-                                                echo'<td><span id="disppseudo'.$singleUser['id'].'">'.$singleUser['pseudo'].'</span><input style="display:none;" id="editPseudo'.$singleUser['id'].'" name="editPseudo" class="form-control" value="'.$singleUser['pseudo'].'"></input></td>';
-                                                echo'<td><span id="dispgroup'.$singleUser['id'].'">'.$singleUser['groupe'].'</span><input style="display:none;" id="editGroup'.$singleUser['id'].'" name="editGroup" class="form-control" value="'.$singleUser['groupe'].'"></input></td>';
-                                                echo'<td><span id="dispemail'.$singleUser['id'].'">'.$singleUser['email'].'</span><input style="display:none;" id="editEmail'.$singleUser['id'].'" name="editEmail" type="email" class="form-control" value="'.$singleUser['email'].'"></input></td>';                                                
-                                                echo'<td><button id="saveModif'.$singleUser['id'].'" style="display:none" class="btn btn-primary" type="submit">Ok</button></td>';
-                                                echo form_close();
+                                                echo'<tr id='.$singleCat['id'].'>';
+                                                
+                                                
+                                                if (!is_null($singleCat['parent_id'])){
+                                                    echo '<td>&nbsp;&nbsp;&nbsp;&nbsp; <span id="dispname'.$singleCat['id'].'">'.$singleCat['name'].'</span></td>';
+                                                } else {
+                                                    echo'<td><span id="dispname'.$singleCat['id'].'">'.$singleCat['name'].'</span></td>';
+                                                }
+                                                echo'<td>';
+                                                foreach ($cat_moderators as $RawData2) {
+                                                    //echo var_dump($RawData2);
+                                                    foreach($RawData2['moderate_cat'] as $RawData3) {
+                                                        if($RawData3['id'] == $singleCat['id']){
+                                                            echo $RawData2["firstname"].' '.$RawData2['name'];
+                                                        }
+                                                    }
+                                                }
+                                                echo'</td>';
+                                                
+                                                //echo form_close();
                                          
                                                 echo'</tr>';
                                                 
