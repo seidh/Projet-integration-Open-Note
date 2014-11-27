@@ -35,6 +35,28 @@ class notes_model extends CI_Model
         return $note_id;
     }
     
+    function get_note_content($note_id)
+    {
+        $note_content = array();
+        $buffer = '';
+        
+        $note_result = $this->db->get_where('note', "id = $note_id", 1)
+                                ->result();
+        $note_path = $note_result[0]->path.$note_result[0]->file_name;
+        
+        $file = fopen($note_path, 'r');
+        if($file)
+        {
+            while (($buffer = fgets($file)) !== false)
+            {
+                $note_content[] = $buffer;
+            }
+            fclose($file);
+        }
+        $note_data = $note_result[0];
+        $note_data['note_content'] = $note_content;
+    }
+            
     function rate_note($note_id, $user_id, $value)
     {
         if(!is_int($note_id) && !is_int($user_id) && !is_bool($value))
@@ -51,11 +73,6 @@ class notes_model extends CI_Model
     }
     
     function revert_note($history_point)
-    {
-        //GIT integration
-    }
-    
-    function push_note($dont_know_which_argument_need)
     {
         //GIT integration
     }
