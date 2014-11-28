@@ -1,6 +1,6 @@
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <span class="navbar-brand sidebarLogo"><a href="acceuil"></a></span>
+                    <span class="navbar-brand sidebarLogo"><a href="<?php echo base_url('accueil');?>"></a></span>
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
@@ -29,13 +29,13 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="../accueil"><i class="fa fa-life-ring fa-fw"></i>Modérateurs</a>
+                            <a href="<?php echo base_url('administration/moderatorsList'); ?>"><i class="fa fa-life-ring fa-fw"></i>Modérateurs</a>
                         </li>                        
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i>Catégorie<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Liste des catégories</a>
+                                    <a href="<?php echo base_url('administration/categoriesList'); ?>">Liste des catégories</a>
                                 </li>
                                 <li>
                                     <a href="morris.html">Créer une nouvelle catégorie</a>

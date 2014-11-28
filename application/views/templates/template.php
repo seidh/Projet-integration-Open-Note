@@ -7,6 +7,8 @@ switch ($sidebar) {
         break;
     case 'profil' : $this->load->view("templates/sidebarProfil");
         break;
+    case 'message' : $this->load->view("templates/sidebarMessage");
+        break;
     default: $this->load->view("templates/sidebar");
         break;
 }

@@ -8,26 +8,30 @@ class VerifyLogin extends CI_Controller {
    $this->load->model('user','',TRUE);
  }
  
- function index()
- {
-   //This method will have the credentials validation
-   $this->load->library('form_validation');
+function index()
+{
+    //This method will have the credentials validation
+    $this->load->library('form_validation');
+    $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>'); 
+    
  
-   $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
-   $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
  
-   if($this->form_validation->run() == FALSE)
-   {
-     //Field validation failed.  User redirected to login page
-     $this->load->view('login_view');
-   }
-   else
-   {
-     //Go to private area
-     redirect('accueil', 'refresh');
-   }
+    if($this->form_validation->run() == FALSE)
+    {
+        //Field validation failed.  User redirected to login page
+        $data['message'] = '';
+        $this->load->view('login_view',$data);
+    }
+    else
+    {
+        //Go to private area
+        $this->checkKey();
+        redirect('accueil', 'refresh');
+    }
  
- }
+}
  
  function check_database($password)
  {
@@ -55,6 +59,22 @@ class VerifyLogin extends CI_Controller {
      $this->form_validation->set_message('check_database', 'Mauvais adresse mail ou mot de passe !');
      return false;
    }
+ }
+ function checkKey()
+ {
+    $session_data = $this->session->userdata('logged_in');
+    $data['id'] = $session_data['id'];                 
+    $result = $this->user->user_data($data['id']);
+    $this -> db -> select('id, cle');
+    $this -> db -> from('activation');
+    $this -> db -> where('id', $result['id']);
+    $this -> db -> limit(1);
+ 
+    $query = $this -> db -> get();
+    if($query -> num_rows() == 1)
+    {
+        $query2 = $this->db->query("DELETE FROM activation WHERE id = '".$result['id']."';");
+    }
  }
 }
 ?>

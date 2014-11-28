@@ -24,6 +24,11 @@
     <link href="<?php echo base_url('assets/sb-admin-2/css/plugins/morris.css');?>" rel="stylesheet" type="text/css"/>
     <!-- Custom Fonts -->
     <link href="<?php echo base_url('assets/sb-admin-2/font-awesome-4.1.0/css/font-awesome.min.css');?>" rel="stylesheet" type="text/css"/>
+    <!-- Page-Level Plugin CSS - Tables -->
+    <link href="<?php echo base_url('assets/sb-admin-2/css/plugins/dataTables.responsive.css'); ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo base_url('assets/sb-admin-2/css/plugins/dataTables.bootstrap.css'); ?>" rel="stylesheet" type="text/css">
+
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -44,7 +49,16 @@
     <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/morris/raphael.min.js');?>" type="text/javascript"></script>
     Custom Theme JavaScript -->
     <script src="<?php echo base_url('assets/sb-admin-2/js/sb-admin-2.js');?>" type="text/javascript"></script>
+
+    <!-- Data Tables Plugin -->
+    <script href="<?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/dataTables.bootstrap.js'); ?>" type="text/javascript"></script>
+    <script href="<?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/jquery.dataTables.js'); ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/custom/custom.js');?>" type="text/javascript"></script>
+    <!--CK editor !-->
+    <script src="<?php echo base_url('assets/ckeditor/ckeditor.js');?>" type="text/javascript"></script>
+    <!-- DataTables JavaScript -->
+    <script src=" <?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/jquery.dataTables.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/dataTables.bootstrap.js'); ?>"></script>
 </head>
 
 <body>
@@ -68,129 +82,59 @@
             <!-- /.navbar-header -->
             
             <ul class="nav navbar-top-links navbar-right">
-                <a href="profil"><li class="firstname-name"><?php echo $firstname." ".$name; ?></li></a>
+                <a href="<?php echo base_url('profil'); ?>">
+                    <li class="firstname-name">
+                    <?php 
+                        $session_data = $this->session->userdata('logged_in');
+                        $data['id'] = $session_data['id'];
+                        $user_page = $this->user->user_data($data['id']);
+                        echo $user_page['firstname']." ".$user_page['name']; ?>
+                    </li>
+                </a>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
+                        <?php
+                        $three_last_message = $this->conversation_model->get_three_last_message();
+                        foreach($three_last_message as $message)
+                        {
+                            $user = $this->user->user_data($message['user_id']);
+                            echo'<li>
+                            <a href="'.base_url('message/voir?id=').''.$message['conversation_id'].'">
                                 <div>
-                                    <strong>John Smith</strong>
+                                    <strong>'.$user['firstname'].' '.$user['name'].'</strong>
                                     <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
+                                        <em>'.$message['date_creation'].'</em>
                                     </span>
                                 </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                <div>'.$message['message'].'</div>
                             </a>
                         </li>
-                        <li class="divider"></li>
+                        <li class="divider"></li>';
+                        }
+                        ?>
                         <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
+                            <a class="text-center" href="<?php echo base_url('message'); ?>">
+                                <strong>Lire tout les messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->
                 </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profil"><i class="fa fa-user fa-fw"></i> Mon profil</a>
+                        <li><a href="<?php echo base_url("profil"); ?>"><i class="fa fa-user fa-fw"></i> Mon profil</a>
                         </li>
-                        <li><a href="profil"><i class="fa fa-wrench fa-fw"></i> Administration</a>
+                        <li><a href="<?php echo base_url("administration");?>"><i class="fa fa-wrench fa-fw"></i> Administration</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="accueil/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="<?php echo base_url("accueil/logout");?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

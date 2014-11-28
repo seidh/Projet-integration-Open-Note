@@ -1,4 +1,8 @@
-
+    <!-- Script for the active navbar -->
+    <script type="text/javascript">
+        activeNavbar();
+        collapseMenu();
+    </script> 
         <div id="page-wrapper">
             <div class="row">
                 <div class="row">
@@ -7,8 +11,8 @@
                     </div>
                     <!-- /.col-lg-12 -->
                     <div class="col-lg-10">
-                        <?php // echo $error; ?>
-                        <?php //echo form_open_multipart('administration/adduser')?>
+                        <?php echo validation_errors(); ?>
+                        <?php echo form_open('administration/adduser');?>
                         <div class="form-group row">
                             <div class="col-lg-3 text-right top5">
                                 <label>Nom :</label>
@@ -45,15 +49,9 @@
                             <div class="col-lg-3 text-right top5">
                                 <label>Date de naissance :</label>
                             </div>
-                            <div class="col-lg-1">
-                                <input id="dayBirth" name="dayBirth" class="form-control" />
-                            </div>
-                            <div class="col-lg-1">
-                                <input id="monthBirth" name="monthBirth" class="form-control" /> 
-                            </div> 
-                            <div class="col-lg-2">
-                                <input id="yearBirth" name="yearBirth" class="form-control" />
-                            </div>                            
+                            <div class="col-lg-3">
+                                <input id="dayBirth" name="dayBirth" class="form-control" type="date" />
+                            </div>                          
                         </div>                        
                     </div>
                 </div>

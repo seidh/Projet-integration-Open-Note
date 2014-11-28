@@ -34,17 +34,19 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 center">
-                <div class="front-logo"></div>
+                <div class="logo_container"">
+                    <span class="front-logo"><span class="inner_logo"></span></span>                        
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Connection</h3>
+                        <h3 class="panel-title">Connexion</h3>
                     </div>
                     <div class="panel-body">
-                        <?php echo validation_errors(); ?>
+                        <?php echo validation_errors(); echo $message?>
                         <?php echo form_open('verifylogin'); ?>
                             <fieldset>
                                 <div class="form-group">
@@ -54,6 +56,7 @@
                                     <input class="form-control" placeholder="Password" name="password" id="password" type="password" value="">
                                 </div>
                                 <input type="submit" value="Login" class="btn btn-lg btn-success btn-block"/>
+                                <a href="recovery_pwd">Mot de passe oublié ?</a>
                             </fieldset>
                         </form>
                     </div>
