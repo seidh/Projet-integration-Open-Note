@@ -25,6 +25,7 @@
     <!-- Custom Fonts -->
     <link href="<?php echo base_url('assets/sb-admin-2/font-awesome-4.1.0/css/font-awesome.min.css');?>" rel="stylesheet" type="text/css"/>
     <!-- Page-Level Plugin CSS - Tables -->
+    <link href="<?php echo base_url('assets/sb-admin-2/css/plugins/dataTables.responsive.css'); ?>" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url('assets/sb-admin-2/css/plugins/dataTables.bootstrap.css'); ?>" rel="stylesheet" type="text/css">
 
     
