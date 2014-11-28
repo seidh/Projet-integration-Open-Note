@@ -37,7 +37,7 @@ class accueil extends CI_Controller {
         }
 
         // définition des données variables du template
-        $data['title'] = 'Open-Note - Acceuil';
+        $data['title'] = 'Open-Note - Accueil';
         $data['description'] = 'La description de la page pour les moteurs de recherche';
         $data['keywords'] = 'les, mots, clés, de, la, page';
         // TEST Affichage date
