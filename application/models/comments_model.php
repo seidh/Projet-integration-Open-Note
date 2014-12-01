@@ -3,6 +3,7 @@
 class comments_model extends CI_Model
 {
     public $table = 'comments';
+    public $get_note_select = 'comments.id as id, user_id, name, firstname, parent_id, text, note_id, creation_date';
     
     /**
      * Add comments inside comments table
@@ -28,16 +29,22 @@ class comments_model extends CI_Model
      */
     private function _get_comment_by_parent($parent_id = NULL)
     {
-        return $this->db->where('parent_id', $parent_id)
-                        ->get($this->table)
+        return $this->db->select($this->get_note_select)
+                        ->from($this->table)
+                        ->join('user', 'user.id = comments.user_id')
+                        ->where('parent_id', $parent_id)
+                        ->get()
                         ->result();
     }
     
     private function _get_primary_note_comment($note_id)
     {
-        return $this->db->where('parent_id', null, FALSE)
+        return $this->db->select($this->get_note_select)
+                        ->from($this->table)
+                        ->join('user', 'user.id = comments.user_id')
+                        ->where('parent_id', null, FALSE)
                         ->where('note_id', $note_id)
-                        ->get($this->table)
+                        ->get()
                         ->result();
     }
     
