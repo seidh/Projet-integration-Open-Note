@@ -5,10 +5,12 @@ class model_testing extends CI_Controller
     function index()
     {
         $this->load->model('comments_model');
-        $tmp = $this->comments_model->get_note_comments(2);
+        $tmp = $this->comments_model->get_note_comments(18);
         var_dump(empty($tmp[3]));
         echo '<pre>';
         print_r($tmp);
+        echo '<pre/><hr/>';
+        $this->write_comments_r($tmp);
     }
     
     function test($arg1, $arg2)
@@ -18,11 +20,38 @@ class model_testing extends CI_Controller
         echo '<br/>';
         echo time();
     }
+    
+    private function write_comments_r($comments)
+    {
+        
+        if(is_array($comments)){
+            foreach ($comments as $probably_comment) {
+                
+                echo '<div style="padding-left:30px;">';
+                $this->write_comments_r($probably_comment);
+                echo '</div>';
+                
+            }
+        }
+        elseif(is_object($comments))
+        {
+            /*
+             *  [id] => 10
+                [user_id] => 4
+                [name] => Beersaerts
+                [firstname] => Jonathan
+                [parent_id] => 9
+                [text] => Troisième lvl
+                [note_id] => 18
+                [creation_date] => 2014-12-01 16:51:45
+             */
+            echo $comments->id;
+            echo $comments->name;
+            echo $comments->creation_date;
+            echo $comments->text."<br/>";
+            
+        }
+    }
 }
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 

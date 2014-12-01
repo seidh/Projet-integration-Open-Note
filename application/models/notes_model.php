@@ -68,6 +68,33 @@ class notes_model extends CI_Model
         return true;
     }
     
+    function modify_note($note_id, $user_id, $note_content, $modify_note_comment)
+    {
+        //get note data from db
+        $note_data = $this->db->get_where('note', "id = $note_id", 1)
+                              ->result_array();
+        
+        //get user data from db
+        $user_data = $this->db->get_where('user', "id = $user_id", 1);
+        
+        //apply modification to file and commit change into Git repository
+        $note_repo = Git::open($note_data['path']);
+            //specify user doing modification
+        $note_repo->run('config user.name "'.$user_data['pseudo'].'"');
+        $note_repo->run('config user.email "'.$user_data['email'].'"');
+            //write modification to file
+        $note_file = fopen($note_data['path'].$note_data['file_name'], "w+");
+        fwrite($note_file, $note_content);
+        fclose($note_file);
+            //commit changment
+        $note_repo->commit($modify_note_comment);
+        
+        //update note data last_update
+        $this->db->where('id', $note_id)
+                 ->update('note', "modification_date = ".date("Y-m-d H:i:s"));
+        
+    }
+    
     function get_note_history($note_id)
     {
         //GIT integration
