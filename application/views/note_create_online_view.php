@@ -22,7 +22,8 @@
                 <script>
                     // Replace the <textarea id="editor1"> with a CKEditor
                     // instance, using default configuration.
-                    CKEDITOR.replace('note_content');
+                    var content = CKEDITOR.instances.yourEditorInstance.getData();
+                    //CKEDITOR.replace('note_content');
                 </script>
                 <input type="hidden" id="cat" name="category" value="<?php echo $cat_id ?>">
                 <button type="sumbit" class="btn btn-success btn-lg btn-block">

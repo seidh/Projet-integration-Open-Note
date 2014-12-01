@@ -49,6 +49,8 @@ class accueil extends CI_Controller {
         $data['contents'] = 'accueil';
 
         $data['sidebar'] = 'normal';
+        
+        $data['my_note'] = $this->category_model->get_my_note($session_data['id']);
 
         // on charge la page dans le template
         $this->load->view('templates/template', $data);

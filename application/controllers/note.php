@@ -76,7 +76,40 @@ class note extends CI_Controller {
 
         // on charge la page dans le template
         $result['note'] = $this->notes_model->get_note_content($note_id);
+        $sql = "SELECT * FROM rate WHERE note_id = ".$note_id." AND vote = true"; 
+        $query = $this->db->query($sql);
+        $result['like'] = $query->num_rows();
+        $sql = "SELECT * FROM rate WHERE note_id = ".$note_id." AND vote = false"; 
+        $query1 = $this->db->query($sql);
+        $result['unlike'] = $query1->num_rows();
+        $sql = "SELECT * FROM rate WHERE note_id = ".$note_id." AND user_id = ".$session_data['id']." AND vote = true"; 
+        $query2 = $this->db->query($sql);
+        $result['vote_like'] = $query2->num_rows();
+        
+        $sql = "SELECT * FROM rate WHERE note_id = ".$note_id." AND user_id = ".$session_data['id']." AND vote = false"; 
+        $query3 = $this->db->query($sql);
+        $result['vote_unlike'] = $query3->num_rows();
+        
         $this->load->view('templates/template', $result);
+    }
+    function like($note_id)
+    {
+        $session_data = $this->session->userdata('logged_in');
+        $sql = "DELETE FROM rate WHERE note_id = ".$note_id." AND user_id = ".$session_data['id']; 
+        $this->db->query($sql);
+       
+        $this->notes_model->rate_note($note_id, $session_data['id'] , true);
+        redirect('note/view/'.$note_id, 'refresh');
+    }
+    
+    function unlike($note_id)
+    {
+        
+        $session_data = $this->session->userdata('logged_in');
+        $sql = "DELETE FROM rate WHERE note_id = ".$note_id." AND user_id = ".$session_data['id']; 
+        $this->db->query($sql);
+        $this->notes_model->rate_note($note_id, $session_data['id'], false);
+        redirect('note/view/'.$note_id, 'refresh');
     }
 
     function create_online($cat_id) {
