@@ -21,6 +21,16 @@ class model_testing extends CI_Controller
         echo time();
     }
     
+    function test_note(){
+        ini_set('display_errors',1);
+        error_reporting(E_ALL);
+        $this->load->model('notes_model', '', TRUE);
+        
+        var_dump($this->notes_model->get_note_content(17));
+        
+        $this->notes_model->modify_note(17, 4, 'get new content', 'test of modify_note function');
+    }
+    
     private function write_comments_r($comments)
     {
         

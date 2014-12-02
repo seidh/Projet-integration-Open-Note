@@ -12,10 +12,7 @@ class notes_model extends CI_Model
             
     function create_note($author_id, $author_pseudo, $author_email, $path, $note_name, $file_name, $cat_id)
     {
-        $git_repo = Git::create($path);
-        
-        $git_repo->run("config user.name \"$author_pseudo\"");
-        $git_repo->run("config user.email \"$author_email\"");
+        $git_repo = $this->open_note_repo($path, $author_pseudo, $author_email);
         
         $git_repo->add();
         $git_repo->commit('Première version');
@@ -40,9 +37,8 @@ class notes_model extends CI_Model
         $note_content = array();
         $buffer = '';
         
-        $note_result = $this->db->get_where('note', "id = $note_id", 1)
-                                ->result_array();
-        $note_path = $note_result[0]['path'].$note_result[0]['file_name'];
+        $note_result = $this->get_db_note_info($note_id);
+        $note_path = $note_result->path . $note_result->file_name;
         
         $file = fopen($note_path, 'r');
         if($file)
@@ -53,7 +49,7 @@ class notes_model extends CI_Model
             }
             fclose($file);
         }
-        $note_data = $note_result[0];
+        $note_data = $note_result;
         $note_data['note_content'] = $note_content;
         return $note_data;
     }
@@ -71,24 +67,22 @@ class notes_model extends CI_Model
     function modify_note($note_id, $user_id, $note_content, $modify_note_comment)
     {
         //get note data from db
-        $note_data = $this->db->get_where('note', "id = $note_id", 1)
-                              ->result_array();
-        
+        $note_data = $this->get_db_note_info($note_id);
+
         //get user data from db
-        $user_data = $this->db->get_where('user', "id = $user_id", 1);
-        
+        $user_data = $this->get_db_user_info($user_id);
+
         //apply modification to file and commit change into Git repository
-        $note_repo = Git::open($note_data['path']);
-            //specify user doing modification
-        $note_repo->run('config user.name "'.$user_data['pseudo'].'"');
-        $note_repo->run('config user.email "'.$user_data['email'].'"');
+        $note_repo = $this->open_note_repo($note_data->path, $user_data->pseudo, $user_data->email);
+
             //write modification to file
-        $note_file = fopen($note_data['path'].$note_data['file_name'], "w+");
+        $note_file = fopen($note_data->path . $note_data->file_name, "w+");
         fwrite($note_file, $note_content);
         fclose($note_file);
+
             //commit changment
         $note_repo->commit($modify_note_comment);
-        
+
         //update note data last_update
         $this->db->where('id', $note_id)
                  ->update('note', "modification_date = ".date("Y-m-d H:i:s"));
@@ -97,10 +91,28 @@ class notes_model extends CI_Model
     
     function get_note_history($note_id)
     {
-        //GIT integration
+        $note_data = $this->get_db_note_info($note_id);
+        $repository = $this->open_note_repo($note_data->path);
+        
+        //get commit history from repository
+        $history_str = $repository->run("log --pretty=format:\"%H|%an|%ae|%ar|%s\"");
+        
+        //build array from history string
+        $tmp_array = explode(PHP_EOL, $history_str);
+        $history_array = array();
+        foreach ($tmp_array as $current_lign) {
+            $data_array = explode('|', $current_lign);
+            $tmp_array = array( 'commit_hash' => $data_array[0],
+                                'user_pseudo' => $data_array[1],
+                                'user_mail' => $data_array[2],
+                                'date_relative' => $data_array[3],
+                                'commit_message' => $data_array[4]);
+            $history_array[] = $tmp_array;
+        }
+        return $history_array;
     }
     
-    function revert_note($history_point)
+    function revert_note($commit_hash)
     {
         //GIT integration
     }
@@ -108,6 +120,31 @@ class notes_model extends CI_Model
     function diff_note($history_point, $now)
     {
         //GIT integration
+    }
+    
+    private function open_note_repo($repo_path, $user_name = NULL, $user_mail = NULL)
+    {
+        $repository = Git::open($repo_path);
+        if(!is_null($user_mail) && !is_null($user_name))
+        {
+            $repository->run('config user.name "'.$user_name.'"');
+            $repository->run('config user.email "'.$user_mail.'"');
+        }
+        return $repository;
+    }
+    
+    private function get_db_note_info($note_id)
+    {
+        $return_from_db = $this->db->get_where('note', "id = $note_id", 1)
+                                   ->result();
+        return $return_from_db[0];
+    }
+    
+    private function get_db_user_info($user_id)
+    {
+        $return_from_db = $this->db->get_where('user', "id = $user_id", 1)
+                                   ->result();
+        return $return_from_db[0];
     }
 }
 
