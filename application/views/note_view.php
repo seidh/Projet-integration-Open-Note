@@ -28,7 +28,7 @@
             </h1>
         </div>
         <div class="form-group row">
-            <div class="col-sm-2" style="padding-left: 10px;">
+            <div class="col-sm-4">
                 <button class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal">
                     Options
                 </button>
@@ -91,7 +91,7 @@
             <div class="col-sm-12">
                 <?php echo validation_errors(); ?>
                 <?php echo form_open(''); ?>
-                <div class="col-sm-8 top15">
+                <div class="col-sm-12 top15">
                     <pre><code>
                             <?php
                             foreach ($note['note_content'] as $row) {
@@ -120,8 +120,50 @@
                 <input class="form-control"  name="note_id" id="note_id" type="text" style="display: none" value="<?php echo $note['id'] ?>" />
                 </form>
             </div>
-
+            <div class="col-sm-12">
+                <div class="panel-group" id="commentaire">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#commentaire" href="#listeCommentaire" aria-expanded="false" class="collapsed">Voir les commentaires de cette note</a>
+                            </h4>
+                        </div>
+                        <div id="listeCommentaire" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <?php
+                                $comments = $this->comments_model->get_note_comments($note['id']);
+                                $this->comments_model->write_comments_r($comments);
+                                ?>
+                                <button type="submit" id="commentMother" class="btn btn-outline btn-info">Commenter</button><br />
+                                <?php
+                                echo'<div id="textCommentMother" style="display: none" class="form-group row">';
+                                echo form_open('note/sendComment');
+                                echo'<input class="form-control"  name="note_id" id="note_id" type="text" style="display: none" value="'.$note['id'].'" />';
+                                echo'<div class="col-lg-10">';
+                                echo'<input id="btn-input" type="text" name="comment" class="form-control input-sm" placeholder="Ecrivez votre message ici...">';
+                                echo'</div>';
+                                echo'<div class="col-lg-2">';
+                                echo'<span class="input-group-btn">';
+                                echo'<button type="submit" class="btn btn-warning btn-sm" id="btn-chat">';
+                                echo'Commenter';
+                                echo'</button>';
+                                echo'</span>';
+                                echo'</div>';
+                                echo form_close();
+                                echo'</div>';
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+
+    comment();
+    commentParent();
+    
+</script>
 

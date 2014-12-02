@@ -45,7 +45,33 @@ avatar = function()
 /////////////////////////////////////
 //End of profil page
 /////////////////////////////////////
+/////////////////////////////////////
+//Note page
+//author: nicolas
+/////////////////////////////////////
 
+comment = function ()
+{
+        $("#comment_list button").click(function(){
+           var idComment = this.id;      
+           $("#textComment"+idComment).toggle("slow");
+        });
+        
+        
+
+        
+};
+commentParent = function()
+{
+    $("#commentMother").click(function(){      
+           $("#textCommentMother").toggle("slow");
+        });
+};
+
+
+/////////////////////////////////////
+//End of Note page
+/////////////////////////////////////
 /////////////////////////////////////
 // SideBar Navigation
 /////////////////////////////////////
