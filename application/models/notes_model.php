@@ -33,12 +33,13 @@ class notes_model extends CI_Model
     }
     
     function get_note_content($note_id)
-    {
+    {        
         $note_content = array();
         $buffer = '';
         
-        $note_result = $this->get_db_note_info($note_id);
-        $note_path = $note_result->path . $note_result->file_name;
+        $note_result = $this->db->get_where('note', "id = $note_id", 1)
+                                ->result_array();
+        $note_path = $note_result[0]['path'].$note_result[0]['file_name'];
         
         $file = fopen($note_path, 'r');
         if($file)
@@ -49,7 +50,7 @@ class notes_model extends CI_Model
             }
             fclose($file);
         }
-        $note_data = $note_result;
+        $note_data = $note_result[0];
         $note_data['note_content'] = $note_content;
         return $note_data;
     }
@@ -85,7 +86,7 @@ class notes_model extends CI_Model
 
         //update note data last_update
         $this->db->where('id', $note_id)
-                 ->update('note', "modification_date = ".date("Y-m-d H:i:s"));
+                 ->update('note', "modification_date = '".date("Y-m-d H:i:s")."'");
         
     }
     
@@ -112,9 +113,11 @@ class notes_model extends CI_Model
         return $history_array;
     }
     
-    function revert_note($commit_hash)
+    function revert_note($repo_path, $commit_hash)
     {
-        //GIT integration
+        $repo = $this->open_note_repo($repo_path);
+        $repo->run('checkout '. $commit_hash .' .'); // str end dot is VERY IMPORTANT - DO NOT REMOVE IT
+        $repo->commit('retour à la version : '.$commit_hash);
     }
     
     function diff_note($history_point, $now)
