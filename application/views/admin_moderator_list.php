@@ -59,7 +59,8 @@
                     <div class="col-lg-12">
                         
                         <button id="addModoBtn" class="btn btn-primary" data-toggle="modal" data-target="#myModal">+</button> &nbsp;&nbsp;                                               
-                        <button id="assignModoBtn" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">+</button>                                               
+                        <button id="assignModoBtn" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">+</button>
+                        
                     </div>
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
