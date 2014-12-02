@@ -57,6 +57,23 @@ class notes_model extends CI_Model
         $note_data['note_content'] = $note_content;
         return $note_data;
     }
+    function get_rating_note($note_id, $user_id)
+    {
+        $sql = "SELECT * FROM rate WHERE note_id = " . $note_id . " AND vote = true";
+        $query = $this->db->query($sql);
+        $result['like'] = $query->num_rows();
+        $sql = "SELECT * FROM rate WHERE note_id = " . $note_id . " AND vote = false";
+        $query1 = $this->db->query($sql);
+        $result['unlike'] = $query1->num_rows();
+        $sql = "SELECT * FROM rate WHERE note_id = " . $note_id . " AND user_id = " . $user_id . " AND vote = true";
+        $query2 = $this->db->query($sql);
+        $result['vote_like'] = $query2->num_rows();
+
+        $sql = "SELECT * FROM rate WHERE note_id = " . $note_id . " AND user_id = " . $user_id . " AND vote = false";
+        $query3 = $this->db->query($sql);
+        $result['vote_unlike'] = $query3->num_rows();
+        return $result;
+    }
             
     function rate_note($note_id, $user_id, $value)
     {

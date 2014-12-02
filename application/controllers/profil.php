@@ -307,7 +307,7 @@ class profil extends CI_Controller {
     }
 
     function ask_cat() {
-        $this->form_validation->set_rules('editor1', 'message', 'trim|required|xss_clean|callback_check_ask');
+        $this->form_validation->set_rules('editor1', 'message', 'trim|required|callback_check_ask');
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);
         if ($this->form_validation->run() == FALSE) {

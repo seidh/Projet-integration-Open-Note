@@ -128,15 +128,15 @@ class comments_model extends CI_Model {
             echo'<div id="textComment' . $comments->id . '" style="display: none" class="form-group row">';
             echo form_open('note/sendComment/' . $comments->id);
             echo'<input class="form-control"  name="note_id" id="note_id" type="text" style="display: none" value="' . $comments->note_id . '" />';
-            echo'<div class="col-lg-10">';
+            echo'<div class="panel-footer">';
+            echo'<div class="input-group">';
             echo'<input id="btn-input" type="text" name="comment" class="form-control input-sm" placeholder="Ecrivez votre message ici...">';
-            echo'</div>';
-            echo'<div class="col-lg-2">';
             echo'<span class="input-group-btn">';
             echo'<button type="submit" class="btn btn-warning btn-sm" id="btn-chat">';
             echo'Commenter';
             echo'</button>';
             echo'</span>';
+            echo'</div>';
             echo'</div>';
             echo form_close();
             echo'</div>';
