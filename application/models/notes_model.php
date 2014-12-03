@@ -85,9 +85,7 @@ class notes_model extends CI_Model
         $note_repo->commit($modify_note_comment);
 
         //update note data last_update
-        $this->db->where('id', $note_id)
-                 ->update('note', "modification_date = '".date("Y-m-d H:i:s")."'");
-        
+        $this->db->update_string('note', array('modification_date' => '\''.date("Y-m-d H:i:s").'\''), array('id' => $note_id));
     }
     
     function get_note_history($note_id)
