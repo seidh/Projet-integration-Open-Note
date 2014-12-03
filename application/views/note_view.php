@@ -111,15 +111,25 @@
                     <div class="panel-body" id="modif_note" style="display: none">
                         <?php echo validation_errors(); ?>
                         <?php echo form_open(''); ?>
-                        <div class="col-sm-12 top15">
-                            <textarea name="modification_note" id="editor1" rows="10" cols="80">
-                                <?php
-                                foreach ($note['note_content'] as $row) {
-                                    echo $row;
-                                }
-                                ?>
-                            </textarea>
-
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label> Raison de la modification : </label>
+                            </div>
+                            <div class="col-sm-10">
+                               <input type="text" name="commentaire_modification" class="form-control" placeholder="Pourquoi vouloir modifier cette note ? ...">
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-sm-12">
+                                <textarea name="modification_note" id="editor1" rows="10" cols="80">
+                                    <?php
+                                    foreach ($note['note_content'] as $row) {
+                                        echo $row;
+                                    }
+                                    ?>
+                                </textarea>
+                            </div>
                         </div>
                         <script>
                             // Replace the <textarea id="editor1"> with a CKEditor

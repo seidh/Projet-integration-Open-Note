@@ -123,9 +123,9 @@ class message extends CI_Controller {
         
         if($this->input->get('id') != '')
         {
-            $data['liste_messages'] = $this->conversation_model->get_all_message_from_conversation($this->input->get('id'));
-            $data['conf_id'] = $this->input->get('id');
-            $data['affichage_name'] = $this->conversation_model->get_name_friend($this->input->get('id'));
+            $data['liste_messages'] = $this->conversation_model->get_all_message_from_conversation(mysql_real_escape_string($this->input->get('id')));
+            $data['conf_id'] = mysql_real_escape_string($this->input->get('id'));
+            $data['affichage_name'] = $this->conversation_model->get_name_friend(mysql_real_escape_string($this->input->get('id')));
         }
         // on charge la page dans le template
         

@@ -145,5 +145,13 @@ class comments_model extends CI_Model {
             echo'</div>';
         }
     }
+    function get_number_comments($note_id)
+    {
+        return $this->db->select('*')
+                        ->from($this->table)
+                        ->where('note_id', $note_id)
+                        ->get()
+                        ->num_rows();
+    }
 
 }
