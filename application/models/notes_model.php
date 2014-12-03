@@ -120,9 +120,23 @@ class notes_model extends CI_Model
         $repo->commit('retour à la version : '.$commit_hash);
     }
     
-    function diff_note($history_point, $now)
+    function note_diff($note_id, $history_point)
     {
-        //GIT integration
+        //get note data from note_id
+        $note_data = $this->get_note_content($note_id);
+        
+        //get traeted data from diff return
+        $diff_return = $this->_get_diff_info($note_data['path'], $history_point);
+        
+        $data = array('previous' => $note_data['note_content'],
+                      'current' => $note_data['note_content']);
+        
+        foreach($diff_return as $chunk)
+        {
+            $this->_build_final_array($chunk, 'previous', $data['previous']);
+            $this->_build_final_array($chunk, 'current', $data['current']);
+        }
+        return $data;
     }
     
     private function open_note_repo($repo_path, $user_name = NULL, $user_mail = NULL)
@@ -148,6 +162,89 @@ class notes_model extends CI_Model
         $return_from_db = $this->db->get_where('user', "id = $user_id", 1)
                                    ->result();
         return $return_from_db[0];
+    }
+    
+    
+    private function _get_diff_info($repo_path, $commit_hash) {
+        //open repo
+        $repo = Git::open($repo_path);
+
+        //get git_diff from given commit
+        $diff_return = $repo->diff(false, ' '.$commit_hash);
+
+        //diff return treatment
+
+        $xpl_str = explode('@@', $diff_return);
+
+        $diff_array = array();
+
+        //isolate data and get begin and duration line from every chunk
+        for ($index = 1; $index < count($xpl_str); $index+=2) {
+
+            $diff_element = array();
+            $diff_element['diff_info'] = array();
+
+            //add diff content in array (line by line)
+            $diff_element['diff_content'] = explode(PHP_EOL, $xpl_str[$index + 1]);
+
+            //isolate diff_info previous and current
+            $tmp = explode(' ', $xpl_str[$index]);
+
+            //remove unnecessary index inside array
+            array_pop($tmp);
+            array_shift($tmp);
+
+            //get begin line et duration line from diff_info whashed by str_replace to remove '+' and '-'
+            $previous_tmp = explode(',', str_replace('-', '', $tmp[0]));
+            $current_tmp = explode(',', str_replace('+', '', $tmp[1]));
+
+            //add obtains info inside array
+            $diff_element['diff_info']['previous']['begin_line'] = (int) $previous_tmp[0];
+            $diff_element['diff_info']['previous']['duration_line'] = (int) $previous_tmp[1];
+
+            $diff_element['diff_info']['current']['begin_line'] = (int) $current_tmp[0];
+            $diff_element['diff_info']['current']['duration_line'] = (int) $current_tmp[1];
+            $diff_array[] = $diff_element;
+
+            $diff_note = array();
+
+            }
+
+            //build array of previous and current state of file
+            for($i = 0; $i < count($diff_array); $i++){
+                $previous_note = array();
+                $current_note = array();
+                foreach ($diff_array[$i]['diff_content'] as $line) {
+                    if (empty($line)) {
+                        $previous_note[] = "";
+                        $current_note[] = "";
+                    } elseif ($line[0] == ' ') {
+                        $line[0] = '';
+                        $previous_note[] = $line;
+                        $current_note[] = $line;
+                    } elseif ($line[0] == '-')
+                        $previous_note[] = $line;
+                    elseif ($line[0] == '+')
+                        $current_note[] = $line;
+                    else {
+
+                    }
+                }
+                $diff_array[$i]['diff_content'] = array('previous' => $previous_note,
+                                                        'current' => $current_note);
+            }
+        return $diff_array;
+    }
+
+    private function _build_final_array($chunk, $prevOrCurrent, &$content) {
+
+        $begin = $chunk['diff_info'][$prevOrCurrent]['begin_line'];
+        $duration = $chunk['diff_info'][$prevOrCurrent]['duration_line'];
+
+        $start_index_diff = ($begin != 1 ) ? 1 : 0;
+        for ($i = $begin - 1, $j = $start_index_diff, $count = 0; $count < $duration; $i++, $j++, $count++) {
+            $content[$i] = $chunk['diff_content'][$prevOrCurrent][$j];
+        }
     }
 }
 
