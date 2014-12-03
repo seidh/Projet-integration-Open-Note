@@ -213,7 +213,7 @@ class administration extends CI_Controller
             $this->form_validation->set_rules('user', 'Utilisateur', 'trim|required|xss_clean');
             $this->form_validation->set_rules('confirm', 'Pseudo', 'trim|required|xss_clean');
             
-            if($this->form_validation->run() == FALSE)
+            if(($this->form_validation->run() == FALSE) AND ($this->input->post('confirm') == TRUE))
             {
                 //erreur dans le formulaire
                 echo'DEBUG';
@@ -222,13 +222,7 @@ class administration extends CI_Controller
             }
             else
             {
-//                echo $this->input->post('editFirstname'); 
-//                echo $this->input->post('editName'); 
-//                echo $this->input->post('editPseudo'); 
-//                echo $this->input->post('editEmail'); 
-//                echo $this->input->post('editGroup'); 
-                
-                //build user data array to inject into database
+                //build modo-cat data array to inject into database
                 $assignation = array('name' => $this->input->post('user'),
                         'firstname' => $this->input->post('editFirstname'),                        
                         'email' => $this->input->post('editEmail'),
@@ -248,6 +242,7 @@ class administration extends CI_Controller
             }
         }
         
+        // INUTILE
         function assignModoForm()
         {
             //TODO controller form side
@@ -318,5 +313,34 @@ class administration extends CI_Controller
 
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
+        }
+        
+        /**
+         *  Function of moderation
+         * input : id of the category which is moderated
+         * 
+         */
+        function moderation($catId)
+        {
+            $session_data = $this->session->userdata('logged_in');
+            
+            if($this->administration_model->is_moderator_of($session_data['id'], $catId)){
+                $this->data['title'] = 'Open-Note - Modifier une catégorie';
+                $this->data['description'] = 'Page permettant la modification d\'une catégorie';
+                $this->data['keywords'] = 'les, mots, clés, de, la, page';
+
+                // on choisit la view qui contient le corps de la page
+                $this->data['contents'] = 'admin_category_view'; //TODO : sync with Olivier view
+
+                $this->data['cat_moderators'] = $this->administration_model->get_all_moderator();
+                $this->data['cat_data'] = $this->administration_model->get_category($catId);
+                $this->data['notes_data'] = $this->administration_model->get_all_notes_from($catId);
+                $this->data['users_data'] = $this->administration_model->get_users_of_cat($catId);
+
+                // on charge la page dans le template
+                $this->load->view('templates/template', $this->data); 
+            } else {
+                redirect('accueil', 'refresh');
+            }
         }
  }

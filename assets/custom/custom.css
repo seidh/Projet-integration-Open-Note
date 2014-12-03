@@ -37,6 +37,12 @@ table {
 .top17 { margin-top:17px; }
 .top30 { margin-top:30px; }
 
+.bottom5 { margin-bottom:5px; }
+.bottom7 { margin-bottom:7px; }
+.bottom10 { margin-bottom:10px; }
+.bottom15 { margin-bottom:15px; }
+.bottom17 { margin-bottom:17px; }
+.bottom30 { margin-bottom:30px; }
 
 .logo_container
 {
@@ -120,4 +126,9 @@ table {
     background-color: #FFF; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
+
+.table-scroll{
+    overflow: auto;
+    height: 600px;
 }

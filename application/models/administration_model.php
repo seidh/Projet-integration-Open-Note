@@ -118,6 +118,11 @@ Class administration_model extends CI_Model {
         return $this->db->get('category')
                         ->result();
     }
+    
+    function get_category($catId){
+        return $this->db->get_where('category', array('id' => $catId))
+                        ->result();
+    }
 
     
     
@@ -180,6 +185,17 @@ Class administration_model extends CI_Model {
     {
         return $this->db->where('cat_id', $cat_id)
                         ->count_all_results('cat_perm');
+    }
+    
+    function get_users_of_cat($cat_id)
+    {
+        return $this->db->select('u.id, u.name, u.firstname, u.pseudo, u.email')
+                                   ->distinct()
+                                   ->from('cat_perm')
+                                   ->join('user as u', 'u.id = cat_perm.user_id')
+                                   ->where('cat_id', $cat_id)
+                                   ->get()
+                                   ->result_array();
     }
     
     
@@ -407,6 +423,11 @@ Class administration_model extends CI_Model {
     function get_all_notes(){
         $this->db->get('note')
                  ->result();
+    }
+    
+    function get_all_notes_from($catId){
+        return $this->db->get_where('note', array('category' => $catId))
+                        ->result();
     }
 
 }
