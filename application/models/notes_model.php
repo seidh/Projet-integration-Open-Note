@@ -71,6 +71,14 @@ class notes_model extends CI_Model
         $result['vote_unlike'] = $query3->num_rows();
         return $result;
     }
+    function get_like($note_id)
+    {
+        return $this->db->select_sum('vote')
+                        ->from('rate')
+                        ->where('note_id = ', $note_id)
+                        ->get()
+                        ->result_array();
+    }
             
     function rate_note($note_id, $user_id, $value)
     {
