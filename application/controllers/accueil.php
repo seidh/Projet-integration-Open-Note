@@ -63,6 +63,10 @@ class accueil extends CI_Controller {
     }
 
     function category() {
+        if(!is_numeric($this->input->get('id')))
+        {
+            redirect('accueil','refresh');
+        }
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);
 
@@ -79,7 +83,7 @@ class accueil extends CI_Controller {
         // On choisit la sidebar
         $result['sidebar'] = 'accueil';
 
-        $category = $this->category_model->get_cat($this->input->get('id'));
+        $category = $this->category_model->get_cat(mysql_real_escape_string($this->input->get('id')));
         foreach ($category as $cat) {
             $result['cat_name'] = $cat['name'];
             $result['cat_id'] = $cat['id'];

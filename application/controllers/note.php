@@ -53,7 +53,11 @@ class note extends CI_Controller {
                 $data['id'] = $session_data['id'];
                 $result = $this->user->user_data($data['id']);
             } else {
-                $result = $this->user->user_data($this->input->get('id'));
+                if(!is_numeric($this->input->get('id')))
+                {
+                    redirect('accueil','refresh');
+                }
+                $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
             }
         } else {
             //If no session, redirect to login page
@@ -135,7 +139,11 @@ class note extends CI_Controller {
                 $data['id'] = $session_data['id'];
                 $result = $this->user->user_data($data['id']);
             } else {
-                $result = $this->user->user_data($this->input->get('id'));
+                if(!is_numeric($this->input->get('id')))
+                {
+                    redirect('accueil','refresh');
+                }
+                $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
             }
         } else {
             //If no session, redirect to login page

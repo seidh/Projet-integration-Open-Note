@@ -26,6 +26,7 @@ class profil extends CI_Controller {
     }
 
     function index() {
+        
         if ($this->session->userdata('logged_in')) {
             if($this->input->get('id') == '')
             {
@@ -35,7 +36,11 @@ class profil extends CI_Controller {
             }
             else
             {
-                $result = $this->user->user_data($this->input->get('id'));
+                if(!is_numeric($this->input->get('id')))
+                {
+                    redirect('accueil','refresh');
+                }
+                $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
             }
             
         } else {
@@ -247,6 +252,10 @@ class profil extends CI_Controller {
     }
 
     function my_category() {
+        if(!is_numeric($this->input->get('id')))
+        {
+            redirect('accueil','refresh');
+        }
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);
 
@@ -263,7 +272,7 @@ class profil extends CI_Controller {
         // On choisit la sidebar
         $result['sidebar'] = 'profil';
 
-        $category = $this->category_model->get_cat($this->input->get('id'));
+        $category = $this->category_model->get_cat(mysql_real_escape_string($this->input->get('id')));
         foreach ($category as $cat) {
             $result['cat_name'] = $cat['name'];
             $result['cat_id'] = $cat['id'];
@@ -277,6 +286,10 @@ class profil extends CI_Controller {
     }
 
     function other_category() {
+        if(!is_numeric($this->input->get('id')))
+        {
+            redirect('accueil','refresh');
+        }
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);
 
@@ -293,7 +306,7 @@ class profil extends CI_Controller {
         // On choisit la sidebar
         $result['sidebar'] = 'profil';
 
-        $category = $this->category_model->get_cat($this->input->get('id'));
+        $category = $this->category_model->get_cat(mysql_real_escape_string($this->input->get('id')));
         foreach ($category as $cat) {
             $result['cat_name'] = $cat['name'];
             $result['cat_id'] = $cat['id'];
