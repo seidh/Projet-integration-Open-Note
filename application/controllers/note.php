@@ -178,7 +178,7 @@ class note extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->create_online($this->input->post('category'));
         } else {
-            $repo_path = 'assets/repo.d/' . $this->data['pseudo'] . time() . '/';
+            $repo_path = 'assets/repo.d/' . sha1(bin2hex(openssl_random_pseudo_bytes(24)) . time()) . '/';
             $file_name = $this->input->post('title') . '.txt';
 
             //create note_file
