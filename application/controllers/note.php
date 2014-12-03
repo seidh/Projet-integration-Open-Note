@@ -53,9 +53,8 @@ class note extends CI_Controller {
                 $data['id'] = $session_data['id'];
                 $result = $this->user->user_data($data['id']);
             } else {
-                if(!is_numeric($this->input->get('id')))
-                {
-                    redirect('accueil','refresh');
+                if (!is_numeric($this->input->get('id'))) {
+                    redirect('accueil', 'refresh');
                 }
                 $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
             }
@@ -81,7 +80,7 @@ class note extends CI_Controller {
         // on charge la page dans le template
         $result['note'] = $this->notes_model->get_note_content($note_id);
         $result['rating'] = $this->notes_model->get_rating_note($note_id, $session_data['id']);
-
+        $result['history'] = $this->notes_model->get_note_history($note_id);
         $this->load->view('templates/template', $result);
     }
 
@@ -139,9 +138,8 @@ class note extends CI_Controller {
                 $data['id'] = $session_data['id'];
                 $result = $this->user->user_data($data['id']);
             } else {
-                if(!is_numeric($this->input->get('id')))
-                {
-                    redirect('accueil','refresh');
+                if (!is_numeric($this->input->get('id'))) {
+                    redirect('accueil', 'refresh');
                 }
                 $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
             }
@@ -210,18 +208,43 @@ class note extends CI_Controller {
     }
 
     function revert_from_history($commit_id) {
-        
+        $commit = $this->notes_model->get_db_note_info($this->input->post('note_id'));
+        $this->notes_model->revert_note($commit->path, $commit_id);
+        redirect('note/view/' . $this->input->post('note_id'), 'refresh');
     }
 
+    function modification() {
+        $this->form_validation->set_rules('commentaire_modification', 'Commentaire modification', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('modification_note', 'modification', 'trim|required|callback_check_content');
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+        } else {
+            //If no session, redirect to login page
+            redirect('login', 'refresh');
+        }
+        if ($this->form_validation->run() == FALSE) {
+            //form mal rempli
+            $this->view($this->input->post('note_id'));
+        } else {
+            //form bien rempli
+            $this->notes_model->modify_note($this->input->post('note_id'), $session_data['id'], $this->input->post('modification_note'), $this->input->post('commentaire_modification'));
+            redirect('note/view/' . $this->input->post('note_id'), 'refresh');
+        }
+    }
+    function check_content($modification_note)
+    {
+        $old_note= $this->notes_model->get_note_content($this->input->post('note_id'));
+        $modification_note = explode(PHP_EOL,$modification_note);
+        $diff = array_diff($old_note['note_content'], $modification_note);
+        if (empty($diff)) {
+            $this->form_validation->set_message('check_content', 'Vous n\'avez rien modifié');
+            return false;
+        } else {
+            
+            return true;
+        }
+    }
     function compare_with($commit_id) {
-        
-    }
-
-    function comment($note_id, $comment_id) {
-        
-    }
-
-    function rate($note_id) {
         
     }
 

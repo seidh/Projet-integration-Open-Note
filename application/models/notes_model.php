@@ -15,7 +15,7 @@ class notes_model extends CI_Model
         $git_repo = $this->open_note_repo($path, $author_pseudo, $author_email);
         
         $git_repo->add();
-        $git_repo->commit('Première version');
+        $git_repo->commit('Premiere version');
         
         //insert data on database
         $note_array = array('path' => $path,
@@ -46,7 +46,7 @@ class notes_model extends CI_Model
         {
             while (($buffer = fgets($file)) !== false)
             {
-                $note_content[] = $buffer;
+                $note_content[] = preg_replace('/\n+/', '', $buffer);
             }
             fclose($file);
         }
@@ -92,7 +92,7 @@ class notes_model extends CI_Model
 
         //apply modification to file and commit change into Git repository
         $note_repo = $this->open_note_repo($note_data->path, $user_data->pseudo, $user_data->email);
-
+        
             //write modification to file
         $note_file = fopen($note_data->path . $note_data->file_name, "w+");
         fwrite($note_file, $note_content);
@@ -153,7 +153,7 @@ class notes_model extends CI_Model
         return $repository;
     }
     
-    private function get_db_note_info($note_id)
+    function get_db_note_info($note_id)
     {
         $return_from_db = $this->db->get_where('note', "id = $note_id", 1)
                                    ->result();

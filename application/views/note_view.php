@@ -48,18 +48,34 @@
                         </div>
                         <div class="modal-body">
                             <div class="panel-group" id="accordion">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">Collapsible Group Item #1</a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false">
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php
+                                $i = 0;
+                                foreach ($history as $commit) {
+                                    echo'<div class="panel panel-default">';
+                                    echo'<div class="panel-heading">';
+                                    echo'<h4 class="panel-title">';
+                                    echo'<a data-toggle="collapse" data-parent="#accordion" href="#collapse' . $i . '" aria-expanded="false" class="collapsed">' . $commit['commit_message'] . ' par ' . $commit['user_pseudo'] . ' | ' . $commit['date_relative'] . '</a>';
+                                    echo'</h4>';
+                                    echo'</div>';
+                                    echo'<div id="collapse' . $i . '" class="panel-collapse collapse" aria-expanded="false">';
+                                    echo'<div class="panel-body">';
+                                    echo'<div class="from-group row">';
+                                    echo'<div class="col-sm-4">';
+                                    echo form_open('note/revert_from_history/' . $commit['commit_hash']);
+                                    echo '<input class="form-control"  name="note_id" id="note_id" type="text" style="display: none" value="' . $note['id'] . '" />';
+                                    echo '<button type="submit" class="btn btn-outline btn-primary btn-sm">Retour à cette version</button>';
+                                    echo form_close();
+                                    echo'</div>';
+                                    echo'<div class="col-sm-4">';
+                                    echo '<button type="button" class="btn btn-outline btn-primary btn-sm">Voir la différence entre cette version et le version actuel</button>';
+                                    echo'</div>';
+                                    echo'</div>';
+                                    echo'</div>';
+                                    echo'</div>';
+                                    echo'</div>';
+                                    $i++;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -71,6 +87,7 @@
                 <!-- /.modal-dialog -->
             </div>
             <div class="col-sm-12">
+                <?php echo validation_errors(); ?>
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         La note
@@ -85,14 +102,13 @@
                         </div>
                     </div>
                     <div class="panel-body" id="modif_note" style="display: none">
-                        <?php echo validation_errors(); ?>
-                        <?php echo form_open(''); ?>
+                        <?php echo form_open('note/modification'); ?>
                         <div class="form-group row">
                             <div class="col-sm-2">
                                 <label> Raison de la modification : </label>
                             </div>
                             <div class="col-sm-10">
-                               <input type="text" name="commentaire_modification" class="form-control" placeholder="Pourquoi vouloir modifier cette note ? ...">
+                                <input type="text" name="commentaire_modification" class="form-control" placeholder="Pourquoi vouloir modifier cette note ? ...">
                             </div>
                             <br />
                             <br />
@@ -113,7 +129,7 @@
                             CKEDITOR.replace('modification_note');
                         </script>
                         <input class="form-control"  name="note_id" id="note_id" type="text" style="display: none" value="<?php echo $note['id'] ?>" />
-                        <button type="button" class="btn btn-primary btn-lg btn-block">Enregistrer vos modifications</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Enregistrer vos modifications</button>
                         </form>
                     </div>
                 </div>
