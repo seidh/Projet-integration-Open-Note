@@ -1,99 +1,73 @@
-<?php
 
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
-session_start(); //we need to call PHP's session object to access it through CI
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Bonjour <?php echo $pseudo; ?>!</h1>
+                </div>
+                <div class="col-lg-8 left">
+                        <div class="panel panel-default">
 
-class accueil extends CI_Controller {
+                            <!-- /.panel-heading -->
+                            <div class="panel-heading">
+                                Mes notes
+                            </div>
 
-    function __construct() {
-        parent::__construct();
-        if ($this->session->userdata('logged_in')) {
-            
-        } else {
-            //If no session, redirect to login page
-            redirect('login', 'refresh');
-        }
-        $this->load->model('user', '', TRUE);
-    }
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" aria-describedby="dataTables-example_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="col-md-3" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending" >Titre</th>
+                                                    <th class="col-md-3" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Catégorie</th>
+                                                    <th class="col-md-3" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" >Date de création</th>
+                                                    <th class="col-md-2" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" >Date de modification</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                foreach ($my_note as $row_note) {
+                                                    $user = $this->user->user_data($row_note['author_id']);
+                                                    $cat = $this->category_model->get_cat($row_note['category']);
+                                                    echo '
+                                                <tr class=" ">
+                                            <td class=" "><a href="' . base_url('note/view') . '/' . $row_note['id'] . '">' . $row_note['name'] . '</a></td>
+                                            <td class=" "><a href="' . base_url('accueil/category?id=') . $row_note['category'] . '">' . $cat[0]['name'] . ' </a></td>
+                                            <td class=" ">' . $row_note['creation_date'] . '</td>
+                                            <td class=" ">' . $row_note['modification_date'] . '</td>
+                                        </tr>';
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script>
+                
+                <!-- /.col-lg-12 -->
+            </div>
 
-    function index() {
+        </div>
+        <!-- /#page-wrapper -->
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            $data['id'] = $session_data['id'];
-            $result = $this->user->user_data($data['id']);
-            $data['name'] = $result['name'];
-            $data['firstname'] = $result['firstname'];
-            $data['pseudo'] = $result['pseudo'];
-        } else {
-            //If no session, redirect to login page
-            redirect('login', 'refresh');
-        }
+    
 
-        // définition des données variables du template
-        $data['title'] = 'Open-Note - Accueil';
-        $data['description'] = 'La description de la page pour les moteurs de recherche';
-        $data['keywords'] = 'les, mots, clés, de, la, page';
-        // TEST Affichage date
-        setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
 
-        $data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
-
-        // on charge la view qui contient le corps de la page
-        $data['contents'] = 'accueil';
-
-        $data['sidebar'] = 'normal';
-        
-        $data['my_note'] = $this->category_model->get_my_note($session_data['id']);
-
-        // on charge la page dans le template
-        $this->load->view('templates/template', $data);
-    }
-
-    function logout() {
-        $this->session->unset_userdata('logged_in');
-        session_destroy();
-        redirect('accueil', 'refresh');
-    }
-
-    function category() {
-        if(!is_numeric($this->input->get('id')))
-        {
-            redirect('accueil','refresh');
-        }
-        $session_data = $this->session->userdata('logged_in');
-        $result = $this->user->user_data($session_data['id']);
-
-        $result['title'] = 'Open-Note - catégorie';
-        $result['description'] = 'La description de la page pour les moteurs de recherche';
-        $data['keywords'] = 'les, mots, clés, de, la, page';
-        // TEST Affichage date
-        setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
-
-        $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
-
-        // on choisit la view qui contient le corps de la page
-        $result['contents'] = 'category_view';
-        // On choisit la sidebar
-        $result['sidebar'] = 'accueil';
-
-        $category = $this->category_model->get_cat(mysql_real_escape_string($this->input->get('id')));
-        foreach ($category as $cat) {
-            $result['cat_name'] = $cat['name'];
-            $result['cat_id'] = $cat['id'];
-            $result['cat_parent_id'] = $cat['parent_id'];
-        }
-        $note_cat = $this->category_model->get_note_cat($result['cat_id']);
-        $result['notes'] = $note_cat;
-
-        // on charge la page dans le template
-        $this->load->view('templates/template', $result);
-    }
-
-}
