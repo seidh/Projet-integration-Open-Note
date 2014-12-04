@@ -12,10 +12,7 @@ class notes_model extends CI_Model
             
     function create_note($author_id, $author_pseudo, $author_email, $path, $note_name, $file_name, $cat_id)
     {
-        $git_repo = Git::create($path);
-        
-        $git_repo->run("config user.name \"$author_pseudo\"");
-        $git_repo->run("config user.email \"$author_email\"");
+        $git_repo = $this->open_note_repo($path, $author_pseudo, $author_email);
         
         $git_repo->add();
         $git_repo->commit('Première version');
@@ -116,32 +113,11 @@ class notes_model extends CI_Model
     
     function revert_note($repo_path, $commit_hash)
     {
-        //get note id by $repo_path
-        $db_result = $this->db->select('id')
-                              ->from($this->table_note)
-                              ->where('path', $repo_path)
-                              ->limit(1)
-                              ->get()
-                              ->result();
-        $note_id = $db_result[0]->id;
-        
-        //get note history
-        $commit_history = $this->get_note_history($note_id);
-        //get index of concerned commit inside commit history
-        $needed_key = $this->recursive_array_search($commit_hash, $commit_history);
-        
-        
         $repo = $this->open_note_repo($repo_path);
         $repo->run('checkout '. $commit_hash .' .'); // str end dot is VERY IMPORTANT - DO NOT REMOVE IT
-        $repo->commit('retour à la version : '.$commit_history[$needed_key]['commit_message']);
+        $repo->commit('retour à la version : '.$commit_hash);
     }
     
-    /**
-     * Get diff between current version and specified commit
-     * @param type $note_id of concerned note
-     * @param type $history_point commit hash of previous version we want diff
-     * @return array containing key 'previous' and 'current' that are array containing line by line file state.
-     */
     function note_diff($note_id, $history_point)
     {
         //get note data from note_id
@@ -161,13 +137,6 @@ class notes_model extends CI_Model
         return $data;
     }
     
-    /**
-     *  private function used to open git repository
-     * @param string $repo_path path of wanted repo to be open
-     * @param string $user_name if repo opened for commit action, username of commiter is needed
-     * @param type $user_mail if repo opened for commit action, user email of commiter is needed
-     * @return type
-     */
     private function open_note_repo($repo_path, $user_name = NULL, $user_mail = NULL)
     {
         $repository = Git::open($repo_path);
@@ -179,11 +148,6 @@ class notes_model extends CI_Model
         return $repository;
     }
     
-    /**
-     * get database note information af specified note id
-     * @param type $note_id id of note searched
-     * @return type return object having property similar to database fields
-     */
     private function get_db_note_info($note_id)
     {
         $return_from_db = $this->db->get_where('note', "id = $note_id", 1)
@@ -191,11 +155,6 @@ class notes_model extends CI_Model
         return $return_from_db[0];
     }
     
-    /**
-     *  get database user information with specified user id
-     * @param type $user_id id of user searched
-     * @return type object having attributes similar to database fields
-     */
     private function get_db_user_info($user_id)
     {
         $return_from_db = $this->db->get_where('user', "id = $user_id", 1)
@@ -203,12 +162,7 @@ class notes_model extends CI_Model
         return $return_from_db[0];
     }
     
-    /**
-     *  Private function using to get diff information of specified repo
-     * @param type $repo_path path of concernd repository
-     * @param type $commit_hash hash of commit we want to compare
-     * @return array containing diff_information
-     */
+    
     private function _get_diff_info($repo_path, $commit_hash) {
         //open repo
         $repo = Git::open($repo_path);
@@ -280,12 +234,6 @@ class notes_model extends CI_Model
         return $diff_array;
     }
 
-    /**
-     *  function that build array of previous and current version of note in function of diff_return information from _get_diff_info function
-     * @param type $chunk 
-     * @param type $prevOrCurrent
-     * @param type $content 
-     */
     private function _build_final_array($chunk, $prevOrCurrent, &$content) {
 
         $begin = $chunk['diff_info'][$prevOrCurrent]['begin_line'];
@@ -295,22 +243,6 @@ class notes_model extends CI_Model
         for ($i = $begin - 1, $j = $start_index_diff, $count = 0; $count < $duration; $i++, $j++, $count++) {
             $content[$i] = $chunk['diff_content'][$prevOrCurrent][$j];
         }
-    }
-    
-    /**
-     * function returning index of row containing specified data
-     * @param type $needle valeur needed
-     * @param type $haystack array that probably contain search value
-     * @return boolean
-     */
-    private function recursive_array_search($needle,$haystack) {
-        foreach($haystack as $key=>$value) {
-            $current_key=$key;
-            if($needle===$value OR (is_array($value) && recursive_array_search($needle,$value) !== false)) {
-                return $current_key;
-            }
-        }
-        return false;
     }
 }
 
