@@ -132,3 +132,17 @@ table {
     overflow: auto;
     height: 600px;
 }
+
+body.error404{
+    display: inline-block;
+    background-image: url('../image/404.jpg');
+    background-size:auto;    
+    background-position-x: center;
+    background-position-y: -250px;
+    background-repeat: no-repeat;
+    min-width:100%;
+    min-height:100%;
+}
+.errorBtn{
+    margin-top:385px;
+}
