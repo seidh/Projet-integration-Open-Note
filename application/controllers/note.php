@@ -83,44 +83,6 @@ class note extends CI_Controller {
         $result['history'] = $this->notes_model->get_note_history($note_id);
         $this->load->view('templates/template', $result);
     }
-    function view_diff($old_commit)
-    {
-        if ($this->session->userdata('logged_in')) {
-            if ($this->input->get('id') == '') {
-                $session_data = $this->session->userdata('logged_in');
-                $data['id'] = $session_data['id'];
-                $result = $this->user->user_data($data['id']);
-            } else {
-                if (!is_numeric($this->input->get('id'))) {
-                    redirect('accueil', 'refresh');
-                }
-                $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
-            }
-        } else {
-            //If no session, redirect to login page
-            redirect('login', 'refresh');
-        }
-
-        // définition des données variables du template
-        $result['title'] = 'Open-Note - Note';
-        $result['description'] = 'La description de la page pour les moteurs de recherche';
-        $data['keywords'] = 'les, mots, clés, de, la, page';
-        // TEST Affichage date
-        setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
-
-        $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
-
-        // on choisit la view qui contient le corps de la page
-        $result['contents'] = 'history_view';
-        // On choisit la sidebar
-        $result['sidebar'] = 'normal';
-
-        // on charge la page dans le template
-        $result['note'] = $this->notes_model->get_note_content($this->input->post('note_id'));
-        $result['commit_hash'] = $old_commit;
-        $result['history'] = $this->notes_model->note_diff($this->input->post('note_id'), $old_commit);
-        $this->load->view('templates/template', $result);
-    }
 
     function like($note_id) {
         $session_data = $this->session->userdata('logged_in');
@@ -209,6 +171,7 @@ class note extends CI_Controller {
     function apply_create_online() {
         $this->form_validation->set_rules('title', 'Titre', 'trim|required|xss_clean');
         $this->form_validation->set_rules('note_content', 'Contenu de la note', 'required');
+        $this->form_validation->set_rules('category', '', 'trim|required|xss_clean|call_back_check_cat'); //hidden fields
 
         if ($this->form_validation->run() == FALSE) {
             $this->create_online($this->input->post('category'));
@@ -224,9 +187,24 @@ class note extends CI_Controller {
 
             //create repository
             $note_id = $this->notes_model->create_note($this->data['id'], $this->data['pseudo'], $this->data['email'], $repo_path, $this->input->post('title'), $file_name, $this->input->post('category'));
-            
+
             $this->view($note_id);
         }
+    }
+
+    function check_cat($cat_id) {
+        /**
+         *  call_back function to check if sessions_user is register inside cat_id given
+         * 
+         */
+    }
+
+    function create_by_upload($cat_id) {
+        
+    }
+
+    function history($note_id) {
+        
     }
 
     function revert_from_history($commit_id) {
@@ -268,6 +246,9 @@ class note extends CI_Controller {
             
             return true;
         }
+    }
+    function compare_with($commit_id) {
+        
     }
 
 }
