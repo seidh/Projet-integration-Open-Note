@@ -84,6 +84,40 @@ class note extends CI_Controller {
         $this->load->view('templates/template', $result);
     }
 
+    function view_diff($old_commit) {
+        if ($this->session->userdata('logged_in')) {
+            if ($this->input->get('id') == '') {
+                $session_data = $this->session->userdata('logged_in');
+                $data['id'] = $session_data['id'];
+                $result = $this->user->user_data($data['id']);
+            } else {
+                if (!is_numeric($this->input->get('id'))) {
+                    redirect('accueil', 'refresh');
+                }
+                $result = $this->user->user_data(mysql_real_escape_string($this->input->get('id')));
+            }
+        } else {
+            //If no session, redirect to login page
+            redirect('login', 'refresh');
+        }
+        // définition des données variables du template
+        $result['title'] = 'Open-Note - Note';
+        $result['description'] = 'La description de la page pour les moteurs de recherche';
+        $data['keywords'] = 'les, mots, clés, de, la, page';
+        // TEST Affichage date
+        setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+        $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+        // on choisit la view qui contient le corps de la page
+        $result['contents'] = 'history_view';
+        // On choisit la sidebar
+        $result['sidebar'] = 'normal';
+        // on charge la page dans le template
+        $result['note'] = $this->notes_model->get_note_content($this->input->post('note_id'));
+        $result['commit_hash'] = $old_commit;
+        $result['history'] = $this->notes_model->note_diff($this->input->post('note_id'), $old_commit);
+        $this->load->view('templates/template', $result);
+    }
+
     function like($note_id) {
         $session_data = $this->session->userdata('logged_in');
         $sql = "DELETE FROM rate WHERE note_id = " . $note_id . " AND user_id = " . $session_data['id'];
@@ -231,10 +265,10 @@ class note extends CI_Controller {
             redirect('note/view/' . $this->input->post('note_id'), 'refresh');
         }
     }
-    function check_content($modification_note)
-    {
-        $old_note= $this->notes_model->get_note_content($this->input->post('note_id'));
-        $modification_note = explode(PHP_EOL,$modification_note);
+
+    function check_content($modification_note) {
+        $old_note = $this->notes_model->get_note_content($this->input->post('note_id'));
+        $modification_note = explode(PHP_EOL, $modification_note);
         var_dump($old_note['note_content']);
         var_dump($modification_note);
         $diff = array_diff($old_note['note_content'], $modification_note);
@@ -243,10 +277,11 @@ class note extends CI_Controller {
             $this->form_validation->set_message('check_content', 'Vous n\'avez rien modifié');
             return false;
         } else {
-            
+
             return true;
         }
     }
+
     function compare_with($commit_id) {
         
     }
