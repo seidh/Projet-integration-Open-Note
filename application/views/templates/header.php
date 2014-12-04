@@ -131,8 +131,23 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="<?php echo base_url("profil"); ?>"><i class="fa fa-user fa-fw"></i> Mon profil</a>
                         </li>
-                        <li><a href="<?php echo base_url("administration");?>"><i class="fa fa-wrench fa-fw"></i> Administration</a>
-                        </li>
+                        <?php 
+                        if($this->user->is_admin($session_data['id'])){
+                            echo'<li><a href="'. base_url("administration") .'"><i class="fa fa-wrench fa-fw"></i> Administration</a></li>';
+                        }
+                        ?>
+                        
+                        
+                        <?php 
+                        if($this->user->is_moderator($session_data['id'])){
+                            echo '<li>';
+                            echo '<a href="' . base_url('moderation') .'">';
+                            echo '<i class="fa fa-cog fa-fw"></i>';
+                            echo 'Modération</a>';
+                            echo '</li>';
+                        }                       
+                        ?>
+                        
                         <li class="divider"></li>
                         <li><a href="<?php echo base_url("accueil/logout");?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>

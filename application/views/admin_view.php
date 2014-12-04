@@ -24,6 +24,28 @@
                     </p> 
                 </div>
             </div>
+            <div class="row">
+                <hr />
+                <div class="col-lg-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <b>Information sur cette installation</b>
+                                </div>
+                                <div class="panel-body">
+                                    <?php 
+                                        $nb_user = count($users_data);
+                                        $nb_notes = count($notes_data);
+                                        
+                                        echo 'Nombre d\'utilisateurs enregistrés : '.$nb_user;
+                                        echo '<br /><br />Nombre de notes hébergées : '.$nb_notes;
+                                    ?>
+                                </div>
+                                <div class="panel-footer">
+                                    
+                                </div>
+                            </div>
+                        </div>
+            </div>
             
         </div>
         <!-- /#page-wrapper -->

@@ -13,12 +13,11 @@ class model_testing extends CI_Controller
         $this->write_comments_r($tmp);
     }
     
-    function test($arg1, $arg2)
+    function test()
     {
-        echo $arg1;
-        echo $arg2;
-        echo '<br/>';
-        echo time();
+                $this->load->model('administration_model');
+                print_r($this->administration_model->get_all_notes());
+
     }
     
     function test_note(){
