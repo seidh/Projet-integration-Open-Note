@@ -67,7 +67,10 @@
                                     echo form_close();
                                     echo'</div>';
                                     echo'<div class="col-sm-4">';
-                                    echo '<button type="button" class="btn btn-outline btn-primary btn-sm">Voir la différence entre cette version et le version actuel</button>';
+                                    echo form_open('note/view_diff/' . $commit['commit_hash']);
+                                    echo '<button type="submit" class="btn btn-outline btn-primary btn-sm">Voir la différence entre cette version et le version actuel</button>';
+                                    echo '<input class="form-control"  name="note_id" id="note_id" type="text" style="display: none" value="' . $note['id'] . '" />';
+                                    echo form_close();
                                     echo'</div>';
                                     echo'</div>';
                                     echo'</div>';
