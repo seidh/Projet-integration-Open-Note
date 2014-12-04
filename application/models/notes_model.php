@@ -165,13 +165,13 @@ class notes_model extends CI_Model {
         return $repository;
     }
 
-    private function get_db_note_info($note_id) {
+    function get_db_note_info($note_id) {
         $return_from_db = $this->db->get_where('note', "id = $note_id", 1)
                 ->result();
         return $return_from_db[0];
     }
 
-    private function get_db_user_info($user_id) {
+    function get_db_user_info($user_id) {
         $return_from_db = $this->db->get_where('user', "id = $user_id", 1)
                 ->result();
         return $return_from_db[0];
