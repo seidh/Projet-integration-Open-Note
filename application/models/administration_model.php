@@ -200,7 +200,7 @@ Class administration_model extends CI_Model {
     
     function get_users_of_cat($cat_id)
     {
-        return $this->db->select('u.id, u.name, u.firstname, u.pseudo, u.email')
+        return $this->db->select('u.id, u.name, u.firstname, u.pseudo, u.email, u.groupe')
                                    ->distinct()
                                    ->from('cat_perm')
                                    ->join('user as u', 'u.id = cat_perm.user_id')
@@ -334,7 +334,7 @@ Class administration_model extends CI_Model {
     
     function is_moderator_of($user_id, $cat_id)
     {
-        $where_clause = array('user_id' => $user_id, 'cat_id' => $cat_id);
+        $where_clause = array('user_id' => $user_id, 'cat_id' => $cat_id, 'perm_id' => $this->moderator_perm);
         $result = $this->db->get_where('cat_perm', $where_clause, 1);
         return ($result->num_rows() >= 1) ? true : false;
     }

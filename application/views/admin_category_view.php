@@ -23,11 +23,26 @@ foreach ($notes_data as $element) {
                     <div class="top15"><b>Nom de la catégorie :</b> <i><?php echo $category_data['name'] ?></i></div>
                     <div class="top15">Modérateur(s) de la catégorie : <i>
                             <?php
+                            $array_of_moderator = array();
                             foreach ($cat_moderators as $element) {
-                                echo'<a href=' . base_url('profil?id=' . $element["id"]) . '>' . $element['firstname'] . ' ' . $element['name'] . '</a>';
-                                if (end($cat_moderators) != $element) {
-                                    echo', ';
+                                
+                                foreach ($element['moderate_cat'] as $cat_moderated){
+                                    //echo var_dump($cat_moderated);
+                                    if($cat_moderated['id'] == $category_data['id']){
+                                        $tmpArray = array('id'=>$element['id'], 'name'=>$element['name'], 'firstname'=>$element['firstname']);
+                                        array_push($array_of_moderator, $tmpArray);
+                                    }
                                 }
+                                //echo var_dump($array_of_moderator);
+                                
+                            }
+                            
+                            foreach($array_of_moderator as $modo){
+                                echo'<a href=' . base_url('profil?id=' . $modo["id"]) . '>' . $modo['firstname'] . ' ' . $modo['name'] . '</a>';
+                                if (end($array_of_moderator) != $modo) {
+                                        echo', ';
+                                    }
+                                
                             }
                             ?></i></div>
                     <div class="top15">Nombre de notes : <i><?php echo count($notesOfCat_data) ?></i></div>
@@ -58,17 +73,86 @@ foreach ($notes_data as $element) {
             </div>
             <div class="row top5">
                 <div class="col-lg-1"></div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
+                    <a href="<?php echo base_url('moderation')?>"><button id="return" class="btn btn-info top30" ><i class="fa fa-reply fa-fw"></i> Retour au panel</button></a>
+                </div>
+                <div class="col-lg-3">
                     <button id="editCat" class="btn btn-success top30" data-toggle="modal" data-target="#myModal"><i class="fa fa-cog fa-fw"></i> Modifier cette catégorie</button>                                              
                 </div>
                 <?php if($isAdmin){
-                    echo'<div class="col-lg-4">
+                    echo'<div class="col-lg-3">
                     <button id="addModo" class="btn btn-warning top30" data-toggle="modal" data-target="#myModal1"><i class="fa fa-plus fa-fw"></i> Ajouter un modérateur</button>                                              
                 </div>';
                 } ?>
                 
-            </div>
+            </div>            
         </div>
+        <div class="row top5">
+                <div class="col-lg-12">
+                <h2 class="page-header">Utilisateurs abonnés à la catégorie</h2>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-8">
+                    <div class="div-table-content">                    
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+
+                            <!-- /.panel-heading -->
+
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+
+                                        <table id="cat_users_table" class="table table-striped table-hover dataTable no-footer">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-2">Nom</th>
+                                                    <th class="col-md-2">Prénom</th>
+                                                    <th class="col-md-2">Pseudo</th>
+                                                    <th class="col-md-1">Groupe</th>
+                                                    <th class="col-md-3">Email</th>                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                //var_dump($user_data);
+                                                foreach ($users_data as $user) {
+                                                    //var_dump($RawData);
+                                                    //$singleUser = get_object_vars($RawData);
+                                                    //echo $singleUser;                                        
+                                                    echo'<tr id=' . $user['id'] . '>';
+                                                    echo form_open('administration/modify_user/' . $user['id'] . '');
+                                                    echo'<td><span id="dispname' . $user['id'] . '">' . $user['name'] . '</span></td>';
+                                                    echo'<td><span id="dispfirstname' . $user['id'] . '">' . $user['firstname'] . '</span></td>';
+                                                    echo'<td><span id="disppseudo' . $user['id'] . '">' . $user['pseudo'] . '</span></td>';
+                                                    echo'<td><span id="dispgroup' . $user['id'] . '">' . $user['groupe'] . '</span></td>';
+                                                    echo'<td><span id="dispemail' . $user['id'] . '">' . $user['email'] . '</span></td>';
+          
+                                                    echo'</tr>';
+                                                }
+                                                ?>
+                                                <?php echo form_open('administration/adduser'); ?>
+                                                <tr id="trAddUser" style="display:none;">
+                                                    <td><input style="display:none;" id="newName" name="newName" class="form-control" size="10" value=""></input></td>
+                                                    <td><input style="display:none;" id="newFirstname" name="newFirstname" class="form-control" size="10" value=""></input></td>
+                                                    <td><input style="display:none;" id="newPseudo" name="newPseudo" class="form-control" size="10" value=""></input></td>
+                                                    <td><input style="display:none;" id="newGroup" name="newGroup" class="form-control" size="6" value=""></input></td>
+                                                    <td><input style="display:none;" id="newEmail" name="newEmail" class="form-control" type="email" value=""></input></td>
+                                                    <td><button id="saveNew" style="display:none;" class="btn btn-primary" type="submit">Ok</button></td>
+                                                </tr>
+                                                <?php echo form_close(); ?>
+                                            </tbody>
+                                        </table>
+                                    </div>                            
+                                </div>
+                            </div>
+                            
+                        </div>                
+                        <!-- /.col-lg-12 -->
+                    </div>
+                </div>
+                </div>
+                </div>
+            </div>
     </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -180,6 +264,16 @@ foreach ($notes_data as $element) {
     <!-- /#page-wrapper -->
 </div>
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<!-- Data Tables Plugin -->
+<script href="<?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/dataTables.bootstrap.js'); ?>" type="text/javascript"></script>
+<script href="<?php echo base_url('assets/sb-admin-2/js/plugins/dataTables/jquery.dataTables.js'); ?>" type="text/javascript"></script>
 <script>
 
+    editUserTable();
+    addUserForm();
+    $(document).ready(function () {
+        $('#cat_users_table').dataTable({
+            responsive: true
+        });
+    });
 </script>

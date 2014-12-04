@@ -328,7 +328,7 @@ class administration extends CI_Controller
         {
             $session_data = $this->session->userdata('logged_in');
             
-            if($this->administration_model->is_moderator_of($session_data['id'], $catId)){
+            if($this->administration_model->is_moderator_of($session_data['id'], $catId) or $this->user->is_admin($session_data['id'])){
                 $this->data['title'] = 'Open-Note - Modifier une catégorie';
                 $this->data['description'] = 'Page permettant la modification d\'une catégorie';
                 $this->data['keywords'] = 'les, mots, clés, de, la, page';
@@ -340,7 +340,8 @@ class administration extends CI_Controller
                 $this->data['cat_data'] = $this->administration_model->get_category($catId);
                 $this->data['notes_data'] = $this->administration_model->get_all_notes_from($catId);
                 $this->data['users_data'] = $this->administration_model->get_users_of_cat($catId);
-
+                $this->data['isAdmin'] = $this->user->is_admin($session_data['id']);
+                $this->data['allusers'] = $this->administration_model->get_all_user();
                 // on charge la page dans le template
                 $this->load->view('templates/template', $this->data); 
             } else {

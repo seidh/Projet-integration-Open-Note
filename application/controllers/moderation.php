@@ -117,7 +117,7 @@ class moderation extends CI_Controller
         {
             $session_data = $this->session->userdata('logged_in');
 
-            if($this->administration_model->is_moderator_of($session_data['id'], $catId)){
+            if($this->administration_model->is_moderator_of($session_data['id'], $catId) or $this->user->is_admin($session_data['id'])){
                 $this->data['title'] = 'Open-Note - Modifier une catégorie';
                 $this->data['description'] = 'Page permettant la modification d\'une catégorie';
                 $this->data['keywords'] = 'les, mots, clés, de, la, page';
@@ -144,6 +144,15 @@ class moderation extends CI_Controller
             $session_data = $this->session->userdata('logged_in');
 
             if($this->administration_model->is_moderator_of($session_data['id'], $cat_id)){
+                
+                $category = $this->administration_model->get_category($cat_id);
+                $categ_array = get_object_vars($category[0]);
+                $result = $this->db->get_where('cat_perm', array('cat_id'=>$categ_array['parent_id'], 'user_id'=>$user_id))
+                                    ->result();
+                if(empty($result)){
+                    $this->db->insert('cat_perm', array('user_id' => $user_id, 'cat_id' => $categ_array['parent_id'], 'perm_id' => 5));
+                }
+                
                 $this->db->insert('cat_perm', array('user_id' => $user_id, 'cat_id' => $cat_id, 'perm_id' => 5));
                 $this->db->delete('cat_subscription', array('user_id' => $user_id, 'cat_id' => $cat_id));
             }

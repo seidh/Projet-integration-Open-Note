@@ -1,7 +1,4 @@
-<!-- Script for the active navbar -->
-<script type="text/javascript">
-    activeNavbar();
-</script> 
+
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -15,14 +12,20 @@
             <h3>Bienvenue sur votre page de modération.</h3>
             <p class="top15">Vous retrouverez ici tout le necéssaire pour gérer les catégories qui vont sont assignées.</p>
             <p>Depuis ce panneau de modération vous pourrez :
-            <ul>
-                <li>Revenir à une version antérieure d'une note</li>
+            <ul>                
                 <li>Modifier le nom de la catégorie</li>
                 <li>Accepter les demandes d'abonnement aux catégories</li>
             </ul>
             </p> 
             <hr />
         </div>                                
+    </div>
+        <div class="row">
+        <div class="col-lg-12 bottom30">
+            
+            <button id="abonnement" class="btn btn-lg btn-success" data-toggle="modal" data-target="#myModal">Voir les demandes d'abonnements</button>                                              
+        <hr />
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -73,12 +76,7 @@
         </div>
 
     </div>
-    <div class="row">
-        <div class="col-lg-12 bottom30">
-            <hr />
-            <button id="abonnement" class="btn btn-info" data-toggle="modal" data-target="#myModal">Voir les demandes d'abonnements</button>                                              
-        </div>
-    </div>
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" style='width:1000px;'>
             <div class="modal-content">
