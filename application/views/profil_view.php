@@ -92,8 +92,7 @@
                             <label>Adresse mail :</label>
                         </div>
                         <div class="col-sm-7">
-                            <div id="email"><?php echo $username; ?></div>
-                            <input id ="saveEmail" name="email" style="display: none" class="form-control" value="<?php echo $username; ?>">
+                            <?php echo $username; ?>
                         </div>
                     </div>
                     <div class="form-group row">

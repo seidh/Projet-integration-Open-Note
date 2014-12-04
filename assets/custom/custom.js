@@ -22,9 +22,6 @@ edit = function()
             
         $('#firstname').toggle("slow");
         $('#saveFirstname').toggle("slow");
-            
-        $('#email').toggle("slow");
-        $('#saveEmail').toggle("slow");
         
         $('#oldpwd').toggle("slow");
         $('#newpwd1').toggle("slow");

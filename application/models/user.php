@@ -6,7 +6,7 @@ Class User extends CI_Model
    $this -> db -> select('id, email, pwd');
    $this -> db -> from('user');
    $this -> db -> where('email', $email);
-   $this -> db -> where('pwd', SHA1($password));
+   $this -> db -> where('pwd', hash("sha512",$password.$email));
    $this -> db -> limit(1);
  
    $query = $this -> db -> get();

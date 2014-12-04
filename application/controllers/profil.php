@@ -69,7 +69,6 @@ class profil extends CI_Controller {
     function edit() {
         $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
         $this->form_validation->set_rules('firstname', 'Prénom', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('email', 'Adresse mail', 'trim|required|xss_clean|callback_check_email');
 
         $this->form_validation->set_rules('old_pwd', 'Ancien mot de passe', 'trim|xss_clean|callback_change_password[new_pwd_1.new_pwd_2]');
         $this->form_validation->set_rules('new_pwd_1', 'Nouveau mot de passe', 'trim|xss_clean');
@@ -100,7 +99,7 @@ class profil extends CI_Controller {
             $this->load->view('templates/template', $result);
         } else {
             //form bien rempli
-            $data = array('name' => $this->input->post('name'), 'email' => $this->input->post('email'), 'firstname' => $this->input->post('firstname'));
+            $data = array('name' => $this->input->post('name'), 'firstname' => $this->input->post('firstname'));
 
             $where = "id = " . $session_data['id'];
 
@@ -122,10 +121,10 @@ class profil extends CI_Controller {
         if ($str != '') {
             list($param1, $param2) = explode('.', $params, 2);
             //Le mot de passe courant est correct
-            $old_pwd_crypt = SHA1($str);
             $session_data = $this->session->userdata('logged_in');
             $result = $this->user->user_data($session_data['id']);
-
+            $old_pwd_crypt = hash("sha512",$str.$result['username']);
+            
             $this->db->select('id, email, pwd');
             $this->db->from('user');
             $this->db->where('pwd', $old_pwd_crypt);
@@ -138,7 +137,7 @@ class profil extends CI_Controller {
                 if ($this->input->post($param1) != '') {
                     //Le nouveau password est coherent
                     if ($this->input->post($param1) == $this->input->post($param2)) {
-                        $new_pwd_crypt = SHA1($this->input->post($param1));
+                        $new_pwd_crypt = hash("sha512",$this->input->post($param1).$result['username']);
                         $data = array('pwd' => $new_pwd_crypt);
                         $where = "id = " . $result['id'];
 
@@ -160,22 +159,6 @@ class profil extends CI_Controller {
             }
         }
         return TRUE;
-    }
-
-    function check_email($email) {
-        $this->db->select('id, email, pwd');
-        $this->db->from('user');
-        $this->db->where('email', $email);
-        $this->db->limit(1);
-
-        $query = $this->db->get();
-        $session_data = $this->session->userdata('logged_in');
-        if ($query->num_rows() == 0 || $email == $session_data['username']) {
-            return true;
-        } else {
-            $this->form_validation->set_message('check_email', 'Adresse mail déja utilisée');
-            return false;
-        }
     }
 
     function do_upload($field = 'userfile') {
