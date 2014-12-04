@@ -22,9 +22,6 @@ edit = function()
             
         $('#firstname').toggle("slow");
         $('#saveFirstname').toggle("slow");
-            
-        $('#email').toggle("slow");
-        $('#saveEmail').toggle("slow");
         
         $('#oldpwd').toggle("slow");
         $('#newpwd1').toggle("slow");
@@ -45,7 +42,43 @@ avatar = function()
 /////////////////////////////////////
 //End of profil page
 /////////////////////////////////////
+/////////////////////////////////////
+//Note page
+//author: nicolas
+/////////////////////////////////////
 
+comment = function ()
+{
+        $("#comment_list button").click(function(){
+           var idComment = this.id;      
+           $("#textComment"+idComment).toggle("slow");
+        });
+        
+        
+
+        
+};
+commentParent = function()
+{
+    $("#commentMother").click(function(){      
+           $("#textCommentMother").toggle("slow");
+        });
+};
+
+modification_note = function()
+{
+    $("#modification, #cancel_modification").click(function(){      
+           $("#see_note").toggle("slow");
+           $("#modif_note").toggle("slow");
+           $("#modification").toggle("slow");
+           $("#cancel_modification").toggle("slow");
+           
+        });
+};
+
+/////////////////////////////////////
+//End of Note page
+/////////////////////////////////////
 /////////////////////////////////////
 // SideBar Navigation
 /////////////////////////////////////
@@ -90,22 +123,13 @@ editUserTable = function ()
            $("#editEmail"+idUser).css("display","inline");        
            $("#saveModif"+idUser).css("display","inline");
         });
-        
+
         
 
         
 };
 
-addUserForm = function(){
-            $("#addUserBtn").mouseover(function(){
-                $("#addUserBtn").animate({width:'180px'},300);
-                $("#addUserBtn").text("+ Ajouter un utilisateur ?");             
-           });
-           
-           $("#addUserBtn").mouseout(function(){
-               $("#addUserBtn").animate({width:'34px'},300);
-               $("#addUserBtn").text("+"); 
-           });
+addUserForm = function(){            
     
         $("#addUserBtn").click(function(){
             $("#trAddUser").css("display","table-row");
@@ -116,29 +140,17 @@ addUserForm = function(){
             $("#newEmail").css("display","table-cell");
             $("#saveNew").css("display","table-cell");
         });
-};
+        
+        $("body").mouseup(function (e){                    
+            var container = $("#trAddUser");
 
-addModoForm = function(){
-        $("#addModoBtn").mouseover(function(){
-                $("#addModoBtn").animate({width:'195px'},300);
-                $("#addModoBtn").text("+ Ajouter un modérateur ?");             
+            if (!container.is(e.target) // if the target of the click isn't the container...
+                && container.has(e.target).length === 0) // ... nor a descendant of the container
+            {
+                container.css("display","none");
+            }
         });
         
-        $("#addModoBtn").mouseout(function(){
-                $("#addModoBtn").animate({width:'34px'},300);
-                $("#addModoBtn").text("+"); 
-        });
 };
 
-assignModoForm = function(){
-        $("#assignModoBtn").mouseover(function(){
-                $("#assignModoBtn").animate({width:'195px'},300);
-                $("#assignModoBtn").text("+ Assigner une catégorie ?");             
-        });
-        
-        $("#assignModoBtn").mouseout(function(){
-                $("#assignModoBtn").animate({width:'34px'},300);
-                $("#assignModoBtn").text("+"); 
-        });
-};
         

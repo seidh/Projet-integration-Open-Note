@@ -52,6 +52,10 @@ class administration extends CI_Controller
 
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_view';
+            
+            // useful data
+            $this->data['users_data'] = $this->administration_model->get_all_user();
+            $this->data['notes_data'] = $this->administration_model->get_all_notes();
 
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data);
@@ -211,43 +215,42 @@ class administration extends CI_Controller
         {
             
             $this->form_validation->set_rules('user', 'Utilisateur', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('category', 'Catégorie', 'trim|required|xss_clean');
             $this->form_validation->set_rules('confirm', 'Pseudo', 'trim|required|xss_clean');
             
-            if($this->form_validation->run() == FALSE)
+            if(($this->form_validation->run() == FALSE) OR ($this->input->post('confirm') == FALSE))
             {
                 //erreur dans le formulaire
                 echo'DEBUG';
+                sleep(5);
                 //redirect('administration/userList', 'refresh');
                 
             }
             else
             {
-//                echo $this->input->post('editFirstname'); 
-//                echo $this->input->post('editName'); 
-//                echo $this->input->post('editPseudo'); 
-//                echo $this->input->post('editEmail'); 
-//                echo $this->input->post('editGroup'); 
+                //build modo-cat data array to inject into database
+                $assignation = array('userid' => (int)$this->input->post('user'),
+                        'catid' => (int)$this->input->post('category'));
                 
-                //build user data array to inject into database
-                $assignation = array('name' => $this->input->post('user'),
-                        'firstname' => $this->input->post('editFirstname'),                        
-                        'email' => $this->input->post('editEmail'),
-                        'groupe' => $this->input->post('editGroup'),
-                        'pseudo' => $this->input->post('editPseudo'));
-                
-                //print_r($user_data);//debug instruction
+                //print_r($assignation);//debug instruction
                 
                 //check if unique fields aren't used yet
-                if($this->administration_model->is_user_exist($user_data['email']))
+                if($this->administration_model->is_moderator_of($assignation['userid'],$assignation['catid']))
                 {
-                    //user already exist so put error message
-                }
-                //else add user inside database
-                $this->administration_model->modify_user($user_data, "id = $id");
-                redirect("administration/userList","refresh");
+                    echo"ERREUR";//user already exist so put error message
+                    sleep(5);
+                } else {
+                    echo var_dump($assignation);
+                    $this->administration_model->attribute_moderator($assignation['userid'],$assignation['catid']);
+                    echo "SUCCES";
+                    
+                    redirect("administration/moderatorsList","refresh");
+                    
+                }                
             }
         }
         
+        // INUTILE
         function assignModoForm()
         {
             //TODO controller form side
@@ -318,5 +321,35 @@ class administration extends CI_Controller
 
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
+        }
+        
+        /**
+         *  Function of moderation
+         * input : id of the category which is moderated
+         * 
+         */
+        function moderation($catId)
+        {
+            $session_data = $this->session->userdata('logged_in');
+            
+            if($this->administration_model->is_moderator_of($session_data['id'], $catId) or $this->user->is_admin($session_data['id'])){
+                $this->data['title'] = 'Open-Note - Modifier une catégorie';
+                $this->data['description'] = 'Page permettant la modification d\'une catégorie';
+                $this->data['keywords'] = 'les, mots, clés, de, la, page';
+
+                // on choisit la view qui contient le corps de la page
+                $this->data['contents'] = 'admin_category_view'; //TODO : sync with Olivier view
+
+                $this->data['cat_moderators'] = $this->administration_model->get_all_moderator();
+                $this->data['cat_data'] = $this->administration_model->get_category($catId);
+                $this->data['notes_data'] = $this->administration_model->get_all_notes_from($catId);
+                $this->data['users_data'] = $this->administration_model->get_users_of_cat($catId);
+                $this->data['isAdmin'] = $this->user->is_admin($session_data['id']);
+                $this->data['allusers'] = $this->administration_model->get_all_user();
+                // on charge la page dans le template
+                $this->load->view('templates/template', $this->data); 
+            } else {
+                redirect('accueil', 'refresh');
+            }
         }
  }

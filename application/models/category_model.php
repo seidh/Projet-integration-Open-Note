@@ -58,5 +58,11 @@ Class category_model extends CI_Model
                         
         return $query -> result_array();
     }
+    function get_my_note($user_id)
+    {
+        $query = $this->db->query("SELECT * FROM note WHERE author_id = ".$user_id.";");
+                        
+        return $query -> result_array();
+    }
     
 }

@@ -37,6 +37,12 @@ table {
 .top17 { margin-top:17px; }
 .top30 { margin-top:30px; }
 
+.bottom5 { margin-bottom:5px; }
+.bottom7 { margin-bottom:7px; }
+.bottom10 { margin-bottom:10px; }
+.bottom15 { margin-bottom:15px; }
+.bottom17 { margin-bottom:17px; }
+.bottom30 { margin-bottom:30px; }
 
 .logo_container
 {
@@ -120,4 +126,23 @@ table {
     background-color: #FFF; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
+
+.table-scroll{
+    overflow: auto;
+    height: 600px;
+}
+
+body.error404{
+    display: inline-block;
+    background-image: url('../image/404.jpg');
+    background-size:auto;    
+    background-position-x: center;
+    background-position-y: -250px;
+    background-repeat: no-repeat;
+    min-width:100%;
+    min-height:100%;
+}
+.errorBtn{
+    margin-top:385px;
 }

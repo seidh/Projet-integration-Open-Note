@@ -118,7 +118,23 @@ Class administration_model extends CI_Model {
         return $this->db->get('category')
                         ->result();
     }
+    
+    function get_category($catId){
+        return $this->db->get_where('category', array('id' => $catId))
+                        ->result();
+    }
 
+    
+    function get_moderated_category($userid)
+    {
+        return $this->db->select('cat.id, cat.name, cat.parent_id')
+                                   ->distinct()
+                                   ->from('cat_perm')
+                                   ->join('category as cat', 'cat.id = cat_perm.cat_id AND cat_perm.perm_id = '. $this->moderator_perm .'')
+                                   ->where('user_id', $userid)
+                                   ->get()
+                                   ->result_array();
+    }
     
     
     
@@ -180,6 +196,17 @@ Class administration_model extends CI_Model {
     {
         return $this->db->where('cat_id', $cat_id)
                         ->count_all_results('cat_perm');
+    }
+    
+    function get_users_of_cat($cat_id)
+    {
+        return $this->db->select('u.id, u.name, u.firstname, u.pseudo, u.email, u.groupe')
+                                   ->distinct()
+                                   ->from('cat_perm')
+                                   ->join('user as u', 'u.id = cat_perm.user_id')
+                                   ->where('cat_id', $cat_id)
+                                   ->get()
+                                   ->result_array();
     }
     
     
@@ -307,7 +334,7 @@ Class administration_model extends CI_Model {
     
     function is_moderator_of($user_id, $cat_id)
     {
-        $where_clause = array('user_id' => $user_id, 'cat_id' => $cat_id);
+        $where_clause = array('user_id' => $user_id, 'cat_id' => $cat_id, 'perm_id' => $this->moderator_perm);
         $result = $this->db->get_where('cat_perm', $where_clause, 1);
         return ($result->num_rows() >= 1) ? true : false;
     }
@@ -347,7 +374,16 @@ Class administration_model extends CI_Model {
     
     
     
-    
+    function get_request_of_cat($catid){
+        return $this->db->select('subs.cat_id, subs.user_id, subs.motivation, u.name, u.firstname, cat.name as catname')
+                                   ->distinct()
+                                   ->from('cat_subscription as subs')
+                                   ->join('user as u', 'subs.user_id = u.id')
+                                   ->join('category as cat', 'cat.id = subs.cat_id')
+                                   ->where('subs.cat_id', $catid)
+                                   ->get()
+                                   ->result_array();
+    }
     
     
     
@@ -405,8 +441,13 @@ Class administration_model extends CI_Model {
     
     
     function get_all_notes(){
-        $this->db->get('note')
+        return $this->db->get('note')
                  ->result();
+    }
+    
+    function get_all_notes_from($catId){
+        return $this->db->get_where('note', array('category' => $catId))
+                        ->result();
     }
 
 }
