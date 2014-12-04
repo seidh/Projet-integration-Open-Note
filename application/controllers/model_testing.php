@@ -63,6 +63,20 @@ class model_testing extends CI_Controller
             
         }
     }
+    
+    function test_get_note_id_from_path()
+    {
+        echo '<pre>';
+        $repo_path = 'assets/repo.d/jiksaa1417053582/';
+        $db_result = $this->db->select('id')
+                              ->from('note')
+                              ->where('path', $repo_path)
+                              ->limit(1)
+                              ->get()
+                              ->result();
+        
+        print_r($db_result);
+    }
 }
 
 
