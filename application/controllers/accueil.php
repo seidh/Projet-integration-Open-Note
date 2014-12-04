@@ -55,13 +55,18 @@ class accueil extends CI_Controller {
         // on charge la page dans le template
         $this->load->view('templates/template', $data);
     }
-
+    /**
+     * Cette fonction permet de se déconnecter du site internet.
+     */
     function logout() {
         $this->session->unset_userdata('logged_in');
         session_destroy();
         redirect('accueil', 'refresh');
     }
-
+    /**
+     * Cette fonction permet d'afficher une catégorie
+     * @return information pour afficher une liste de catégorie et la page category_view
+     */
     function category() {
         if(!is_numeric($this->input->get('id')))
         {

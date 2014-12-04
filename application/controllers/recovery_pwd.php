@@ -16,7 +16,9 @@ class recovery_pwd extends CI_Controller {
         $this->load->helper(array('form'));
         $this->load->view('recovery_pwd_view');
     }
-
+    /**
+     * Cette fonction permet d'envoie un mail avec un HASH en md5 pour la récupération de mot de passe
+     */
     function sendMail() {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('email', 'Adresse mail', 'trim|required|xss_clean|callback_check_email');
@@ -61,7 +63,11 @@ class recovery_pwd extends CI_Controller {
             $this->load->view('login_view', $data);
         }
     }
-
+    /**
+     * Cette fonction reçoit en paamètre un email et renvoie vrai si l'email existe en base de donnée et inversément.
+     * @param type $email
+     * @return boolean
+     */
     function check_email($email) {
         $this->db->select('id, email, pwd');
         $this->db->from('user');
@@ -88,11 +94,15 @@ class recovery_pwd extends CI_Controller {
             return false;
         }
     }
-
+    /**
+     * Permet d'afficher la page pour la récupération de mail
+     */
     function change_pwd() {
         $this->load->view('change_pwd_view');
     }
-
+    /**
+     * Cette fonction permet de faire la récupération du mot de passe
+     */
     function recovery() {
         $this->form_validation->set_rules('cle', 'Clé de récupération', 'trim|required|xss_clean|callback_check_cle');
         $this->form_validation->set_rules('pwd1', 'Password', 'trim|required|matches[pwd2]');
@@ -127,7 +137,12 @@ class recovery_pwd extends CI_Controller {
             $this->load->view('login_view', $data);
         }
     }
-
+    /**
+     * Cette fonction reçoit en paramètre la clé qui a été envoyé via le mail et retourne vrai 
+     * si la clé existe dans la base de donnée et inversément
+     * @param type $cle
+     * @return boolean
+     */
     function check_cle($cle) {
         $this->db->select('id, cle');
         $this->db->from('activation');

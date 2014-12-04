@@ -65,7 +65,9 @@ class profil extends CI_Controller {
         // on charge la page dans le template
         $this->load->view('templates/template', $result);
     }
-
+    /**
+     * Cette fonction permet d'éditer les informations du profil
+     */
     function edit() {
         $this->form_validation->set_rules('name', 'Nom', 'trim|required|xss_clean');
         $this->form_validation->set_rules('firstname', 'Prénom', 'trim|required|xss_clean');
@@ -115,7 +117,15 @@ class profil extends CI_Controller {
             redirect('profil', 'refresh');
         }
     }
-
+    /**
+     * Cette fonction permet de modifier le mot de passe de l'utilisateur et vérifie si
+     * l'ancien mot de passe est celui encoder dans la base de donnée et si le nouveau mot de passe 1
+     * et le nouveau mot de passe 2 sont les mêmes.
+     * Si tout se passe bien, la fonction retourne vrai et inversément
+     * @param type $str
+     * @param type $params
+     * @return boolean
+     */
     public function change_password($str, $params) {
         //Fonction permettant de verifier le mot de passe courant.
         if ($str != '') {
@@ -160,7 +170,10 @@ class profil extends CI_Controller {
         }
         return TRUE;
     }
-
+    /**
+     * Cette fonction permet de uploader un avatar sur le site internet
+     * @param type $field
+     */
     function do_upload($field = 'userfile') {
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);
@@ -233,7 +246,9 @@ class profil extends CI_Controller {
             redirect('profil', 'refresh');
         }
     }
-
+    /**
+     * Cette fonction permet d'afficher les catégories auxquelles l'utilisateur est abonnées
+     */
     function my_category() {
         if(!is_numeric($this->input->get('id')))
         {
@@ -267,7 +282,9 @@ class profil extends CI_Controller {
         // on charge la page dans le template
         $this->load->view('templates/template', $result);
     }
-
+    /**
+     * Cette fonction permet d'afficher les catégories auxquelles l'utilisateur n'est pas abonnées
+     */
     function other_category() {
         if(!is_numeric($this->input->get('id')))
         {
@@ -301,7 +318,9 @@ class profil extends CI_Controller {
         // on charge la page dans le template
         $this->load->view('templates/template', $result);
     }
-
+    /**
+     * Cette fonction permet de demander un abonnement à une catégorie auxquel l'utilisateur n'est pas abonnée
+     */
     function ask_cat() {
         $this->form_validation->set_rules('editor1', 'message', 'trim|required|callback_check_ask');
         $session_data = $this->session->userdata('logged_in');
@@ -360,7 +379,11 @@ class profil extends CI_Controller {
             $this->load->view('templates/template', $result);
         }
     }
-
+    /**
+     * Cette fonction retourne vrai si l'utilisateur n'a pas déjà fait une demande à la catégorie
+     * à laquelle il veut s'abonner et inversément.
+     * @return boolean
+     */
     function check_ask() {
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);
@@ -378,7 +401,9 @@ class profil extends CI_Controller {
             return false;
         }
     }
-
+    /**
+     * Cette fonction permet de se désabonner d'une catégorie
+     */
     function delink_cat() {
         $session_data = $this->session->userdata('logged_in');
         $result = $this->user->user_data($session_data['id']);

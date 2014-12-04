@@ -20,7 +20,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 		//$this->load->view('welcome_message');
-                echo hash("sha512","adminandy.vanbutsele@gmail.com");
+                //echo hash("sha512","adminandy.vanbutsele@gmail.com");
 	}
 }
 

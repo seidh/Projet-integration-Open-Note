@@ -45,7 +45,10 @@ class note extends CI_Controller {
         error_reporting(E_ALL);
         var_dump($this->notes_model->get_note_content(18));
     }
-
+    /**
+     * Cette fonction permet de voir une note grâce aux paramètre note_id
+     * @param type $note_id
+     */
     function view($note_id) {
         if ($this->session->userdata('logged_in')) {
             if ($this->input->get('id') == '') {
@@ -83,7 +86,11 @@ class note extends CI_Controller {
         $result['history'] = $this->notes_model->get_note_history($note_id);
         $this->load->view('templates/template', $result);
     }
-
+    /**
+     * Cette fonction permet de voir la différence entre le contenu actuel d'une note 
+     * et le contenu de la note du commit_hash passé en paramètre
+     * @param type $old_commit
+     */
     function view_diff($old_commit) {
         if ($this->session->userdata('logged_in')) {
             if ($this->input->get('id') == '') {
@@ -117,7 +124,10 @@ class note extends CI_Controller {
         $result['history'] = $this->notes_model->note_diff($this->input->post('note_id'), $old_commit);
         $this->load->view('templates/template', $result);
     }
-
+    /**
+     * Permet de rajouter un like sur une note en fonction de l'id passé en paramètre
+     * @param type $note_id
+     */
     function like($note_id) {
         $session_data = $this->session->userdata('logged_in');
         $sql = "DELETE FROM rate WHERE note_id = " . $note_id . " AND user_id = " . $session_data['id'];
@@ -126,7 +136,10 @@ class note extends CI_Controller {
         $this->notes_model->rate_note($note_id, $session_data['id'], true);
         redirect('note/view/' . $note_id, 'refresh');
     }
-
+    /**
+     * Permet de rajouter un unlike sur une note en fonction de l'id passé en paramètre
+     * @param type $note_id
+     */
     function unlike($note_id) {
 
         $session_data = $this->session->userdata('logged_in');
@@ -135,7 +148,12 @@ class note extends CI_Controller {
         $this->notes_model->rate_note($note_id, $session_data['id'], false);
         redirect('note/view/' . $note_id, 'refresh');
     }
-
+    /**
+     * Permet de créer un commentaire sur une note en fonction de l'id du commentaire.
+     * C'est-à-dire que l'on peut créer un commentaire d'un commentaire déjà présent et ainsi
+     * avoir des commentaires récursifs
+     * @param type $comment_id
+     */
     function sendComment($comment_id = null) {
         $this->form_validation->set_rules('comment', 'Commentaire', 'trim|required|xss_clean');
         $session_data = $this->session->userdata('logged_in');
@@ -164,7 +182,10 @@ class note extends CI_Controller {
             redirect('note/view/' . $this->input->post('note_id'), 'refresh');
         }
     }
-
+    /**
+     * Cette fonction permet d'afficher la page de création d'une note
+     * @param type $cat_id
+     */
     function create_online($cat_id) {
         if ($this->session->userdata('logged_in')) {
             if ($this->input->get('id') == '') {
@@ -201,7 +222,9 @@ class note extends CI_Controller {
         $result['category'] = $this->category_model->get_cat($cat_id);
         $this->load->view('templates/template', $result);
     }
-
+    /**
+     * Cette fonction permet de rajouter une note dans un catégorie grâce à l'id de la catégorie passé en POST
+     */
     function apply_create_online() {
         $this->form_validation->set_rules('title', 'Titre', 'trim|required|xss_clean');
         $this->form_validation->set_rules('note_content', 'Contenu de la note', 'required');
@@ -225,28 +248,18 @@ class note extends CI_Controller {
             $this->view($note_id);
         }
     }
-
-    function check_cat($cat_id) {
-        /**
-         *  call_back function to check if sessions_user is register inside cat_id given
-         * 
-         */
-    }
-
-    function create_by_upload($cat_id) {
-        
-    }
-
-    function history($note_id) {
-        
-    }
-
+    /**
+     * Cette fonction permet de restaurer une note via le commit_id passé en paramètre
+     * @param type $commit_id
+     */
     function revert_from_history($commit_id) {
         $commit = $this->notes_model->get_db_note_info($this->input->post('note_id'));
         $this->notes_model->revert_note($commit->path, $commit_id);
         redirect('note/view/' . $this->input->post('note_id'), 'refresh');
     }
-
+    /**
+     * Cette fonction permet de modifier une note
+     */
     function modification() {
         $this->form_validation->set_rules('commentaire_modification', 'Commentaire modification', 'trim|required|xss_clean');
         $this->form_validation->set_rules('modification_note', 'modification', 'trim|required|callback_check_content');
@@ -265,7 +278,11 @@ class note extends CI_Controller {
             redirect('note/view/' . $this->input->post('note_id'), 'refresh');
         }
     }
-
+    /**
+     * Cette fonction retourne vrai si le contenu de la modification et le contenu de la note que l'on veut modifier est différent et inversément
+     * @param type $modification_note
+     * @return boolean
+     */
     function check_content($modification_note) {
         $old_note = $this->notes_model->get_note_content($this->input->post('note_id'));
         $modification_note = explode(PHP_EOL, $modification_note);
@@ -279,9 +296,4 @@ class note extends CI_Controller {
             return true;
         }
     }
-
-    function compare_with($commit_id) {
-        
-    }
-
 }

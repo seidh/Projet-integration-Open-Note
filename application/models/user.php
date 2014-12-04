@@ -1,6 +1,13 @@
 <?php
 Class User extends CI_Model
 {
+    /**
+     * Cette fonction permet de verifier si les paramètre email ET password existe dans 
+     * la base de donnée.
+     * @param type $email
+     * @param type $password
+     * @return boolean
+     */
  function login($email, $password)
  {
    $this -> db -> select('id, email, pwd');
@@ -20,6 +27,11 @@ Class User extends CI_Model
      return false;
    }
  }
+ /**
+  * Cette fonction retourne toute les informations d'un utilisateur passé en paramètre.
+  * @param type $id
+  * @return type
+  */
  function user_data($id)
  {
     $this -> db -> select('*');
@@ -52,13 +64,21 @@ Class User extends CI_Model
         return $data;
     }
  }
- 
+ /**
+  * Cette fonction permet de verifier si l'id de l'utilisateur passé en paramètre est modérateur
+  * @param type $id
+  * @return type
+  */
  function is_moderator($id)
  {
     return $this->db->get_where('cat_perm', array('user_id' => $id))
                 ->result();
  }
- 
+ /**
+  * Cette fonction permet de verifier si l'id de l'utilisateur passé en paramètre est administrateur
+  * @param type $id
+  * @return type
+  */
  function is_admin($id)
  {
     $result = $this->db->select('*')

@@ -57,6 +57,9 @@ class message extends CI_Controller {
         $this->load->view('templates/template', $data);
         
     }
+    /**
+     *Permet d'envoyer un message à un utilisateur
+     */
     function send()
     {
         $this->form_validation->set_rules('editor1', 'message', 'trim|required');
@@ -64,27 +67,6 @@ class message extends CI_Controller {
         $session_data = $this->session->userdata('logged_in');
         if ($this->form_validation->run() == FALSE) {
             //form mal rempli
-            /*
-            $result = $this->user->user_data($session_data['id']);
-
-            $result['title'] = 'Open-Note - Conversation';
-            $result['description'] = 'La description de la page pour les moteurs de recherche';
-            $data['keywords'] = 'les, mots, clés, de, la, page';
-            // TEST Affichage date
-            setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
-
-            $result['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
-
-            // on choisit la view qui contient le corps de la page
-            $result['contents'] = 'message_view';
-            // On choisit la sidebar
-            $result['sidebar'] = 'sidebarMessage';
-            $result['conf_id'] = $this->input->post('conf_id');
-            // on charge la page dans le template
-            $result['liste_messages'] = $this->conversation_model->get_all_message_from_conversation($this->input->post('conf_id'));
-            $result['conf_id'] = $this->input->post('conf_id');
-            $this->load->view('templates/template', $result);
-             * */
              redirect('message/voir?id='.$this->input->post('conf_id'), 'refresh');
         } else {
             //form bien rempli
@@ -93,6 +75,9 @@ class message extends CI_Controller {
             redirect('message/voir?id='.$this->input->post('conf_id'), 'refresh');
         }
     }
+    /**
+     * Permet de voir une conversation
+     */
     function voir()
     {
         if ($this->session->userdata('logged_in')) {
@@ -135,6 +120,9 @@ class message extends CI_Controller {
         
         $this->load->view('templates/template', $data);
     }
+    /**
+     * Permet de créer une conversation avec un utilisateur
+     */
     function ajout_conversation()
     {
         $this->form_validation->set_rules('editor1', 'message', 'trim|required');

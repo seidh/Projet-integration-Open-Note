@@ -32,7 +32,12 @@ function index()
     }
  
 }
- 
+ /**
+  * Cette fonction reçoit en paramètre le mot de passe et en POST le login pour la connection. 
+  * Elle renvoie vrai si les champs ont bien été complété par l'utilisateur sinon elle renvoie faux.
+  * @param type $password
+  * @return boolean
+  */
  function check_database($password)
  {
    //Field validation succeeded.  Validate against database
@@ -60,6 +65,10 @@ function index()
      return false;
    }
  }
+ /**
+  * Cette fonction permet de supprimer une clé de récupération de mot de passe.
+  * Si l'utilisateur avait lancer une récupération de mot de passe mais qu'il arrive bien à se connecter par la suite
+  */
  function checkKey()
  {
     $session_data = $this->session->userdata('logged_in');
