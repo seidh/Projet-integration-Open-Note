@@ -441,7 +441,7 @@ Class administration_model extends CI_Model {
     
     
     function get_all_notes(){
-        $this->db->get('note')
+        return $this->db->get('note')
                  ->result();
     }
     

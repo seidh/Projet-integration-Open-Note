@@ -52,6 +52,10 @@ class administration extends CI_Controller
 
             // on choisit la view qui contient le corps de la page
             $this->data['contents'] = 'admin_view';
+            
+            // useful data
+            $this->data['users_data'] = $this->administration_model->get_all_user();
+            $this->data['notes_data'] = $this->administration_model->get_all_notes();
 
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data);
