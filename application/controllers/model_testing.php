@@ -65,6 +65,9 @@ class model_testing extends CI_Controller
     
     function test_get_note_id_from_path()
     {
+        ini_set('display_errors',1);
+        error_reporting(E_ALL);
+        $this->load->model('notes_model');
         echo '<pre>';
         $repo_path = 'assets/repo.d/jiksaa1417053582/';
         $db_result = $this->db->select('id')
@@ -74,7 +77,20 @@ class model_testing extends CI_Controller
                               ->get()
                               ->result();
         
-        print_r($db_result);
+                      print_r($db_result);
+        
+        $note_id = $db_result[0]->id;
+        
+        //get note history
+        $commit_history = $this->notes_model->get_note_history($note_id);
+        
+        print_r($commit_history);
+        //get index of concerned commit inside commit history
+        $needed_key = $this->notes_model->recursive_array_search('e53a0df6ba8609cf97fe81c1d0ab41606770558f', $commit_history);
+        
+        var_dump($needed_key);
+        
+        echo $commit_history[$needed_key]['commit_message'];
     }
 }
 
