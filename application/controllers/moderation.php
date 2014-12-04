@@ -160,6 +160,7 @@ class moderation extends CI_Controller
         }
         
         function unsubscription($user_id, $cat_id){
+            $session_data = $this->session->userdata('logged_in');
             if($this->administration_model->is_moderator_of($session_data['id'], $cat_id)){
                 
                 $this->db->delete('cat_subscription', array('user_id' => $user_id, 'cat_id' => $cat_id));
