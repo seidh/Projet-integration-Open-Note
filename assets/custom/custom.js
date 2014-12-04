@@ -90,7 +90,7 @@ editUserTable = function ()
            $("#editEmail"+idUser).css("display","inline");        
            $("#saveModif"+idUser).css("display","inline");
         });
-        
+
         
 
         

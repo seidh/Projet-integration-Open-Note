@@ -52,5 +52,24 @@ Class User extends CI_Model
         return $data;
     }
  }
+ 
+ function is_moderator($id)
+ {
+    return $this->db->get_where('cat_perm', array('user_id' => $id))
+                ->result();
+ }
+ 
+ function is_admin($id)
+ {
+    $result = $this->db->select('*')
+                 ->from('user_perm')
+                 ->where('user_id = ',$id)
+                 ->where('perm_id = 1')
+                 ->limit(1)
+                 ->get()
+                 ->result();
+    
+    return (empty($result))? false : true;
+ }
 }
 ?>

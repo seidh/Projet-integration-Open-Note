@@ -211,34 +211,38 @@ class administration extends CI_Controller
         {
             
             $this->form_validation->set_rules('user', 'Utilisateur', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('category', 'Catégorie', 'trim|required|xss_clean');
             $this->form_validation->set_rules('confirm', 'Pseudo', 'trim|required|xss_clean');
             
-            if(($this->form_validation->run() == FALSE) AND ($this->input->post('confirm') == TRUE))
+            if(($this->form_validation->run() == FALSE) OR ($this->input->post('confirm') == FALSE))
             {
                 //erreur dans le formulaire
                 echo'DEBUG';
+                sleep(5);
                 //redirect('administration/userList', 'refresh');
                 
             }
             else
             {
                 //build modo-cat data array to inject into database
-                $assignation = array('name' => $this->input->post('user'),
-                        'firstname' => $this->input->post('editFirstname'),                        
-                        'email' => $this->input->post('editEmail'),
-                        'groupe' => $this->input->post('editGroup'),
-                        'pseudo' => $this->input->post('editPseudo'));
+                $assignation = array('userid' => (int)$this->input->post('user'),
+                        'catid' => (int)$this->input->post('category'));
                 
-                //print_r($user_data);//debug instruction
+                //print_r($assignation);//debug instruction
                 
                 //check if unique fields aren't used yet
-                if($this->administration_model->is_user_exist($user_data['email']))
+                if($this->administration_model->is_moderator_of($assignation['userid'],$assignation['catid']))
                 {
-                    //user already exist so put error message
-                }
-                //else add user inside database
-                $this->administration_model->modify_user($user_data, "id = $id");
-                redirect("administration/userList","refresh");
+                    echo"ERREUR";//user already exist so put error message
+                    sleep(5);
+                } else {
+                    echo var_dump($assignation);
+                    $this->administration_model->attribute_moderator($assignation['userid'],$assignation['catid']);
+                    echo "SUCCES";
+                    
+                    redirect("administration/moderatorsList","refresh");
+                    
+                }                
             }
         }
         

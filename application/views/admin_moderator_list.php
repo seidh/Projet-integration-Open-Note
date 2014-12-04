@@ -105,7 +105,7 @@
                                                 <label>Catégorie :</label>
                                             </div>
                                             <div class="col-lg-8">
-                                                <select class="form-control" name='user' required>
+                                                <select class="form-control" name='category' required>
                                                     <?php
                                                     foreach ($category_data as $RawData) {
                                                         $singleCat = get_object_vars($RawData);
@@ -123,17 +123,19 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-6 top7"> 
-                                            <input type='checkbox' name='confirm' required> Je confirme l'assignation</input>
+                                            <input type='checkbox' name='confirm' id='checkbox' required /> <label for='checkbox'> Je confirme l'assignation</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" type='submit'>Save changes</button>
-                                </div>
+                                    <button class="btn btn-success" type="submit">Save changes</button>
+                                </div> 
+                                <?php echo form_close(); ?>
                             </div>
                             <!-- /.modal-content -->
                         </div>
+                    
                         <!-- /.modal-dialog -->
                     </div> 
                 </div>                
