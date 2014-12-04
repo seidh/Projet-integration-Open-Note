@@ -257,7 +257,10 @@ class note extends CI_Controller {
     {
         $old_note= $this->notes_model->get_note_content($this->input->post('note_id'));
         $modification_note = explode(PHP_EOL,$modification_note);
+        var_dump($old_note['note_content']);
+        var_dump($modification_note);
         $diff = array_diff($old_note['note_content'], $modification_note);
+        var_dump($diff);
         if (empty($diff)) {
             $this->form_validation->set_message('check_content', 'Vous n\'avez rien modifié');
             return false;
