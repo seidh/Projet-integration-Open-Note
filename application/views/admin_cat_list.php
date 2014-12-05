@@ -43,22 +43,26 @@
                                 if (!is_null($singleCat['parent_id'])) {
                                     echo '<td>&nbsp;&nbsp;&nbsp;&nbsp; <span id="catname' . $singleCat['id'] . '"><a href=' . base_url('administration/moderation/' . $singleCat['id']) . '>' . $singleCat['name'] . '</a></span></td>';
                                 } else {
-                                    echo'<td><span id="catname' . $singleCat['id'] . '"><a href=' . base_url('category?id=' . $singleCat['id']) . '>' . $singleCat['name'] . '</a></span></td>';
+                                    echo'<td><span id="catname' . $singleCat['id'] . '"><a href=' . base_url('administration/moderation/' . $singleCat['id']) . '>' . $singleCat['name'] . '</a></span></td>';
                                 }
                                 echo'<td>';
 
-
-                                foreach ($cat_moderators as $RawData2) { // Pour chaque modérateur
-                                    //echo var_dump($RawData2);
-                                    foreach ($RawData2['moderate_cat'] as $RawData3) { // Aller voir chaque catégorie
-                                        if ($RawData3['id'] == $singleCat['id']) {
-                                            echo '<a href=' . base_url('profil?id=' . $RawData2["id"]) . '>' . $RawData2["firstname"] . ' ' . $RawData2['name'] . '</a>';
-                                        }
-                                    }
-                                    if (end($cat_moderators) != $RawData2) {
+ 
+                                $array_of_moderator = $this->administration_model-> get_moderators_of($singleCat['id']);
+                            foreach ($array_of_moderator as $moderator) {
+                                
+                                echo'<a href=' . base_url('profil?id=' . $moderator["uid"]) . '>' . $moderator['firstname'] . ' ' . $moderator['uname'] . '</a>';
+                                if (end($array_of_moderator) != $moderator) {
                                         echo', ';
                                     }
-                                }
+                                
+                                
+                            }
+                                //echo var_dump($array_of_moderator);
+                                
+                            
+                            
+                          
 
                                 echo'</td>';
 
@@ -67,16 +71,7 @@
                                 echo'</tr>';
                             }
                             ?>
-                            <?php echo form_open('administration/adduser'); ?>
-                            <tr id="trAddUser" style="display:none;">
-                                <td><input style="display:none;" id="newName" name="newName" class="form-control" value=""></input></td>
-                                <td><input style="display:none;" id="newFirstname" name="newFirstname" class="form-control" value=""></input></td>
-                                <td><input style="display:none;" id="newPseudo" name="newPseudo" class="form-control" value=""></input></td>
-                                <td><input style="display:none;" id="newGroup" name="newGroup" class="form-control" value=""></input></td>
-                                <td><input style="display:none;" id="newEmail" name="newEmail" class="form-control" type="email" value=""></input></td>
-                                <td><button id="saveNew" style="display:none;" class="btn btn-primary" type="submit">Ok</button></td>
-                            </tr>
-                            <?php echo form_close(); ?>
+                            
                         </tbody>
                     </table>
                 </div>                            
@@ -130,7 +125,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" type='submit'>Save changes</button>
+                        <button  class="btn btn-primary" type='submit'>Save changes</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->

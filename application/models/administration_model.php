@@ -428,6 +428,16 @@ Class administration_model extends CI_Model {
         return $moderator_array;
     }
     
+    function get_moderators_of($catid){
+        return $this->db->select('user.id as uid, user.name as uname, user.firstname')
+                                     ->from('user')
+                                     ->join('cat_perm',"cat_perm.user_id = user.id")
+                                     ->where('cat_id',$catid)
+                                     ->where('perm_id',$this->moderator_perm)
+                                     ->get()
+                                     ->result_array();
+    }
+    
     
     
     
@@ -443,6 +453,15 @@ Class administration_model extends CI_Model {
     function get_all_notes(){
         return $this->db->get('note')
                  ->result();
+    }
+    
+    function get_all_notes_detail(){
+        return $this->db->select('note.id, note.name,user.id as uid, user.name as authorName, user.firstname as authorFirstname, category.id as catid, category.name as CatName, note.creation_date')
+                                     ->from('note')
+                                     ->join('user','user.id = note.author_id')
+                                     ->join('category', 'category.id = note.category')                                     
+                                     ->get()
+                                     ->result_array();
     }
     
     function get_all_notes_from($catId){
