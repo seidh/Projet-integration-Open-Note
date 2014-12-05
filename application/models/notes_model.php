@@ -108,7 +108,7 @@ class notes_model extends CI_Model {
 
         //update note data last_update
         $this->db->where('id', $note_id)
-                ->update('note', "modification_date = '" . date("Y-m-d H:i:s") . "'");
+                ->update('note', array('modification_date' => (string)date("Y-m-d H:i:s")));
     }
 
     function get_note_history($note_id) {
@@ -134,9 +134,34 @@ class notes_model extends CI_Model {
     }
 
     function revert_note($repo_path, $commit_hash) {
+        //get note id by $repo_path
+        $db_result = $this->db->select('id')
+                              ->from($this->table_note)
+                              ->where('path', $repo_path)
+                              ->limit(1)
+                              ->get()
+                              ->result();
+        $note_id = (int) $db_result[0]->id;
+        
+        //get note history
+        $commit_history = $this->get_note_history($note_id);
+        //get index of concerned commit inside commit history
+        $needed_key = $this->recursive_array_search($commit_hash, $commit_history);
+        
+        
         $repo = $this->open_note_repo($repo_path);
-        $repo->run('checkout ' . $commit_hash . ' .'); // str end dot is VERY IMPORTANT - DO NOT REMOVE IT
-        $repo->commit('retour à la version : ' . $commit_hash);
+        $repo->run('checkout '. $commit_hash .' .'); // str end dot is VERY IMPORTANT - DO NOT REMOVE IT
+        $repo->commit('retour à la version : '.$commit_history[$needed_key]['commit_message']);
+    }
+    
+    function recursive_array_search($needle,$haystack) {
+        foreach($haystack as $key=>$value) {
+            $current_key=$key;
+            if($needle===$value OR (is_array($value) && $this->recursive_array_search($needle,$value) !== false)) {
+                return $current_key;
+            }
+        }
+        return false;
     }
 
     function note_diff($note_id, $history_point) {
@@ -145,10 +170,15 @@ class notes_model extends CI_Model {
 
         //get traeted data from diff return
         $diff_return = $this->_get_diff_info($note_data['path'], $history_point);
-
-        $data = array('previous' => $note_data['note_content'],
-            'current' => $note_data['note_content']);
-
+        
+        //open git repo
+        $repo = $this->open_note_repo($note_data['path']);
+        
+        $data = array(
+            'previous' => explode(PHP_EOL,$repo->run('show '.$history_point.':'.$note_data['file_name'])),
+            'current' => explode(PHP_EOL,$repo->run('show HEAD:'.$note_data['file_name']))
+         );
+        
         foreach ($diff_return as $chunk) {
             $this->_build_final_array($chunk, 'previous', $data['previous']);
             $this->_build_final_array($chunk, 'current', $data['current']);
@@ -206,19 +236,46 @@ class notes_model extends CI_Model {
             array_pop($tmp);
             array_shift($tmp);
 
-            //get begin line et duration line from diff_info whashed by str_replace to remove '+' and '-'
-            $previous_tmp = explode(',', str_replace('-', '', $tmp[0]));
-            $current_tmp = explode(',', str_replace('+', '', $tmp[1]));
+            $previous_tmp = array();
+            $current_tmp = array();
+
+            $tmp[0] = str_replace('-', '', $tmp[0]);
+            $tmp[1] = str_replace('+', '', $tmp[1]);
+
+            $previous_tmp['one_line'] = false;
+            $current_tmp['one_line'] = false;
+
+            if (!strpos($tmp[0], ',') !== false) {
+                $previous_tmp['one_line'] = true;
+                $previous_tmp['begin_line'] = (int) $tmp[0];
+                $previous_tmp['duration_line'] = 0;
+            }
+
+            if (!strpos($tmp[1], ',') !== false) {
+                $current_tmp['one_line'] = true;
+                $current_tmp['begin_line'] = (int) $tmp[1];
+                $current_tmp['duration_line'] = 0;
+            }
+
+            if (!$previous_tmp['one_line']) {
+                $explode_tmp = explode(',', $tmp[0]);
+                $previous_tmp['begin_line'] = (int) $explode_tmp[0];
+                $previous_tmp['duration_line'] = (int) $explode_tmp[1];
+            }
+            unset($explode_tmp);
+
+            if (!$current_tmp['one_line']) {
+                $explode_tmp = explode(',', $tmp[1]);
+                $current_tmp['begin_line'] = (int) $explode_tmp[0];
+                $current_tmp['duration_line'] = (int) $explode_tmp[1];
+            }
 
             //add obtains info inside array
-            $diff_element['diff_info']['previous']['begin_line'] = (int) $previous_tmp[0];
-            $diff_element['diff_info']['previous']['duration_line'] = (int) $previous_tmp[1];
+            $diff_element['diff_info']['previous'] = $previous_tmp;
 
-            $diff_element['diff_info']['current']['begin_line'] = (int) $current_tmp[0];
-            $diff_element['diff_info']['current']['duration_line'] = (int) $current_tmp[1];
+            $diff_element['diff_info']['current'] = $current_tmp;
+
             $diff_array[] = $diff_element;
-
-            $diff_note = array();
         }
 
         //build array of previous and current state of file
@@ -238,7 +295,8 @@ class notes_model extends CI_Model {
                 elseif ($line[0] == '+')
                     $current_note[] = $line;
                 else {
-                    
+                    $previous_note[] = $line;
+                    $current_note[] = $line;
                 }
             }
             $diff_array[$i]['diff_content'] = array('previous' => $previous_note,
@@ -252,8 +310,7 @@ class notes_model extends CI_Model {
         $begin = $chunk['diff_info'][$prevOrCurrent]['begin_line'];
         $duration = $chunk['diff_info'][$prevOrCurrent]['duration_line'];
 
-        $start_index_diff = ($begin != 1 ) ? 1 : 0;
-        for ($i = $begin - 1, $j = $start_index_diff, $count = 0; $count < $duration; $i++, $j++, $count++) {
+        for ($i = $begin - 1, $j = 1, $count = 0; $count < $duration; $i++, $j++, $count++) {
             $content[$i] = $chunk['diff_content'][$prevOrCurrent][$j];
         }
     }

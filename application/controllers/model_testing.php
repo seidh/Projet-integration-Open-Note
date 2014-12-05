@@ -65,16 +65,12 @@ class model_testing extends CI_Controller
     
     function test_get_note_id_from_path()
     {
+        ini_set('display_errors',1);
+        error_reporting(E_ALL);
         echo '<pre>';
-        $repo_path = 'assets/repo.d/jiksaa1417053582/';
-        $db_result = $this->db->select('id')
-                              ->from('note')
-                              ->where('path', $repo_path)
-                              ->limit(1)
-                              ->get()
-                              ->result();
-        
-        print_r($db_result);
+        $this->load->model('notes_model');
+        $return = $this->notes_model->note_diff(18, 'd8a8bc74a1d2b56aedb2852d1fe6d1e426368a6f');
+        print_r($return);
     }
 }
 
