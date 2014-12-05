@@ -37,6 +37,9 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="<?php echo base_url('payment'); ?>"><i class="fa fa-euro fa-fw"></i>Informations de paiement</a>
+            </li>   
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

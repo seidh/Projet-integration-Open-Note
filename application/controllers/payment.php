@@ -38,7 +38,7 @@ class payment extends CI_Controller
                     // on charge la view qui contient le corps de la page
                     $result['contents'] = 'payment_view';
 
-                    $result['sidebar'] = 'normal';
+                    $result['sidebar'] = 'admin';
 
                     // on charge la page dans le template
                     $this->load->view('templates/template', $result);   
