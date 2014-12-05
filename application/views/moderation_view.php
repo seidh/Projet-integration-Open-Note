@@ -93,6 +93,10 @@
                     <?php //echo form_open("moderation/subscription"); ?>
                     <div class="row top30">
                         <div class="col-lg-12">
+                            <?php //echo var_dump($subscription_data);?>
+                            <?php if(empty($subscription_data)): ?>
+                            <i> Il n'y a aucune demandes pour le moment... </i>
+                            <?php else: ?>
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                 <th>Utilisateur</th>
@@ -129,6 +133,7 @@
                                     } ?>
                                 </tbody>
                             </table>
+                            <?php endif; ?>
                         </div>
                     </div>              
                     

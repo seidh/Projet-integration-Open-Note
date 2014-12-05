@@ -11,6 +11,7 @@ class administration extends CI_Controller
     
         function __construct()
         {
+            
             parent::__construct();
             $this->load->model('administration_model','',TRUE);
             $this->load->model('user','',TRUE);
@@ -22,18 +23,25 @@ class administration extends CI_Controller
             if($this->session->userdata('logged_in'))
             {
                 $session_data = $this->session->userdata('logged_in');
-                $this->data['id'] = $session_data['id'];                 
-                $result = $this->user->user_data($this->data['id']);
-                $this->data['name'] = $result['name'];
-                $this->data['firstname'] = $result['firstname'];
-                $this->data['pseudo'] = $result['pseudo'];
+                $this->data['id'] = $session_data['id'];               
+                if($this->user->is_admin($session_data['id'])){
+                    $result = $this->user->user_data($this->data['id']);
+                    $this->data['name'] = $result['name'];
+                    $this->data['firstname'] = $result['firstname'];
+                    $this->data['pseudo'] = $result['pseudo'];
 
-                //affichage date
-                setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
-                $this->data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
-                
-                // On choisit la sidebar
-                $this->data['sidebar'] = 'admin';
+                    //affichage date
+                    setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+                    $this->data['date'] = strftime("%a %d/%m/%Y &nbsp;&nbsp;");
+
+                    // On choisit la sidebar
+                    $this->data['sidebar'] = 'admin';
+                }
+                else
+            {
+                //If no session, redirect to login page
+                redirect('accueil', 'refresh');
+            }
 
             }
             else
@@ -266,28 +274,25 @@ class administration extends CI_Controller
             $this->load->view('templates/template', $this->data); 
         }
         
-        function notesList()
-        {
-            $this->data['title'] = 'Open-Note - Liste des notes';
-            $this->data['description'] = 'Page listant toutes les notes de la plateforme';
-            $this->data['keywords'] = 'les, mots, clés, de, la, page';
-
-            // on choisit la view qui contient le corps de la page
-            $this->data['contents'] = 'admin_notesList_view'; //TODO : sync with Olivier view
-            
-            $this->data['notes_data'] = $this->administration_model->get_all_notes();
-
-            // on charge la page dans le template
-            $this->load->view('templates/template', $this->data); 
-        }
         
         function addCat()
         {
+            $session_data = $this->session->userdata('logged_in');
             //TODO cat adding form validation
-            $this->form_validation->set_rules('cat_name', 'Nom', 'trim|required|xss-clean');
-            $this->form_validation->set_rules('parent_id', 'Categories parentes', 'trim|required|xss-clean');
+            $this->form_validation->set_rules('newCatName', 'Nom', 'trim|required|xss-clean');
+            $this->form_validation->set_rules('parent_cat', 'Categories parentes', 'trim|required|xss-clean');
+            $catName = $this->input->post('newCatName');
+            $parentid = $this->input->post('parent_cat');
+      
+            if($parentid == 'null'){
+               $newCatArray = array('name' => $catName);
+            } else {
+                $newCatArray = array('name' => $catName, 'parent_id' => $parentid);
+            }
+            //echo $catName.'---'.var_dump($parentid);
             
-            $this->administration_model->create_category();
+            $this->administration_model->create_category($newCatArray, $session_data['id']);
+            redirect('administration/categoriesList', 'refresh');
         }
         
         
@@ -302,6 +307,7 @@ class administration extends CI_Controller
             
             $this->data['cat_moderators'] = $this->administration_model->get_all_moderator();
             $this->data['cat_datas'] = $this->administration_model->get_all_category();
+            
             
             // on charge la page dans le template
             $this->load->view('templates/template', $this->data); 
@@ -351,5 +357,22 @@ class administration extends CI_Controller
             } else {
                 redirect('accueil', 'refresh');
             }
+        }
+        
+        function noteslist(){
+            $session_data = $this->session->userdata('logged_in');
+            
+            
+                $this->data['title'] = 'Open-Note - Modifier une catégorie';
+                $this->data['description'] = 'Page permettant la modification d\'une catégorie';
+                $this->data['keywords'] = 'les, mots, clés, de, la, page';
+
+                // on choisit la view qui contient le corps de la page
+                $this->data['contents'] = 'admin_notes_view'; //TODO : sync with Olivier view
+              
+                $this->data['notes_array'] = $this->administration_model->get_all_notes_detail();
+                
+                // on charge la page dans le template
+                $this->load->view('templates/template', $this->data); 
         }
  }

@@ -8,33 +8,22 @@
                 <!-- /input-group -->
             </li>
             <li>
-                <a href="<?php echo base_url('administration'); ?>"><i class="fa fa-wrench fa-fw"></i>Administration</a>
-            </li>                          
+                <a href="<?php echo base_url('administration'); ?>"><i class="fa fa-wrench fa-fw"></i> Administration</a>
+            </li>     
+                        <li>
+                <a href="<?php echo base_url('administration/noteslist'); ?>"><i class="fa fa-file-text fa-fw"></i> Toutes les notes</a>
+            </li>  
             <li>
-                <a class="active" href="#"><i class="fa fa-users fa-fw"></i>Utilisateurs<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<?php echo base_url('administration/userlist'); ?>">Liste d'utilisateurs</a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('administration/newuserform'); ?>">Ajout d'un utilisateur</a>
-                    </li>
-                </ul>
+                <a class="active" href="<?php echo base_url('administration/userlist'); ?>"><i class="fa fa-users fa-fw"></i> Utilisateurs</a>
+                
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="<?php echo base_url('administration/moderatorsList'); ?>"><i class="fa fa-life-ring fa-fw"></i>Modérateurs</a>
+                <a href="<?php echo base_url('administration/moderatorsList'); ?>"><i class="fa fa-life-ring fa-fw"></i> Modérateurs</a>
             </li>                        
             <li>
-                <a href="#"><i class="fa fa-sitemap fa-fw"></i>Catégorie<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<?php echo base_url('administration/categoriesList'); ?>">Liste des catégories</a>
-                    </li>
-                    <li>
-                        <a href="morris.html">Créer une nouvelle catégorie</a>
-                    </li>
-                </ul>
+                <a href="<?php echo base_url('administration/categoriesList'); ?>"><i class="fa fa-sitemap fa-fw"></i> Catégories</a>
+
                 <!-- /.nav-second-level -->
             </li>
             <li>

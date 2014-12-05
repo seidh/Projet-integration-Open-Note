@@ -74,7 +74,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <span class="navbar-text"><?php echo $date; ?><span id="id39018"> </span></span>
+                <span class="navbar-text navbar-date"><?php echo $date; ?><span id="id39018"> </span></span>
                 <script defer src="<?php echo base_url('assets/sb-admin-2/js/gettime.js');?>"></script>
                 <!-- <a class="navbar-brand" href="accueil">OpenNote</a> | -->
             </div>
@@ -82,8 +82,8 @@
             <!-- /.navbar-header -->
             
             <ul class="nav navbar-top-links navbar-right">
-                <a href="<?php echo base_url('profil'); ?>">
-                    <li class="firstname-name">
+                <a class="firstname-name" href="<?php echo base_url('profil'); ?>">
+                    <li >
                     <?php 
                         $session_data = $this->session->userdata('logged_in');
                         $data['id'] = $session_data['id'];

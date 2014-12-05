@@ -1,3 +1,28 @@
+@media (max-width: 767px) {
+    .navbar-fixed-top {
+        position: relative;
+        top: auto;
+    }
+    .navbar-collapse {
+        max-height: none;
+    }
+    body {
+        margin: 0;
+        padding-top: 0px;
+    }
+    .firstname-name {
+        display:none;
+    }
+    .navbar-date{
+        display: none;
+    }
+    .navbar-header{
+        display: inline;
+        float:left;
+    }
+
+}
+
 /*
 Add custom style here. 
 Please note where your custom style is used.
@@ -8,8 +33,10 @@ Don't forget to write your name and the date :-D
     Author     : Olivier
 */
 
+@media (min-width: 767px) {
 body {
     padding-top:40px;
+}
 }
 
 /* 22/10/2014 - Olivier - Scrollable tables for admin page */
