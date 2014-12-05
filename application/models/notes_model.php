@@ -178,7 +178,7 @@ class notes_model extends CI_Model {
             'previous' => explode(PHP_EOL,$repo->run('show '.$history_point.':'.$note_data['file_name'])),
             'current' => explode(PHP_EOL,$repo->run('show HEAD:'.$note_data['file_name']))
          );
-
+        
         foreach ($diff_return as $chunk) {
             $this->_build_final_array($chunk, 'previous', $data['previous']);
             $this->_build_final_array($chunk, 'current', $data['current']);
@@ -295,7 +295,8 @@ class notes_model extends CI_Model {
                 elseif ($line[0] == '+')
                     $current_note[] = $line;
                 else {
-                    
+                    $previous_note[] = $line;
+                    $current_note[] = $line;
                 }
             }
             $diff_array[$i]['diff_content'] = array('previous' => $previous_note,
@@ -309,8 +310,7 @@ class notes_model extends CI_Model {
         $begin = $chunk['diff_info'][$prevOrCurrent]['begin_line'];
         $duration = $chunk['diff_info'][$prevOrCurrent]['duration_line'];
 
-        $start_index_diff = ($begin != 1 ) ? 1 : 0;
-        for ($i = $begin - 1, $j = $start_index_diff, $count = 0; $count < $duration; $i++, $j++, $count++) {
+        for ($i = $begin - 1, $j = 1, $count = 0; $count < $duration; $i++, $j++, $count++) {
             $content[$i] = $chunk['diff_content'][$prevOrCurrent][$j];
         }
     }
