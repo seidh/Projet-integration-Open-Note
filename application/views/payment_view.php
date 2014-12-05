@@ -11,10 +11,10 @@
             <ul>
                 <li>Solutions Grand Volume (installation sur parc informatique du client) :
                     <ul>
-                        <li>300 utilisateurs : 5€ / mois / utilisateur</li>
-                        <li>300 - 1000 utilisateurs : 4,5 € /mois /utilisateur</li>
-                        <li>1000 - 10000 utilisateurs : 4 € /mois /utilisateur</li>
-                        <li> +10000 : 3 € /mois /utilisateurs</li>
+                        <li>300 utilisateurs : 5€ / an / utilisateur</li>
+                        <li>300 - 1000 utilisateurs : 4,5 € /an /utilisateur</li>
+                        <li>1000 - 10000 utilisateurs : 4 € /an /utilisateur</li>
+                        <li> +10000 : 3 € /an /utilisateurs</li>
                         <br />
                         <li>import data utilisateurs : forfait 500 €</li>
                         <li>Offre gratuite de l'installation matérielle</li>

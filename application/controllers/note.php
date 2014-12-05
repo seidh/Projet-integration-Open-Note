@@ -45,6 +45,7 @@ class note extends CI_Controller {
         error_reporting(E_ALL);
         var_dump($this->notes_model->get_note_content(18));
     }
+
     /**
      * Cette fonction permet de voir une note grâce aux paramètre note_id
      * @param type $note_id
@@ -82,10 +83,14 @@ class note extends CI_Controller {
 
         // on charge la page dans le template
         $result['note'] = $this->notes_model->get_note_content($note_id);
+        if (!$this->category_model->check_my_cat($result['note']['category'], $session_data['id'])) {
+            redirect('accueil', 'refresh');
+        }
         $result['rating'] = $this->notes_model->get_rating_note($note_id, $session_data['id']);
         $result['history'] = $this->notes_model->get_note_history($note_id);
         $this->load->view('templates/template', $result);
     }
+
     /**
      * Cette fonction permet de voir la différence entre le contenu actuel d'une note 
      * et le contenu de la note du commit_hash passé en paramètre
@@ -107,6 +112,15 @@ class note extends CI_Controller {
             //If no session, redirect to login page
             redirect('login', 'refresh');
         }
+        //get note history
+        $commit_history = $this->notes_model->get_note_history($this->input->post('note_id'));
+
+        //get index of concerned commit inside commit history
+        $needed_key = $this->notes_model->recursive_array_search($old_commit, $commit_history);
+        if ($needed_key === false) {
+            // illegal commit
+            redirect('login', 'refresh');
+        } 
         // définition des données variables du template
         $result['title'] = 'Open-Note - Note';
         $result['description'] = 'La description de la page pour les moteurs de recherche';
@@ -120,10 +134,15 @@ class note extends CI_Controller {
         $result['sidebar'] = 'normal';
         // on charge la page dans le template
         $result['note'] = $this->notes_model->get_note_content($this->input->post('note_id'));
+        if (!$this->category_model->check_my_cat($result['note']['category'], $session_data['id'])) {
+            redirect('accueil', 'refresh');
+        }
         $result['commit_hash'] = $old_commit;
         $result['history'] = $this->notes_model->note_diff($this->input->post('note_id'), $old_commit);
         $this->load->view('templates/template', $result);
+        
     }
+
     /**
      * Permet de rajouter un like sur une note en fonction de l'id passé en paramètre
      * @param type $note_id
@@ -136,6 +155,7 @@ class note extends CI_Controller {
         $this->notes_model->rate_note($note_id, $session_data['id'], true);
         redirect('note/view/' . $note_id, 'refresh');
     }
+
     /**
      * Permet de rajouter un unlike sur une note en fonction de l'id passé en paramètre
      * @param type $note_id
@@ -148,6 +168,7 @@ class note extends CI_Controller {
         $this->notes_model->rate_note($note_id, $session_data['id'], false);
         redirect('note/view/' . $note_id, 'refresh');
     }
+
     /**
      * Permet de créer un commentaire sur une note en fonction de l'id du commentaire.
      * C'est-à-dire que l'on peut créer un commentaire d'un commentaire déjà présent et ainsi
@@ -172,6 +193,9 @@ class note extends CI_Controller {
             // On choisit la sidebar
             $result['sidebar'] = 'normal';
             $result['note'] = $this->notes_model->get_note_content($this->input->post('note_id'));
+            if (!$this->category_model->check_my_cat($result['note']['category'], $session_data['id'])) {
+                redirect('accueil', 'refresh');
+            }
             $result['rating'] = $this->notes_model->get_rating_note($this->input->post('note_id'), $session_data['id']);
 
             // on charge la page dans le template
@@ -182,6 +206,7 @@ class note extends CI_Controller {
             redirect('note/view/' . $this->input->post('note_id'), 'refresh');
         }
     }
+
     /**
      * Cette fonction permet d'afficher la page de création d'une note
      * @param type $cat_id
@@ -220,8 +245,12 @@ class note extends CI_Controller {
         // on charge la page dans le template
         $result['cat_id'] = $cat_id;
         $result['category'] = $this->category_model->get_cat($cat_id);
+        if (!$this->category_model->check_my_cat($cat_id, $session_data['id'])) {
+            redirect('accueil', 'refresh');
+        }
         $this->load->view('templates/template', $result);
     }
+
     /**
      * Cette fonction permet de rajouter une note dans un catégorie grâce à l'id de la catégorie passé en POST
      */
@@ -234,7 +263,7 @@ class note extends CI_Controller {
             $this->create_online($this->input->post('category'));
         } else {
             $repo_path = 'assets/repo.d/' . sha1(bin2hex(openssl_random_pseudo_bytes(24)) . time()) . '/';
-            $file_name = $this->input->post('title') . '.txt';
+            $file_name = time() . '.txt';
 
             //create note_file
             mkdir($repo_path);
@@ -248,6 +277,7 @@ class note extends CI_Controller {
             $this->view($note_id);
         }
     }
+
     /**
      * Cette fonction permet de restaurer une note via le commit_id passé en paramètre
      * @param type $commit_id
@@ -257,6 +287,7 @@ class note extends CI_Controller {
         $this->notes_model->revert_note($commit->path, $commit_id);
         redirect('note/view/' . $this->input->post('note_id'), 'refresh');
     }
+
     /**
      * Cette fonction permet de modifier une note
      */
@@ -278,6 +309,7 @@ class note extends CI_Controller {
             redirect('note/view/' . $this->input->post('note_id'), 'refresh');
         }
     }
+
     /**
      * Cette fonction retourne vrai si le contenu de la modification et le contenu de la note que l'on veut modifier est différent et inversément
      * @param type $modification_note
@@ -296,4 +328,5 @@ class note extends CI_Controller {
             return true;
         }
     }
+
 }

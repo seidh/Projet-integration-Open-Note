@@ -6,8 +6,6 @@
         <div class="col-lg-12 left">
             <div class="">
                 <p style="text-align: center">
-                <h1>
-                    MENTIONS LEGALES :</h1>
                 <p style="text-align: justify">
                     Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., nous portons à la connaissance des utilisateurs et visiteurs du site : <a href="http://www.open-note.ddns.net" target="_blank">www.open-note.ddns.net</a> les informations suivantes :</p>
                 <p style="text-align: justify">

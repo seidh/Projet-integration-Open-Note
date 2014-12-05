@@ -73,6 +73,11 @@ class accueil extends CI_Controller {
             redirect('accueil','refresh');
         }
         $session_data = $this->session->userdata('logged_in');
+        if(!$this->category_model->check_my_cat($this->input->get('id'), $session_data['id']))
+        {
+            redirect('accueil','refresh');
+        }
+        
         $result = $this->user->user_data($session_data['id']);
 
         $result['title'] = 'Open-Note - catégorie';

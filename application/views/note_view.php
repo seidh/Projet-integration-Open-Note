@@ -5,40 +5,41 @@
                 Note - <?php echo $note['name'] ?> - <span style="color: green; font-style: italic;"> ++ <?php echo $rating['like']; ?></span> / <span style="color:red; font-style: italic;"> -- <?php echo $rating['unlike']; ?></span>
                 <div class="row top15">
                     <?php
+                    echo'<div class="text-left">';
+                    echo'<div class="col-sm-5 ">';
                     if ($rating['vote_unlike'] == 1 || ($rating['vote_like'] == 0 && $rating['vote_unlike'] == 0)) {
-                        echo'<div class="col-sm-1">';
-                        echo form_open('note/like/' . $note['id']);
-                        echo '<button type="submit" class="btn btn-outline btn-success">J\'aime</button>';
-                        echo '</form>';
-                        echo'</div>';
+                        $path = base_url('note/like/' . $note['id']);
+                        echo '<a href="'.$path.'"><button type="submit" class="btn btn-outline btn-success">J\'aime</button></a>';
+                        
                     }
                     ?>
-
-
                     <?php
                     if ($rating['vote_like'] == 1 || ($rating['vote_like'] == 0 && $rating['vote_unlike'] == 0)) {
-                        echo'<div class="col-sm-1">';
-                        echo form_open('note/unlike/' . $note['id']);
-                        echo '<button type="submit" class="btn btn-outline btn-danger">Je n\'aime pas</button>';
-                        echo '</form>';
-                        echo'</div>';
+                        $path = base_url('note/unlike/' . $note['id']);
+                        echo '<a href="'.$path.'"><button type="submit" class="btn btn-outline btn-danger">Je n\'aime pas</button></a>';
                     }
+                    echo'</div>';
+                    echo'</div>';
                     ?>
+                    <div class="text-right">
+                        <div class="col-sm-6">
+                            <button class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal">
+                                Options
+                            </button>
+                            <button class="btn btn-outline btn-primary" id="modification">
+                                Modifier la note
+                            </button>
+                            <button class="btn btn-outline btn-primary" id="cancel_modification" style="display: none;">
+                                Annuler la modification
+                            </button>
+                        </div>
+                    </div>
                 </div> 
+
             </h1>
+
         </div>
         <div class="form-group row">
-            <div class="col-sm-4">
-                <button class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal">
-                    Options
-                </button>
-                <button class="btn btn-outline btn-primary" id="modification">
-                    Modifier la note
-                </button>
-                <button class="btn btn-outline btn-primary" id="cancel_modification" style="display: none;">
-                    Annuler la modification
-                </button>
-            </div>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">

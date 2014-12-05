@@ -70,8 +70,8 @@ modification_note = function()
     $("#modification, #cancel_modification").click(function(){      
            $("#see_note").toggle("slow");
            $("#modif_note").toggle("slow");
-           $("#modification").toggle("slow");
-           $("#cancel_modification").toggle("slow");
+           $("#modification").toggle();
+           $("#cancel_modification").toggle();
            
         });
 };
